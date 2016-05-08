@@ -1,0 +1,61 @@
+/* Copyright 2016 Marcos Vazquez. All rights reserved.
+ *
+ * Author: Marcos Vazquez <vazquezre@esat-alumni.es>
+ *
+ * File:   Piece.h
+ * Represents a physics body controllable by the player.
+ * This class is effectively abstract. It MUST be inherited and its methods must be overriden.
+ *
+ */
+//#ifndef WIN32
+//#define WIN32 1
+//#endif
+
+#ifndef __PIECE_H__
+#define __PIECE_H__ 1
+
+#include <vector>
+#include <cmath>
+#include <ctgmath>
+#include "MathLib.h"
+#include <ESAT/math.h>
+#include <ESAT/time.h>
+#include "ESAT_extra/chipmunk/chipmunk.h"
+#include "config.h"
+
+class Piece {
+  public:
+    Piece();
+    Piece(const Piece& orig);
+    virtual ~Piece();
+
+    virtual void update();
+    virtual void move();
+    virtual void draw();
+    void setPhysics();
+    virtual void setDynamicPhysics();
+    virtual void setStaticPhysics();
+    
+    bool checkClick();
+    bool checkHover();
+    
+    ESAT::SpriteHandle img_;
+    bool static_;
+    bool dragged_;
+    
+    std::vector<MathLib::Point2> points_;
+    MathLib::Vec2 pos_;
+    float rotation_;
+    
+    double last_update_;
+    
+    cpSpace* space_;    
+    cpBody* physics_body_;
+    cpShape* physics_shape_;
+    
+  private:
+    std::vector<MathLib::Point2> floatToPoints(float* arr, int length);
+    float* pointsToFloat(std::vector<MathLib::Point2> points);
+};
+
+#endif /* __PIECE_H__ */

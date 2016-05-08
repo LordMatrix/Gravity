@@ -1,0 +1,19 @@
+GRAVITY
+-----------------------
+
+An Incredible Machine / Isaac Newton's Gravity ripoff
+
+
+Drag&drop puzzle pieces
+Create static objects on simulation starts
+
+Eject ball on specific point
+Mark & detect collision with goal
+Static objects on start
+Prevent puzzle pieces from overlapping
+
+Piece - Kind of piece
+Ball
+Scene - Intro
+        Menu
+        Level
