@@ -19,15 +19,14 @@
 #include "time.h"
 
 #include "../include/Piece.h"
-#define STB_PERLIN_IMPLEMENTATION
 #include "ESAT_extra/chipmunk/chipmunk.h" 
 #include "../include/config.h"
 #include "../include/Button.h"
 
 ESAT::SpriteHandle g_cursor_sprite_;
-ESAT::SpriteHandle g_button_background;
 float g_menu_width = 300.0f;
 bool g_simulation_running;
+bool g_simulation_started;
 
 std::vector<Button*> g_buttons;
 
@@ -35,12 +34,14 @@ cpSpace* g_space = nullptr;
 
 ESAT::SpriteHandle g_bg;
 std::vector<Piece*> g_pieces;
+Piece* g_ball;
 
 
 struct {
   int width;
   int height;
 } WindowOptions = {kWinWidth, kWinHeight};
+
 
 
 /**
@@ -50,7 +51,8 @@ void startGame() {
   srand(time(NULL));
   
   g_simulation_running = false;
-          
+  g_simulation_started = false;
+  
   g_space = cpSpaceNew();
   cpSpaceSetGravity(g_space, cpv(0, 0.0098f));
   
@@ -73,13 +75,29 @@ void startGame() {
   ball->points_.clear();
   MathLib::Vec2 position_offset = {0.0f, 0.0f};
   MathLib::assignRegularPolygon(20, 30, position_offset, 0.0f, ball->points_);
-  ball->pos_ = {500.0f, 500.0f};
+  ball->pos_ = {100.0f, 0.0f};
   
+  g_ball = ball;
   g_pieces.push_back(ball);
   
   float x = kWinWidth - g_menu_width;
-  
-  g_buttons.push_back(new Button(x + 25.0f, kWinHeight - 200.0f, 110.0f, 250.0f, 0, g_button_background, "Simulate", false));
+
+  //Play button
+  g_buttons.push_back(new Button(x + 25.0f, kWinHeight - 100.0f, 50.0f, 50.0f, 0, ESAT::SpriteFromFile("assets/img/play.png"), "", false));
+  //Pause Button
+  g_buttons.push_back(new Button(x + 125.0f, kWinHeight - 100.0f, 50.0f, 50.0f, 0, ESAT::SpriteFromFile("assets/img/pause.png"), "", false));
+  //Stop button
+  g_buttons.push_back(new Button(x + 225.0f, kWinHeight - 100.0f, 50.0f, 50.0f, 0, ESAT::SpriteFromFile("assets/img/stop.png"), "", false));
+}
+
+
+void restartLevel() {
+  //Delete previous pieces
+  for (int i=g_pieces.size()-1; i>=0; i--) {
+    delete g_pieces[i];
+  }
+  g_pieces.clear();
+  startGame();
 }
 
 
@@ -91,15 +109,45 @@ void update(double delta) {
   //Listen to button click
   if (ESAT::MouseButtonPressed(0)) {
     for (int i=0; i<g_buttons.size(); i++) {
-      if (g_buttons[i]->checkClick() && !g_simulation_running) {
+      if (g_buttons[i]->checkClick()) {
+        switch(i) {
+          case 0:
+            //Play
+            
+            //Update pieces physics
+            if (!g_simulation_started) {
+              g_ball->pos_ = {100.0f, 0.0f};
+              for (int i=0; i<g_pieces.size(); i++) {
+                g_pieces[i]->setPhysics();
+              }
+            }
+            g_simulation_running = true;
+            g_simulation_started = true;
+            break;
+          case 1:
+            g_simulation_running = false;
+            break;
+          case 2:
+            restartLevel();
+            break;
+        }
         
-        g_simulation_running = true;
-        
-        //Update pieces physics
+      }
+    }
+  }
+  //Listen to spacebar press
+  if (ESAT::GetNextPressedKey()) {
+    if (ESAT::IsSpecialKeyDown(ESAT::kSpecialKey_Space)) {
+      
+      //Update pieces physics
+      if (!g_simulation_started) {
+        g_ball->pos_ = {100.0f, 0.0f};
         for (int i=0; i<g_pieces.size(); i++) {
           g_pieces[i]->setPhysics();
         }
       }
+      g_simulation_started = true;
+      g_simulation_running = !g_simulation_running;
     }
   }
   
@@ -109,7 +157,7 @@ void update(double delta) {
     for (int i=0; i<g_pieces.size(); i++) {
       g_pieces[i]->update();
     }
-  } else {
+  } else if (!g_simulation_started) {
     for (int i=0; i<g_pieces.size(); i++) {
       
       //Detect drag/drop
@@ -176,7 +224,6 @@ int ESAT::main(int argc, char **argv) {
   
   g_bg = ESAT::SpriteFromFile("assets/img/sky.jpg");
   g_cursor_sprite_ = ESAT::SpriteFromFile("assets/img/Crosshair_02.png");
-  g_button_background = ESAT::SpriteFromFile("assets/img/button_bg.png");
   
   startGame();
   

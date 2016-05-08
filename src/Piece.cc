@@ -90,7 +90,7 @@ void Piece::setDynamicPhysics() {
   cpPolyShapeInit(poly, physics_body_, points_.size(), verts, transform, 1.0f);
   
   cpShapeSetElasticity(sbox, 0);
-  cpShapeSetFriction(sbox, 1.0f);
+  cpShapeSetFriction(sbox, 0.4f);
   cpShapeSetMass(sbox, 0.5);
   
   cpVect position = {pos_.x, pos_.y};
