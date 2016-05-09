@@ -38,13 +38,20 @@ class Piece {
     
     bool checkClick();
     bool checkHover();
+    void drop();
     
     ESAT::SpriteHandle img_;
     bool static_;
     bool dragged_;
+    bool active_;
     
     std::vector<MathLib::Point2> points_;
-    MathLib::Vec2 pos_;
+    //Position at level start
+    MathLib::Vec2 initial_pos_;
+    //Position set by the player
+    MathLib::Vec2 set_pos_;
+    //Position set by the simulation
+    MathLib::Vec2 current_pos_;
     float rotation_;
     
     double last_update_;

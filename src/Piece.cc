@@ -3,8 +3,11 @@
 Piece::Piece() {
   static_ = false;
   dragged_ = false;
-  pos_ = {900.0f, 200.0f};
+  initial_pos_ = {900.0f, 200.0f};
+  set_pos_ = initial_pos_;
+  current_pos_ = initial_pos_;
   rotation_ = 0.0f;
+  active_ = false;
   
   float width = 50.0f;
   float points[] = {-width,-width, width,-width, width,width, -width,width};
@@ -22,9 +25,9 @@ Piece::~Piece() {
 
 
 void Piece::update() {
-  if (!static_) {
-    pos_.x = cpBodyGetPosition(physics_body_).x;
-    pos_.y = cpBodyGetPosition(physics_body_).y;
+  if (active_ && !static_) {
+    current_pos_.x = cpBodyGetPosition(physics_body_).x;
+    current_pos_.y = cpBodyGetPosition(physics_body_).y;
   }
   
   if (dragged_) {
@@ -39,7 +42,7 @@ void Piece::move() {
 
 void Piece::draw() {
   ESAT::Mat3 translate;
-  ESAT::Mat3InitAsTranslate(pos_.x, pos_.y, &translate);
+  ESAT::Mat3InitAsTranslate(current_pos_.x, current_pos_.y, &translate);
   
   //Calculate transformed vertices
   float vertices_out[40];
@@ -93,7 +96,7 @@ void Piece::setDynamicPhysics() {
   cpShapeSetFriction(sbox, 0.4f);
   cpShapeSetMass(sbox, 0.5);
   
-  cpVect position = {pos_.x, pos_.y};
+  cpVect position = {current_pos_.x, current_pos_.y};
   cpBodySetPosition(physics_body_, position);
 }
 
@@ -104,7 +107,7 @@ void Piece::setStaticPhysics() {
     MathLib::Point2 p1 = points_[i];
     MathLib::Point2 p2 = points_[i+1];
     
-    cpShape* ground = cpSegmentShapeNew( cpSpaceGetStaticBody(space_), cpv(p1.x + pos_.x, p1.y + pos_.y), cpv(p2.x + pos_.x, p2.y + pos_.y), 2.0f);
+    cpShape* ground = cpSegmentShapeNew( cpSpaceGetStaticBody(space_), cpv(p1.x + current_pos_.x, p1.y + current_pos_.y), cpv(p2.x + current_pos_.x, p2.y + current_pos_.y), 2.0f);
     cpShapeSetFriction(ground, 1.0f);
     cpSpaceAddShape(space_, ground);
   }
@@ -141,10 +144,10 @@ bool Piece::checkClick() {
   float margin = 50.0f;
   
   //Check if clicked inside the button
-  if (ESAT::MousePositionX() >= pos_.x
-    && ESAT::MousePositionX() <= pos_.x + margin
-    && ESAT::MousePositionY() >= pos_.y
-    && ESAT::MousePositionY() <= pos_.y + margin) {
+  if (ESAT::MousePositionX() >= current_pos_.x
+    && ESAT::MousePositionX() <= current_pos_.x + margin
+    && ESAT::MousePositionY() >= current_pos_.y
+    && ESAT::MousePositionY() <= current_pos_.y + margin) {
     click = 1;
   }
     
@@ -155,4 +158,10 @@ bool Piece::checkClick() {
 /// @brief  An alias for CheckClick(), to be used for detecting hover
 bool Piece::checkHover() {
   return checkClick();
+}
+
+
+void Piece::drop() {
+  set_pos_ = {(float)ESAT::MousePositionX(), (float)ESAT::MousePositionY()};
+  current_pos_ = set_pos_;
 }

@@ -58,7 +58,9 @@ void startGame() {
   
   Piece* piece = new Piece();
   piece->space_ = g_space;
-  piece->pos_ = {900.0f, 500.0f};
+  piece->initial_pos_ = {900.0f, 500.0f};
+  piece->set_pos_ = piece->initial_pos_;
+  piece->current_pos_ = piece->initial_pos_;
   piece->static_ = true;
   g_pieces.push_back(piece);
   
@@ -75,7 +77,9 @@ void startGame() {
   ball->points_.clear();
   MathLib::Vec2 position_offset = {0.0f, 0.0f};
   MathLib::assignRegularPolygon(20, 30, position_offset, 0.0f, ball->points_);
-  ball->pos_ = {100.0f, 0.0f};
+  ball->initial_pos_ = {100.0f, 0.0f};
+  ball->set_pos_ = ball->initial_pos_;
+  ball->current_pos_ = ball->initial_pos_;
   
   g_ball = ball;
   g_pieces.push_back(ball);
@@ -101,6 +105,46 @@ void restartLevel() {
 }
 
 
+void startSimulation() {
+  //Update pieces physics
+  if (!g_simulation_started) {
+    g_ball->current_pos_ = {100.0f, 0.0f};
+    
+    for (int i=0; i<g_pieces.size(); i++) {
+      //Check if the piece is inside the menu
+      float menu_x = kWinWidth - g_menu_width;
+      //Update active status
+      g_pieces[i]->active_ = (g_pieces[i]->current_pos_.x < menu_x);
+        
+      if (g_pieces[i]->active_)
+        g_pieces[i]->setPhysics();
+    }
+  }
+  g_simulation_running = true;
+  g_simulation_started = true;
+}
+
+
+void pauseSimulation() {
+  g_simulation_running = false;
+}
+
+
+void resumeSimulation() {
+  g_simulation_running = true;
+}
+
+
+void stopSimulation() {
+//  restartLevel();
+  for (int i=0; i<g_pieces.size(); i++) {
+    g_pieces[i]->current_pos_ = g_pieces[i]->set_pos_;
+  }
+  g_simulation_started = false;
+  g_simulation_running = false;
+}
+
+
 /**
  * Updates the game status
  * @param delta   Milliseconds elapsed since the last update
@@ -113,22 +157,17 @@ void update(double delta) {
         switch(i) {
           case 0:
             //Play
-            
-            //Update pieces physics
             if (!g_simulation_started) {
-              g_ball->pos_ = {100.0f, 0.0f};
-              for (int i=0; i<g_pieces.size(); i++) {
-                g_pieces[i]->setPhysics();
-              }
+              startSimulation();
+            } else {
+              resumeSimulation();
             }
-            g_simulation_running = true;
-            g_simulation_started = true;
             break;
           case 1:
-            g_simulation_running = false;
+            pauseSimulation();
             break;
           case 2:
-            restartLevel();
+            stopSimulation();
             break;
         }
         
@@ -141,13 +180,11 @@ void update(double delta) {
       
       //Update pieces physics
       if (!g_simulation_started) {
-        g_ball->pos_ = {100.0f, 0.0f};
-        for (int i=0; i<g_pieces.size(); i++) {
-          g_pieces[i]->setPhysics();
-        }
+        startSimulation();
+      } else {
+        if (g_simulation_running) pauseSimulation();
+        else resumeSimulation();
       }
-      g_simulation_started = true;
-      g_simulation_running = !g_simulation_running;
     }
   }
   
@@ -169,7 +206,7 @@ void update(double delta) {
       
       //Move selected piece along with the mouse
       if (g_pieces[i]->dragged_) {
-        g_pieces[i]->pos_ = {(float)ESAT::MousePositionX(), (float)ESAT::MousePositionY()};
+        g_pieces[i]->drop();
       }
     }
   }
@@ -185,11 +222,6 @@ void draw() {
 
 //  ESAT::DrawSprite(g_bg, 0, 0);
 
-  //Draw Pieces
-  for (int i=0; i<g_pieces.size(); i++) {
-    g_pieces[i]->draw();
-  }
-  
   /************ MENU ************/
   ESAT::DrawSetFillColor(0,0,200,200);
   ESAT::DrawSetStrokeColor(255,255,255,255);
@@ -204,7 +236,11 @@ void draw() {
     g_buttons[i]->draw(); 
   }
   /******************************/
-  
+
+  //Draw Pieces
+  for (int i=0; i<g_pieces.size(); i++) {
+    g_pieces[i]->draw();
+  }
   
   ESAT::DrawSprite(g_cursor_sprite_, (float)ESAT::MousePositionX(), (float)ESAT::MousePositionY());
   
