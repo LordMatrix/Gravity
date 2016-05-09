@@ -59,6 +59,7 @@ class Piece {
     cpSpace* space_;    
     cpBody* physics_body_;
     cpShape* physics_shape_;
+    std::vector<cpShape*> physics_segments_;
     
   private:
     std::vector<MathLib::Point2> floatToPoints(float* arr, int length);

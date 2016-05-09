@@ -9,6 +9,9 @@ Piece::Piece() {
   rotation_ = 0.0f;
   active_ = false;
   
+  physics_body_ = nullptr;
+  physics_shape_ = nullptr;
+  
   float width = 50.0f;
   float points[] = {-width,-width, width,-width, width,width, -width,width};
   
@@ -69,6 +72,16 @@ void Piece::draw() {
 
 void Piece::setPhysics() {
   if (static_) {
+    //Remove existing physics
+    for (int i=physics_segments_.size()-1; i>=0; i--) {
+      if (physics_segments_[i] != nullptr) {
+        cpSpaceRemoveShape(space_, physics_segments_[i]);
+        physics_segments_.pop_back();
+      }
+    }
+    physics_segments_.clear();
+    
+    //Set new physics
     setStaticPhysics();
   } else {
     setDynamicPhysics();
@@ -107,9 +120,9 @@ void Piece::setStaticPhysics() {
     MathLib::Point2 p1 = points_[i];
     MathLib::Point2 p2 = points_[i+1];
     
-    cpShape* ground = cpSegmentShapeNew( cpSpaceGetStaticBody(space_), cpv(p1.x + current_pos_.x, p1.y + current_pos_.y), cpv(p2.x + current_pos_.x, p2.y + current_pos_.y), 2.0f);
-    cpShapeSetFriction(ground, 1.0f);
-    cpSpaceAddShape(space_, ground);
+    physics_segments_.push_back(cpSegmentShapeNew( cpSpaceGetStaticBody(space_), cpv(p1.x + current_pos_.x, p1.y + current_pos_.y), cpv(p2.x + current_pos_.x, p2.y + current_pos_.y), 2.0f));
+    cpShapeSetFriction(physics_segments_[i], 1.0f);
+    cpSpaceAddShape(space_, physics_segments_[i]);
   }
 }
 

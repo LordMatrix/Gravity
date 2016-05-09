@@ -136,9 +136,10 @@ void resumeSimulation() {
 
 
 void stopSimulation() {
-//  restartLevel();
+  
   for (int i=0; i<g_pieces.size(); i++) {
     g_pieces[i]->current_pos_ = g_pieces[i]->set_pos_;
+    g_pieces[i]->setPhysics();
   }
   g_simulation_started = false;
   g_simulation_running = false;
