@@ -43,6 +43,47 @@ struct {
 } WindowOptions = {kWinWidth, kWinHeight};
 
 
+/************* PHYSICS CONTROL *************/
+void deleteBody(cpBody *body, void *data) {
+  cpSpaceRemoveBody(cpBodyGetSpace(body), body);
+}
+
+
+void deleteShape(cpShape *shape, void *data) {
+  cpSpaceRemoveShape(cpShapeGetSpace(shape), shape);
+  cpShapeFree(shape);
+}
+
+
+void deleteAllShapes(cpSpace *space, void *key, void *data) {
+  if (!g_simulation_started && !g_simulation_running) {
+    printf("deleting shizz\n");
+    cpSpaceEachShape(g_space, deleteShape, NULL);
+  }
+}
+
+void drawBody(cpBody *body, void *data) {
+
+}
+
+
+void drawShape(cpShape *shape, void *data) {
+  ESAT::DrawSetStrokeColor(255,0,0,255);
+  cpBB bb = cpShapeGetBB(shape);
+  float path[] = {bb.l,bb.t, bb.r,bb.t, bb.r,bb.b, bb.l,bb.b, bb.l,bb.t};
+  ESAT::DrawPath(path, 5);
+}
+
+
+/**
+ * Prints all objects contained in the global space
+ */
+void drawPhysics() {
+  cpSpaceEachBody(g_space, drawBody, NULL);
+  cpSpaceEachShape(g_space, drawShape, NULL);
+}
+/*******************************************/
+
 
 /**
  * Initializes variables and sets the game to its initial status
@@ -106,6 +147,14 @@ void restartLevel() {
 
 
 void startSimulation() {
+  
+  g_space = cpSpaceNew();
+  cpSpaceSetGravity(g_space, cpv(0, 0.0098f));
+  for (int i=0; i<g_pieces.size(); i++) {
+    g_pieces[i]->space_ = g_space;
+    g_pieces[i]->physics_segments_.clear();
+  }
+  
   //Update pieces physics
   if (!g_simulation_started) {
     g_ball->current_pos_ = {100.0f, 0.0f};
@@ -141,6 +190,7 @@ void stopSimulation() {
     g_pieces[i]->current_pos_ = g_pieces[i]->set_pos_;
     g_pieces[i]->setPhysics();
   }
+  
   g_simulation_started = false;
   g_simulation_running = false;
 }
@@ -196,6 +246,7 @@ void update(double delta) {
       g_pieces[i]->update();
     }
   } else if (!g_simulation_started) {
+    
     for (int i=0; i<g_pieces.size(); i++) {
       
       //Detect drag/drop
@@ -245,6 +296,8 @@ void draw() {
   
   ESAT::DrawSprite(g_cursor_sprite_, (float)ESAT::MousePositionX(), (float)ESAT::MousePositionY());
   
+  
+  drawPhysics();
   
   ESAT::DrawEnd();
   ESAT::WindowFrame();
