@@ -17,11 +17,11 @@
 #include <vector>
 #include <cmath>
 #include <ctgmath>
-#include "MathLib.h"
+#include "../MathLib.h"
 #include <ESAT/math.h>
 #include <ESAT/time.h>
 #include "ESAT_extra/chipmunk/chipmunk.h"
-#include "config.h"
+#include "../config.h"
 
 class Piece {
   public:
@@ -60,6 +60,7 @@ class Piece {
     cpBody* physics_body_;
     cpShape* physics_shape_;
     std::vector<cpShape*> physics_segments_;
+    cpCollisionType collision_type_;
     
   private:
     std::vector<MathLib::Point2> floatToPoints(float* arr, int length);

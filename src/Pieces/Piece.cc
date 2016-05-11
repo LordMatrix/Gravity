@@ -1,4 +1,4 @@
-#include "../include/Piece.h"
+#include "../../include/Pieces/Piece.h"
 
 Piece::Piece() {
   static_ = false;
@@ -11,6 +11,7 @@ Piece::Piece() {
   
   physics_body_ = nullptr;
   physics_shape_ = nullptr;
+  collision_type_ = 0;
   
   float width = 50.0f;
   float points[] = {-width,-width, width,-width, width,width, -width,width};
@@ -86,6 +87,7 @@ void Piece::setPhysics() {
   } else {
     setDynamicPhysics();
   }
+  
 }
 
 
@@ -111,6 +113,7 @@ void Piece::setDynamicPhysics() {
   
   cpVect position = {current_pos_.x, current_pos_.y};
   cpBodySetPosition(physics_body_, position);
+  cpShapeSetCollisionType(physics_shape_, collision_type_);
 }
 
 
@@ -123,6 +126,8 @@ void Piece::setStaticPhysics() {
     physics_segments_.push_back(cpSegmentShapeNew( cpSpaceGetStaticBody(space_), cpv(p1.x + current_pos_.x, p1.y + current_pos_.y), cpv(p2.x + current_pos_.x, p2.y + current_pos_.y), 2.0f));
     cpShapeSetFriction(physics_segments_[i], 1.0f);
     cpSpaceAddShape(space_, physics_segments_[i]);
+    
+    cpShapeSetCollisionType(physics_segments_[i], collision_type_);
   }
 }
 
