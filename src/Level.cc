@@ -9,7 +9,54 @@
 #include "ESAT/draw.h"
 
 
-Level::Level() {
+Level::Level(int id, Piece* b, Piece* g, cpSpace* space) {
+  //This should be replaced by a Database
+  switch (id) {
+    case 0:
+      
+      MathLib::Point2 init;
+  
+  
+      //Ball position restarts on simulation play
+      init = {0.0f, 0.0f};
+      Piece* ball = new Piece(init, false, BALL_TYPE, space); 
+
+      //Additional ball properties
+      ball->points_.clear();
+      MathLib::Vec2 position_offset = {0.0f, 0.0f};
+      MathLib::assignRegularPolygon(20, 30, position_offset, 0.0f, ball->points_);
+      ball->initial_pos_ = {100.0f, 0.0f};
+      ball->set_pos_ = ball->initial_pos_;
+      ball->current_pos_ = ball->initial_pos_;
+      //Save this piece reference
+      ball_ = ball;
+      pieces_.push_back(ball);
+
+
+      //GOAL
+      init = {100.0f, 600.0f};
+      Piece* goal = new Piece(init, true, GOAL_TYPE, space);
+      pieces_.push_back(goal);
+      //Save this piece reference
+      goal_ = goal;
+
+
+      //SCENE PIECES
+      Piece* piece;
+
+      init = {900.0f, 500.0f};
+      piece = new Piece(init, true, 0, space);
+      pieces_.push_back(piece);
+
+      init = {900.0f, 200.0f};
+      piece = new Piece(init, false, 0, space);
+      pieces_.push_back(piece);
+
+      //Place NON-STATIC pieces in inventory (menu area)
+      break;
+    default:
+      printf("ERROR: Level not coded\n");
+  }
 }
 
 Level::Level(const Level& orig) {
@@ -19,8 +66,3 @@ Level::Level(const Level& orig) {
 Level::~Level() {
   printf("LEVEL IS BEING DELETED\n");
 }
-
-
-void Level::LoadFromFile(std::string filename, Level* levels[10]) {
-}
-

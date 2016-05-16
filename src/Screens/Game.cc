@@ -21,10 +21,10 @@ Game::~Game() {
 
 void Game::restartLevel() {
   //Delete previous pieces
-  for (int i=pieces_.size()-1; i>=0; i--) {
-    delete pieces_[i];
+  for (int i=current_level_->pieces_.size()-1; i>=0; i--) {
+    delete current_level_->pieces_[i];
   }
-  pieces_.clear();
+  current_level_->pieces_.clear();
   Init();
 }
 
@@ -38,48 +38,12 @@ void Game::Init() {
   
   cpSpaceSetGravity(physics_->space_, cpv(0, 0.0098f));
   
-  Piece* piece = new Piece();
-  piece->space_ = physics_->space_;
-  piece->initial_pos_ = {900.0f, 500.0f};
-  piece->set_pos_ = piece->initial_pos_;
-  piece->current_pos_ = piece->initial_pos_;
-  piece->static_ = true;
-  pieces_.push_back(piece);
-  
-  Piece* piece2 = new Piece();
-  piece2->space_ = physics_->space_;
-  piece2->static_ = false;
-  pieces_.push_back(piece2);
-  
-  //BALL
-  Piece* ball = new Piece();
-  ball->space_ = physics_->space_;
-  ball->static_ = false;
-  ball->collision_type_ = BALL_TYPE;
-  
-  ball->points_.clear();
-  MathLib::Vec2 position_offset = {0.0f, 0.0f};
-  MathLib::assignRegularPolygon(20, 30, position_offset, 0.0f, ball->points_);
-  ball->initial_pos_ = {100.0f, 0.0f};
-  ball->set_pos_ = ball->initial_pos_;
-  ball->current_pos_ = ball->initial_pos_;
-  
-  ball_ = ball;
-  pieces_.push_back(ball);
-  
-  
-  //GOAL
-  Piece* goal = new Piece();
-  goal->space_ = physics_->space_;
-  goal->initial_pos_ = {100.0f, 600.0f};
-  goal->set_pos_ = goal->initial_pos_;
-  goal->current_pos_ = goal->initial_pos_;
-  goal->static_ = true;
-  goal->collision_type_ = GOAL_TYPE;
-  
-  goal_ = goal;
-  pieces_.push_back(goal);
-  
+  loadLevels();
+  current_level_ = levels_[0];
+
+  ball_ = current_level_->ball_;
+  goal_ = current_level_->goal_;
+          
   CreateButtons();
 }
 
@@ -110,8 +74,8 @@ void Game::Draw() {
   /******************************/
 
   //Draw Pieces
-  for (int i=0; i<pieces_.size(); i++) {
-    pieces_[i]->draw();
+  for (int i=0; i<current_level_->pieces_.size(); i++) {
+    current_level_->pieces_[i]->draw();
   }
   
   ESAT::DrawSprite(cursor_sprite_, (float)ESAT::MousePositionX(), (float)ESAT::MousePositionY());
@@ -167,23 +131,23 @@ void Game::Update(double delta) {
   if (physics_->simulation_running_) {
     cpSpaceStep(physics_->space_, delta);
 
-    for (int i=0; i<pieces_.size(); i++) {
-      pieces_[i]->update();
+    for (int i=0; i<current_level_->pieces_.size(); i++) {
+      current_level_->pieces_[i]->update();
     }
   } else if (!physics_->simulation_started_) {
     
-    for (int i=0; i<pieces_.size(); i++) {
+    for (int i=0; i<current_level_->pieces_.size(); i++) {
       
       //Detect drag/drop
       if (ESAT::MouseButtonDown(0)) {
-        if (pieces_[i]->checkClick()) {
-          pieces_[i]->dragged_ = !pieces_[i]->dragged_;
+        if (current_level_->pieces_[i]->checkClick()) {
+          current_level_->pieces_[i]->dragged_ = !current_level_->pieces_[i]->dragged_;
         }
       }
       
       //Move selected piece along with the mouse
-      if (pieces_[i]->dragged_) {
-        pieces_[i]->drop();
+      if (current_level_->pieces_[i]->dragged_) {
+        current_level_->pieces_[i]->drop();
       }
     }
   }
@@ -203,35 +167,41 @@ void Game::CreateButtons() {
 }
 
 
+void Game::loadLevels() {
+  Level* lvl = new Level(0, ball_, goal_, physics_->space_);
+  levels_.push_back(lvl);
+}
+
+
 void Game::startSimulation() {
   physics_->startSimulation();
   
-  for (int i=0; i<pieces_.size(); i++) {
-    pieces_[i]->space_ = physics_->space_;
-    pieces_[i]->physics_segments_.clear();
+  for (int i=0; i<current_level_->pieces_.size(); i++) {
+    current_level_->pieces_[i]->space_ = physics_->space_;
+    current_level_->pieces_[i]->physics_segments_.clear();
   }
   
   //Update pieces physics
 //  if (!physics_->simulation_started_) {
     ball_->current_pos_ = {100.0f, 0.0f};
     
-    for (int i=0; i<pieces_.size(); i++) {
+    for (int i=0; i<current_level_->pieces_.size(); i++) {
       //Check if the piece is inside the menu
       float menu_x = kWinWidth - menu_width_;
       //Update active status
-      pieces_[i]->active_ = (pieces_[i]->current_pos_.x < menu_x);
+      current_level_->pieces_[i]->active_ = (current_level_->pieces_[i]->current_pos_.x < menu_x);
         
-      if (pieces_[i]->active_)
-        pieces_[i]->setPhysics();
+      if (current_level_->pieces_[i]->active_)
+        current_level_->pieces_[i]->setPhysics();
     }
 //  }
 }
 
 
 void Game::stopSimulation() {
-  for (int i=0; i<pieces_.size(); i++) {
-    pieces_[i]->current_pos_ = pieces_[i]->set_pos_;
-    pieces_[i]->setPhysics();
+  for (int i=0; i<current_level_->pieces_.size(); i++) {
+    current_level_->pieces_[i]->current_pos_ = current_level_->pieces_[i]->set_pos_;
+    current_level_->pieces_[i]->setPhysics();
   }
   physics_->stopSimulation();
 }

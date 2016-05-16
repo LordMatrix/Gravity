@@ -26,6 +26,7 @@
 class Piece {
   public:
     Piece();
+    Piece(MathLib::Point2 initial_pos, bool is_static, int collision_type, cpSpace* space);
     Piece(const Piece& orig);
     virtual ~Piece();
 

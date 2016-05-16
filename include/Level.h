@@ -15,9 +15,13 @@
 #include <stdlib.h>
 #include <math.h>
 #include <string>
+#include <vector>
 #include <ESAT/sprite.h>
 #include <ESAT/window.h>
-#include "Level.h"
+
+#include "ESAT_extra/chipmunk/chipmunk.h" 
+
+#include "Pieces/Piece.h"
 
 class Level {
   
@@ -29,12 +33,22 @@ class Level {
     };
 
     Level();
+    Level(int id, Piece* ball, Piece* goal, cpSpace* space);
     Level(const Level& orig);
     ~Level();
 
     void LoadFromFile(std::string filename, Level* levels[10]);
    
     LevelId id_;
+    std::vector<Piece*> pieces_;
+    
+     MathLib::Point2 eject_point_;
+     std::vector<Piece*> inventory_pieces_;
+     std::vector<Piece*> fixed_pieces_;
+     
+     Piece* ball_;
+     Piece* goal_;
+    
    
   private:
     
