@@ -43,6 +43,8 @@ void Piece::update() {
   if (active_ && !static_) {
     current_pos_.x = cpBodyGetPosition(physics_body_).x;
     current_pos_.y = cpBodyGetPosition(physics_body_).y;
+    
+    rotation_ = cpBodyGetAngle(physics_body_);
   }
   
   if (dragged_) {
@@ -56,8 +58,11 @@ void Piece::move() {
 
 
 void Piece::draw() {
-  ESAT::Mat3 translate;
+  ESAT::Mat3 translate, rotate, transform;
   ESAT::Mat3InitAsTranslate(current_pos_.x, current_pos_.y, &translate);
+  ESAT::Mat3InitAsRotate(rotation_, &rotate);
+  
+  ESAT::Mat3Multiply(translate, rotate, &transform);
   
   //Calculate transformed vertices
   float vertices_out[40];
@@ -69,7 +74,7 @@ void Piece::draw() {
   for (i=0; i<points_.size(); i++) {
     vertex[0] = points_[i].x;
     vertex[1] = points_[i].y;
-    ESAT::Mat3TransformVec2(translate, vertex, vertex_out);
+    ESAT::Mat3TransformVec2(transform, vertex, vertex_out);
     vertices_out[2*i] = vertex_out[0];
     vertices_out[2*i+1] = vertex_out[1];
   }
@@ -124,6 +129,9 @@ void Piece::setDynamicPhysics() {
   
   cpVect position = {current_pos_.x, current_pos_.y};
   cpBodySetPosition(physics_body_, position);
+  
+  cpBodySetAngle(physics_body_, rotation_);
+  
   cpShapeSetCollisionType(physics_shape_, collision_type_);
 }
 

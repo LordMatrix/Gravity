@@ -63,7 +63,7 @@ class Piece {
     std::vector<cpShape*> physics_segments_;
     cpCollisionType collision_type_;
     
-  private:
+  protected:
     std::vector<MathLib::Point2> floatToPoints(float* arr, int length);
     float* pointsToFloat(std::vector<MathLib::Point2> points);
 };

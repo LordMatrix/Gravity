@@ -11,6 +11,12 @@
 
 Level::Level(int id, Piece* b, Piece* g, cpSpace* space) {
   //This should be replaced by a Database
+  
+  Piece* ball;
+  Piece* goal;
+  Piece* piece;
+  MathLib::Vec2 position_offset;
+  
   switch (id) {
     case 0:
       
@@ -19,11 +25,11 @@ Level::Level(int id, Piece* b, Piece* g, cpSpace* space) {
   
       //Ball position restarts on simulation play
       init = {0.0f, 0.0f};
-      Piece* ball = new Piece(init, false, BALL_TYPE, space); 
+      ball = new Piece(init, false, BALL_TYPE, space); 
 
       //Additional ball properties
       ball->points_.clear();
-      MathLib::Vec2 position_offset = {0.0f, 0.0f};
+      position_offset = {0.0f, 0.0f};
       MathLib::assignRegularPolygon(20, 30, position_offset, 0.0f, ball->points_);
       ball->initial_pos_ = {100.0f, 0.0f};
       ball->set_pos_ = ball->initial_pos_;
@@ -35,27 +41,27 @@ Level::Level(int id, Piece* b, Piece* g, cpSpace* space) {
 
       //GOAL
       init = {100.0f, 600.0f};
-      Piece* goal = new Piece(init, true, GOAL_TYPE, space);
+      goal = new Piece(init, true, GOAL_TYPE, space);
       pieces_.push_back(goal);
       //Save this piece reference
       goal_ = goal;
 
 
       //SCENE PIECES
-      Piece* piece;
-
       init = {900.0f, 500.0f};
-      piece = new Piece(init, true, 0, space);
+      piece = new SmallRamp(init, true, 0, space);
+      
       pieces_.push_back(piece);
 
       init = {900.0f, 200.0f};
-      piece = new Piece(init, false, 0, space);
+      piece = new LargeRamp(init, true, 0, space);
       pieces_.push_back(piece);
 
       //Place NON-STATIC pieces in inventory (menu area)
       break;
     default:
       printf("ERROR: Level not coded\n");
+      break;
   }
 }
 

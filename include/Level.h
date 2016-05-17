@@ -22,6 +22,8 @@
 #include "ESAT_extra/chipmunk/chipmunk.h" 
 
 #include "Pieces/Piece.h"
+#include "Pieces/SmallRamp.h"
+#include "Pieces/LargeRamp.h"
 
 class Level {
   
