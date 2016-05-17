@@ -16,6 +16,7 @@
 #include "Screens/Screen.h"
 #include "Screens/Game.h"
 #include "Level.h"
+#include "Pieces/Piece.h"
 
 class Manager {
 public:
@@ -35,6 +36,7 @@ public:
     int quit_game_;
     Level* levels_[10];
   
+    Piece* ball_;
 
 private:
     

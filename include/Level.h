@@ -25,6 +25,7 @@
 #include "Pieces/SmallRamp.h"
 #include "Pieces/LargeRamp.h"
 #include "Pieces/Wall.h"
+#include "Pieces/ConveyorBelt.h"
 
 class Level {
   

@@ -66,12 +66,41 @@ cpBool Physics::OnBallGoalCollisionEnter(cpArbiter *arb, cpSpace *space, void *d
   return cpTrue;
 }
 
+
+cpBool Physics::OnBallConveyorCollisionEnter(cpArbiter *arb, cpSpace *space, void *data) {
+  printf("You winHITHITHIT\n");
+  cpShape *a = NULL;
+  cpShape *b = NULL;
+  cpBody *c = NULL;
+  cpBody *d = NULL;
   
+  cpArbiterGetShapes(arb, &a, &b);
+  cpArbiterGetBodies(arb, &c, &d);
+  
+  cpBody* ball;
+  
+  
+  if (cpShapeGetCollisionType(a) == BALL_TYPE) {
+    ball = cpShapeGetBody(a);
+    printf("111\n");
+  } else if (cpShapeGetCollisionType(b) == BALL_TYPE) {
+    ball = cpShapeGetBody(b);
+    printf("222\n");
+  }
+  
+  cpBodyApplyForceAtLocalPoint(Manager::getInstance()->ball_->physics_body_ , cpVect{0.8f,0.0f}, cpVect{-10.0f,0.0f});
+  return cpTrue;
+}
+
+
 void Physics::createCollisionHandlers() {
   //Create winning collision
   cpCollisionHandler* handler = cpSpaceAddCollisionHandler (space_, BALL_TYPE, GOAL_TYPE);
   handler->beginFunc = OnBallGoalCollisionEnter;
   handler->userData = &ball_caged_;
+  
+  handler = cpSpaceAddCollisionHandler (space_, BALL_TYPE, CONVEYORBELT_TYPE);
+  handler->beginFunc = OnBallConveyorCollisionEnter;
 }
 
 

@@ -20,6 +20,8 @@
 #include "Screen.h"
 #include "../Level.h"
 
+class Physics;
+
 class Game: public Screen {
   
   public:

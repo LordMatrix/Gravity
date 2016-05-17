@@ -21,7 +21,10 @@
 #include "ESAT_extra/chipmunk/chipmunk.h" 
 
 #include "config.h"
+#include "Pieces/Piece.h"
+#include "Manager.h"
 
+class Piece;
 
 class Physics {
   
@@ -42,7 +45,9 @@ class Physics {
     void drawPhysics();
 
     //Collisions
-    static cpBool OnBallGoalCollisionEnter(cpArbiter *arb, cpSpace *space, void *data);    
+    static cpBool OnBallGoalCollisionEnter(cpArbiter *arb, cpSpace *space, void *data);
+    static cpBool OnBallConveyorCollisionEnter(cpArbiter *arb, cpSpace *space, void *data);
+    
     void createCollisionHandlers();
     
     //Simulation Flow
@@ -52,6 +57,11 @@ class Physics {
     void stopSimulation();
     
     
+    typedef struct {
+      Piece* col1;
+      Piece* col2;
+    } Colliders;
+  
     //Flags
     bool simulation_running_;
     bool simulation_started_;

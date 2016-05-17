@@ -248,6 +248,8 @@ void Game::startSimulation() {
       if (current_level_->pieces_[i]->active_)
         current_level_->pieces_[i]->setPhysics();
     }
+    
+    Manager::getInstance()->ball_ = ball_;
 //  }
 }
 

@@ -46,10 +46,9 @@ Level::Level(int id, Piece* b, Piece* g, cpSpace* space) {
       start_x = kWinWidth - kMenuWidth + 70.0f;
       x = start_x;
       y = 50.0f;
-        
-      
-      
       break;
+      
+      
     case 1:
       goal_init = {350.0f, 700.0f};
       init = {0.0f, 0.0f};
@@ -98,6 +97,20 @@ Level::Level(int id, Piece* b, Piece* g, cpSpace* space) {
       piece->movable_ = false;
       pieces_.push_back(piece);
       break;
+     
+      
+    case 2:
+      goal_init = {300.0f, 720.0f};
+      init = {0.0f, 0.0f};
+      
+      init = {50.0, 650.0};
+      piece = new ConveyorBelt(init, true, CONVEYORBELT_TYPE, space);
+      piece->rotation_ = 90.0f;
+      piece->movable_ = false;
+      pieces_.push_back(piece);
+      break;
+      
+      
     default:
       printf("ERROR: Level not coded\n");
       break;
