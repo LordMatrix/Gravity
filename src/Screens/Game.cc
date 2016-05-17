@@ -39,7 +39,7 @@ void Game::Init() {
   cpSpaceSetGravity(physics_->space_, cpv(0, 0.0098f));
   
   loadLevels();
-  current_index_ = 0;
+  current_index_ = kStartingLevel;
   current_level_ = levels_[current_index_];
 
   ball_ = current_level_->ball_;
@@ -87,7 +87,7 @@ void Game::Draw() {
   //Print mouse coordinates
   InitText();
   ESAT::DrawSetTextSize(15.0f);
-  ESAT::DrawText(10.0f, 20.0f, (std::to_string((int)ESAT::MousePositionX())+", "+std::to_string((int)ESAT::MousePositionX())).c_str());
+  ESAT::DrawText(10.0f, 20.0f, (std::to_string((int)ESAT::MousePositionX())+", "+std::to_string((int)ESAT::MousePositionY())).c_str());
   
   ESAT::DrawEnd();
   ESAT::WindowFrame();

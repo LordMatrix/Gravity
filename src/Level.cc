@@ -51,7 +51,7 @@ Level::Level(int id, Piece* b, Piece* g, cpSpace* space) {
       
       break;
     case 1:
-      goal_init = {100.0f, 800.0f};
+      goal_init = {350.0f, 700.0f};
       init = {0.0f, 0.0f};
       piece = new SmallRamp(init, true, 0, space);
       pieces_.push_back(piece);
@@ -64,28 +64,63 @@ Level::Level(int id, Piece* b, Piece* g, cpSpace* space) {
       
       piece = new SmallRamp(init, true, 0, space);
       pieces_.push_back(piece);
+      
+      init = {150.0, 300.0};
+      piece = new Wall(init, true, 0, space);
+      piece->movable_ = false;
+      pieces_.push_back(piece);
+      
+      init = {367.0, 130.0};
+      piece = new Wall(init, true, 0, space);
+      piece->movable_ = false;
+      pieces_.push_back(piece);
+      
+      init = {525.0, 275.0};
+      piece = new Wall(init, true, 0, space);
+      piece->movable_ = false;
+      pieces_.push_back(piece);
+      
+      init = {260.0, 550.0};
+      piece = new Wall(init, true, 0, space);
+      pieces_.push_back(piece);
+      piece->movable_ = false;
+      piece->rotation_ = 90.0f;
+      
+      init = {520.0, 650.0};
+      piece = new Wall(init, true, 0, space);
+      pieces_.push_back(piece);
+      piece->movable_ = false;
+      piece->rotation_ = 90.0f;
+      
+      init = {730.0, 650.0};
+      piece = new Wall(init, true, 0, space);
+      piece->rotation_ = 90.0f;
+      piece->movable_ = false;
+      pieces_.push_back(piece);
       break;
     default:
       printf("ERROR: Level not coded\n");
       break;
   }
   
-  //BALL AND GOAL ARE ALWAYS CREATED
-  //Ball is created equal regarless of level
+
+  //BALL
   ball = new Piece(goal_init, false, BALL_TYPE, space); 
   //Additional ball properties
   ball->points_.clear();
   position_offset = {0.0f, 0.0f};
   MathLib::assignRegularPolygon(20, 30, position_offset, 0.0f, ball->points_);
+  
   ball->initial_pos_ = {100.0f, 0.0f};
   ball->set_pos_ = ball->initial_pos_;
   ball->current_pos_ = ball->initial_pos_;
+  
   //Save this piece reference
   ball_ = ball;
   ball->movable_ = false;
   pieces_.push_back(ball);
   
-  //Same for goal
+  //GOAL
   goal = new Piece(goal_init, true, GOAL_TYPE, space);
   goal->movable_ = false;
   pieces_.push_back(goal);

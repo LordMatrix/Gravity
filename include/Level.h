@@ -24,6 +24,7 @@
 #include "Pieces/Piece.h"
 #include "Pieces/SmallRamp.h"
 #include "Pieces/LargeRamp.h"
+#include "Pieces/Wall.h"
 
 class Level {
   

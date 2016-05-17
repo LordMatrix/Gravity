@@ -62,7 +62,7 @@ void Piece::move() {
 void Piece::draw() {
   ESAT::Mat3 translate, rotate, transform;
   ESAT::Mat3InitAsTranslate(current_pos_.x, current_pos_.y, &translate);
-  ESAT::Mat3InitAsRotate(rotation_, &rotate);
+  ESAT::Mat3InitAsRotate(MathLib::rads(rotation_), &rotate);
   
   ESAT::Mat3Multiply(translate, rotate, &transform);
   
@@ -139,17 +139,51 @@ void Piece::setDynamicPhysics() {
 
 
 void Piece::setStaticPhysics() {
+  ESAT::Mat3 translate, rotate, transform;
+  MathLib::Point2 p1, p2;
+  
+  //Momentarily add points
+  points_.push_back(points_[0]);
+  
   for(int i=0; i<points_.size()-1; i++) {
     
-    MathLib::Point2 p1 = points_[i];
-    MathLib::Point2 p2 = points_[i+1];
+    p1 = points_[i];
+    p2 = points_[i+1];
+
+    ESAT::Mat3 translate, rotate, transform;
+    ESAT::Mat3InitAsTranslate(current_pos_.x, current_pos_.y, &translate);
+    ESAT::Mat3InitAsRotate(MathLib::rads(rotation_), &rotate);
+    ESAT::Mat3Multiply(translate, rotate, &transform);
+
+    std::vector<MathLib::Point2> f;  
+    f.push_back(p1);
+    f.push_back(p2);
     
-    physics_segments_.push_back(cpSegmentShapeNew( cpSpaceGetStaticBody(space_), cpv(p1.x + current_pos_.x, p1.y + current_pos_.y), cpv(p2.x + current_pos_.x, p2.y + current_pos_.y), 2.0f));
+    float vertices_out[100];
+    float vertex[2];
+    float vertex_out[2];
+
+    //Draw points
+    int j;
+    for (j=0; j<f.size(); j++) {
+      vertex[0] = f[j].x;
+      vertex[1] = f[j].y;
+      ESAT::Mat3TransformVec2(transform, vertex, vertex_out);
+      vertices_out[2*j] = vertex_out[0];
+      vertices_out[2*j+1] = vertex_out[1];
+    }
+    vertices_out[2*j] = vertices_out[0];
+    vertices_out[2*j+1] = vertices_out[1];
+   
+    physics_segments_.push_back(cpSegmentShapeNew( cpSpaceGetStaticBody(space_), cpv(vertices_out[0], vertices_out[1]), cpv(vertices_out[2], vertices_out[3]), 2.0f));
     cpShapeSetFriction(physics_segments_[i], 1.0f);
     cpSpaceAddShape(space_, physics_segments_[i]);
     
     cpShapeSetCollisionType(physics_segments_[i], collision_type_);
   }
+  
+  //Remove garbage
+  points_.pop_back();
 }
 
 
