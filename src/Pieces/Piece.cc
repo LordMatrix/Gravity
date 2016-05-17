@@ -67,7 +67,7 @@ void Piece::draw() {
   ESAT::Mat3Multiply(translate, rotate, &transform);
   
   //Calculate transformed vertices
-  float vertices_out[40];
+  float vertices_out[100];
   float vertex[2];
   float vertex_out[2];
   
@@ -139,7 +139,7 @@ void Piece::setDynamicPhysics() {
 
 
 void Piece::setStaticPhysics() {
-  for(int i=0; i<points_.size(); i++) {
+  for(int i=0; i<points_.size()-1; i++) {
     
     MathLib::Point2 p1 = points_[i];
     MathLib::Point2 p2 = points_[i+1];

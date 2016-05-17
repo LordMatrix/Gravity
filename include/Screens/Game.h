@@ -34,8 +34,9 @@ class Game: public Screen {
     void Update(double delta);
     void Draw();
     void CreateButtons() override;
+    void deleteButtons();
     void loadLevels();
-    
+    void levelUp();
     void startSimulation();
     void stopSimulation();
     
@@ -43,6 +44,7 @@ class Game: public Screen {
     
     Physics* physics_;
     std::vector<Level*> levels_;
+    int current_index_;
     Level* current_level_;
     
     Piece* ball_;

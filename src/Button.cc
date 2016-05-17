@@ -73,14 +73,11 @@ void Button::update() {
 /// @brief Draws the screen
 void Button::draw() {
   float margin = 30.0f;
-  
-  if (border_) {
+
+  ESAT::DrawSetFillColor(100, 0, 0, 255);
+  ESAT::DrawSetStrokeColor(100,0,0, 255);
     
-    /*rgb colors inside the polygon*/
-    ESAT::DrawSetFillColor(0, 0, 0, 0);
-
-    ESAT::DrawSetStrokeColor(0,0,0, 255);
-
+  if (border_) {
     ESAT::DrawPath(path_points_, num_points_);
   }
 
