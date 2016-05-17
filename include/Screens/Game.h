@@ -40,8 +40,6 @@ class Game: public Screen {
     void stopSimulation();
     
     bool exit_ = false;
-
-    float menu_width_ = 300.0f;
     
     Physics* physics_;
     std::vector<Level*> levels_;

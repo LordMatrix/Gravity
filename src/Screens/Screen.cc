@@ -154,7 +154,7 @@ void Screen::DrawButtons() {
 
 /// @brief  Stablishes initial font settings
 void Screen::InitText() {
-  ESAT::DrawSetTextFont("assets/UI/medieval.ttf");
+  ESAT::DrawSetTextFont("assets/font/medieval.ttf");
   ESAT::DrawSetTextSize(40);
   ESAT::DrawSetFillColor(0, 0, 0);
   ESAT::DrawSetStrokeColor(0, 0, 0);

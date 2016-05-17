@@ -45,6 +45,8 @@ class Piece {
     bool static_;
     bool dragged_;
     bool active_;
+    int colspan_;
+    bool movable_;
     
     std::vector<MathLib::Point2> points_;
     //Position at level start

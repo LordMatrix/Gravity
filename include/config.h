@@ -7,6 +7,7 @@
 const int kWinWidth = 1366;
 const int kWinHeight = 768;
 const int kNumLevels = 1;
+const float kMenuWidth = 300.0f;
 
 struct {
   int width;

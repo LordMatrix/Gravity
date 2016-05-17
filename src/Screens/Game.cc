@@ -63,7 +63,7 @@ void Game::Draw() {
   ESAT::DrawSetStrokeColor(255,255,255,255);
   
   //Draw menu background
-  float x = kWinWidth - menu_width_;
+  float x = kWinWidth - kMenuWidth;
   float path[] = {x,0.0f, x,kWinHeight, kWinWidth,kWinHeight, kWinWidth,0.0f, x,0.0f};
   ESAT::DrawSolidPath(path, 5);
   
@@ -83,12 +83,28 @@ void Game::Draw() {
   
   physics_->drawPhysics();
   
+  //Print mouse coordinates
+  InitText();
+  ESAT::DrawSetTextSize(15.0f);
+  ESAT::DrawText(10.0f, 20.0f, (std::to_string((int)ESAT::MousePositionX())+", "+std::to_string((int)ESAT::MousePositionX())).c_str());
+  
   ESAT::DrawEnd();
   ESAT::WindowFrame();
 }
 
 
 void Game::Update(double delta) {
+  
+  if(physics_->ball_caged_) {
+    //Display winning message
+    ESAT::DrawText(kWinWidth/3, 100.0f, "You Win");
+    //Display "next level" button
+    if (!current_level_->won_) {
+      buttons_.push_back(new Button(kWinWidth/3, kWinHeight - 100.0f, 50.0f, 50.0f, 0, ESAT::SpriteFromFile("assets/img/play.png"), "NEXT LEVEL", true));
+      current_level_->won_ = true;
+    }
+  }
+    
   //Listen to button click
   if (ESAT::MouseButtonPressed(0)) {
     for (int i=0; i<buttons_.size(); i++) {
@@ -136,18 +152,21 @@ void Game::Update(double delta) {
     }
   } else if (!physics_->simulation_started_) {
     
+    //Check clicking on pieces
     for (int i=0; i<current_level_->pieces_.size(); i++) {
       
       //Detect drag/drop
-      if (ESAT::MouseButtonDown(0)) {
-        if (current_level_->pieces_[i]->checkClick()) {
-          current_level_->pieces_[i]->dragged_ = !current_level_->pieces_[i]->dragged_;
+      if (current_level_->pieces_[i]->movable_) {
+        if (ESAT::MouseButtonDown(0)) {
+          if (current_level_->pieces_[i]->checkClick()) {
+            current_level_->pieces_[i]->dragged_ = !current_level_->pieces_[i]->dragged_;
+          }
         }
-      }
-      
-      //Move selected piece along with the mouse
-      if (current_level_->pieces_[i]->dragged_) {
-        current_level_->pieces_[i]->drop();
+
+        //Move selected piece along with the mouse
+        if (current_level_->pieces_[i]->dragged_) {
+          current_level_->pieces_[i]->drop();
+        }
       }
     }
   }
@@ -156,7 +175,7 @@ void Game::Update(double delta) {
 
 void Game::CreateButtons() {
   printf("CREATING BUTTONS\n");
-  float x = kWinWidth - menu_width_;
+  float x = kWinWidth - kMenuWidth;
 
   //Play button
   buttons_.push_back(new Button(x + 25.0f, kWinHeight - 100.0f, 50.0f, 50.0f, 0, ESAT::SpriteFromFile("assets/img/play.png"), "", false));
@@ -187,7 +206,7 @@ void Game::startSimulation() {
     
     for (int i=0; i<current_level_->pieces_.size(); i++) {
       //Check if the piece is inside the menu
-      float menu_x = kWinWidth - menu_width_;
+      float menu_x = kWinWidth - kMenuWidth;
       //Update active status
       current_level_->pieces_[i]->active_ = (current_level_->pieces_[i]->current_pos_.x < menu_x);
         

@@ -3,6 +3,7 @@
 Physics::Physics() {
   simulation_running_ = false;
   simulation_started_ = false;
+  ball_caged_ = false;
   space_ = nullptr;
 }
 
@@ -60,6 +61,8 @@ void Physics::drawPhysics() {
 
 cpBool Physics::OnBallGoalCollisionEnter(cpArbiter *arb, cpSpace *space, void *data) {
   printf("You win\n");
+  bool* caged = (bool*)data;
+  *caged = true;
   return cpTrue;
 }
 
@@ -68,7 +71,7 @@ void Physics::createCollisionHandlers() {
   //Create winning collision
   cpCollisionHandler* handler = cpSpaceAddCollisionHandler (space_, BALL_TYPE, GOAL_TYPE);
   handler->beginFunc = OnBallGoalCollisionEnter;
-//  handler->userData = g_colliders;
+  handler->userData = &ball_caged_;
 }
 
 

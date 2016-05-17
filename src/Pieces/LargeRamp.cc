@@ -15,6 +15,7 @@ LargeRamp::LargeRamp(MathLib::Point2 initial_pos, bool is_static, int collision_
   current_pos_ = initial_pos_;
   static_ = is_static;
   collision_type_ = collision_type;
+  colspan_ = 2;
 }
 
 

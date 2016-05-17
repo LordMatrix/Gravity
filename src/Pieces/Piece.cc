@@ -8,6 +8,8 @@ Piece::Piece() {
   current_pos_ = initial_pos_;
   rotation_ = 0.0f;
   active_ = false;
+  colspan_ = 1;
+  movable_ = true;
   
   physics_body_ = nullptr;
   physics_shape_ = nullptr;

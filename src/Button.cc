@@ -79,7 +79,7 @@ void Button::draw() {
     /*rgb colors inside the polygon*/
     ESAT::DrawSetFillColor(0, 0, 0, 0);
 
-    ESAT::DrawSetStrokeColor(255, 255, 255, 255);
+    ESAT::DrawSetStrokeColor(0,0,0, 255);
 
     ESAT::DrawPath(path_points_, num_points_);
   }

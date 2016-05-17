@@ -11,11 +11,13 @@
 
 Level::Level(int id, Piece* b, Piece* g, cpSpace* space) {
   //This should be replaced by a Database
+  won_ = false;
   
   Piece* ball;
   Piece* goal;
   Piece* piece;
   MathLib::Vec2 position_offset;
+  float start_x, x, y;
   
   switch (id) {
     case 0:
@@ -36,28 +38,52 @@ Level::Level(int id, Piece* b, Piece* g, cpSpace* space) {
       ball->current_pos_ = ball->initial_pos_;
       //Save this piece reference
       ball_ = ball;
+      ball->movable_ = false;
       pieces_.push_back(ball);
 
 
       //GOAL
-      init = {100.0f, 600.0f};
+      init = {620.0f, 620.0f};
       goal = new Piece(init, true, GOAL_TYPE, space);
+      goal->movable_ = false;
       pieces_.push_back(goal);
       //Save this piece reference
       goal_ = goal;
 
 
       //SCENE PIECES
-      init = {900.0f, 500.0f};
-      piece = new SmallRamp(init, true, 0, space);
+      init = {0.0f, 0.0f};
       
+      piece = new SmallRamp(init, true, 0, space);
       pieces_.push_back(piece);
-
-      init = {900.0f, 200.0f};
+      
+      piece = new SmallRamp(init, true, 0, space);
+      pieces_.push_back(piece);
+      
       piece = new LargeRamp(init, true, 0, space);
       pieces_.push_back(piece);
 
+      
       //Place NON-STATIC pieces in inventory (menu area)
+      start_x = kWinWidth - kMenuWidth + 70.0f;
+      x = start_x;
+      y = 50.0f;
+        
+      for (int i=0; i<pieces_.size(); i++) {
+        if (pieces_[i]->movable_) {
+          pieces_[i]->initial_pos_ = {x,y};
+          pieces_[i]->set_pos_ = pieces_[i]->initial_pos_;
+          pieces_[i]->current_pos_ = pieces_[i]->initial_pos_;
+
+          if (i%2==0 && pieces_[i]->colspan_ == 1) {
+            x += 150.0f;
+          } else {
+            x = start_x;
+            y += 100.0f;
+          }
+        }
+      }
+      
       break;
     default:
       printf("ERROR: Level not coded\n");

@@ -42,6 +42,7 @@ class Level {
     void LoadFromFile(std::string filename, Level* levels[10]);
    
     LevelId id_;
+    bool won_;
     std::vector<Piece*> pieces_;
     
      MathLib::Point2 eject_point_;

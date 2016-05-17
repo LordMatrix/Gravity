@@ -55,6 +55,7 @@ class Physics {
     //Flags
     bool simulation_running_;
     bool simulation_started_;
+    bool ball_caged_;
     cpSpace* space_;
 };
 
