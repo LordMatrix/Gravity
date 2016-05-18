@@ -40,12 +40,6 @@ Level::Level(int id, Piece* b, Piece* g, cpSpace* space) {
       
       piece = new LargeRamp(init, true, 0, space);
       pieces_.push_back(piece);
-
-      
-      //Place NON-STATIC pieces in inventory (menu area)
-      start_x = kWinWidth - kMenuWidth + 70.0f;
-      x = start_x;
-      y = 50.0f;
       break;
       
       
@@ -84,18 +78,21 @@ Level::Level(int id, Piece* b, Piece* g, cpSpace* space) {
       pieces_.push_back(piece);
       piece->movable_ = false;
       piece->rotation_ = 90.0f;
+      piece->img_pivot_ = {100.0f, -20.0f};
       
       init = {520.0, 650.0};
       piece = new Wall(init, true, 0, space);
       pieces_.push_back(piece);
       piece->movable_ = false;
       piece->rotation_ = 90.0f;
+      piece->img_pivot_ = {100.0f, -20.0f};
       
       init = {730.0, 650.0};
       piece = new Wall(init, true, 0, space);
+      pieces_.push_back(piece);
       piece->rotation_ = 90.0f;
       piece->movable_ = false;
-      pieces_.push_back(piece);
+      piece->img_pivot_ = {100.0f, -20.0f};
       break;
      
       
@@ -103,7 +100,7 @@ Level::Level(int id, Piece* b, Piece* g, cpSpace* space) {
       goal_init = {300.0f, 720.0f};
       init = {0.0f, 0.0f};
       
-      init = {50.0, 650.0};
+      init = {60.0, 725.0};
       piece = new ConveyorBelt(init, true, CONVEYORBELT_TYPE, space);
       piece->rotation_ = 90.0f;
       piece->movable_ = false;
@@ -136,11 +133,21 @@ Level::Level(int id, Piece* b, Piece* g, cpSpace* space) {
   //GOAL
   goal = new Piece(goal_init, true, GOAL_TYPE, space);
   goal->movable_ = false;
+  
+  goal->img_ = ESAT::SpriteFromFile("assets/img/goal.png");
+  goal->width_ = 100.0f;
+  goal->height_ = 100.0f;
+  goal->img_pivot_ = {-50.0f, -50.0f};
+  
   pieces_.push_back(goal);
   //Save this piece reference
   goal_ = goal;
   
   
+  //Place NON-STATIC pieces in inventory (menu area)
+  start_x = kWinWidth - kMenuWidth + 70.0f;
+  x = start_x;
+  y = 50.0f;
   //Place movable pieces on menu space
   for (int i=0; i<pieces_.size(); i++) {
     if (pieces_[i]->movable_) {
