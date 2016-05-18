@@ -213,17 +213,29 @@ float* Piece::pointsToFloat(std::vector<MathLib::Point2> points) {
 
 /// @brief  Checks and returns if the piece has been clicked
 bool Piece::checkClick() {
+  int i, j = 0;
   int click = false;
-  float margin = 50.0f;
+  float margin = 5.0f;
   
-  //Check if clicked inside the button
-  if (ESAT::MousePositionX() >= current_pos_.x
-    && ESAT::MousePositionX() <= current_pos_.x + margin
-    && ESAT::MousePositionY() >= current_pos_.y
-    && ESAT::MousePositionY() <= current_pos_.y + margin) {
-    click = 1;
-  }
+  int num_vertices = points_.size();
+  float mx = ESAT::MousePositionX();
+  float my = ESAT::MousePositionY();
+  
+  
+  //Raycast the area
+  for (i = 0, j = num_vertices - 1; i < num_vertices; j = i++) {
+    MathLib::Point2 p1, p2;
+    p1.x = points_[i].x + current_pos_.x + margin;
+    p1.y = points_[i].y + current_pos_.y - margin;
+    p2.x = points_[j].x + current_pos_.x + margin;
+    p2.y = points_[j].y + current_pos_.y - margin;
     
+    
+    if (((p1.y > my) != (p2.y > my)) &&
+        (mx < (p2.x - p1.x) * (my - p1.y) / (p2.y - p1.y) + p1.x))
+          click = !click;
+  }
+  
   return click;
 }
 

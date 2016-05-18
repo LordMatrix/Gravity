@@ -5,9 +5,9 @@ SmallRamp::SmallRamp(MathLib::Point2 initial_pos, bool is_static, int collision_
   
   //Redefine shape
   float width = 50.0f;
-  float points[] = {-width,-width, 0,0, width,width, -width,width};
+  float points[] = {-width,-width, width,width, -width,width};
   
-  points_ = floatToPoints(points, 8);
+  points_ = floatToPoints(points, 6);
   
   space_ = space;
   initial_pos_ = initial_pos;
