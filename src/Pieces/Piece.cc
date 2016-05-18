@@ -11,6 +11,7 @@ Piece::Piece() {
   colspan_ = 1;
   movable_ = true;
   
+  img_ = nullptr;
   physics_body_ = nullptr;
   physics_shape_ = nullptr;
   collision_type_ = 0;
@@ -60,7 +61,7 @@ void Piece::move() {
 
 
 void Piece::draw() {
-  ESAT::Mat3 translate, rotate, transform;
+  ESAT::Mat3 translate, rotate, scale, transform, sprmat;
   ESAT::Mat3InitAsTranslate(current_pos_.x, current_pos_.y, &translate);
   ESAT::Mat3InitAsRotate(MathLib::rads(rotation_), &rotate);
   
@@ -86,6 +87,24 @@ void Piece::draw() {
   ESAT::DrawSetFillColor(0,200,200,200);
   ESAT::DrawSetStrokeColor(255,255,255,255);
   ESAT::DrawSolidPath(vertices_out, points_.size());
+
+  if (img_ != nullptr) {
+    
+    float img_height = ESAT::SpriteHeight(img_);
+    float img_width = ESAT::SpriteWidth(img_);
+    
+    float x_ratio = width_/img_width;
+    float y_ratio = height_/img_height;
+    
+    ESAT::Mat3InitAsTranslate(current_pos_.x + img_pivot_.x, current_pos_.y + img_pivot_.y, &translate);
+    ESAT::Mat3InitAsRotate(MathLib::rads(rotation_), &rotate);
+    ESAT::Mat3Multiply(translate, rotate, &transform);
+    
+    ESAT::Mat3InitAsScale(x_ratio, y_ratio, &scale);
+    ESAT::Mat3Multiply(transform, scale, &sprmat);
+    
+    ESAT::DrawSpriteWithMatrix(img_, sprmat);
+  }
 }
 
 

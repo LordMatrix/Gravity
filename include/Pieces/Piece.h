@@ -57,6 +57,10 @@ class Piece {
     MathLib::Vec2 current_pos_;
     float rotation_;
     
+    float height_;
+    float width_;
+    MathLib::Point2 img_pivot_;
+    
     double last_update_;
     
     cpSpace* space_;    
