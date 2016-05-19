@@ -21,6 +21,8 @@ Bouncer::Bouncer(MathLib::Point2 initial_pos, bool is_static, int collision_type
   width_ = 100.0f;
   height_ = 100.0f;
   img_pivot_ = {-50.0f, -50.0f};
+  
+  movable_ = false;
 }
 
 

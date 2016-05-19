@@ -259,5 +259,8 @@ void Game::stopSimulation() {
     current_level_->pieces_[i]->current_pos_ = current_level_->pieces_[i]->set_pos_;
     current_level_->pieces_[i]->setPhysics();
   }
+  
+  ball_->rotation_ = 0.0f;
+  
   physics_->stopSimulation();
 }

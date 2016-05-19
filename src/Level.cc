@@ -60,30 +60,25 @@ Level::Level(int id, Piece* b, Piece* g, cpSpace* space) {
       
       init = {150.0, 300.0};
       piece = new Wall(init, true, 0, space);
-      piece->movable_ = false;
       pieces_.push_back(piece);
       
       init = {367.0, 130.0};
       piece = new Wall(init, true, 0, space);
-      piece->movable_ = false;
       pieces_.push_back(piece);
       
       init = {525.0, 275.0};
       piece = new Wall(init, true, 0, space);
-      piece->movable_ = false;
       pieces_.push_back(piece);
       
       init = {260.0, 550.0};
       piece = new Wall(init, true, 0, space);
       pieces_.push_back(piece);
-      piece->movable_ = false;
       piece->rotation_ = 90.0f;
       piece->img_pivot_ = {100.0f, -20.0f};
       
       init = {520.0, 650.0};
       piece = new Wall(init, true, 0, space);
       pieces_.push_back(piece);
-      piece->movable_ = false;
       piece->rotation_ = 90.0f;
       piece->img_pivot_ = {100.0f, -20.0f};
       
@@ -91,22 +86,14 @@ Level::Level(int id, Piece* b, Piece* g, cpSpace* space) {
       piece = new Wall(init, true, 0, space);
       pieces_.push_back(piece);
       piece->rotation_ = 90.0f;
-      piece->movable_ = false;
       piece->img_pivot_ = {100.0f, -20.0f};
       break;
      
       
     case 2:
-      goal_init = {500.0f, 720.0f};
+      goal_init = {450.0f, 720.0f};
       init = {0.0f, 0.0f};
       
-      init = {200.0, 725.0};
-      piece = new ConveyorBelt(init, true, CONVEYORBELT_TYPE, space);
-      piece->rotation_ = 90.0f;
-      piece->movable_ = true;
-      pieces_.push_back(piece);
-      
-      init = {80.0, 500.0};
       piece = new Spring(init, true, SPRING_TYPE, space);
       piece->movable_ = true;
       pieces_.push_back(piece);
@@ -114,10 +101,136 @@ Level::Level(int id, Piece* b, Piece* g, cpSpace* space) {
       piece = new SmallRamp(init, true, 0, space);
       pieces_.push_back(piece);
       
+      init = {525.0, 228.0};
       piece = new Bouncer(init, true, BOUNCER_TYPE, space);
+      pieces_.push_back(piece);
+      
+      init = {525.0, 343.0};
+      piece = new Bouncer(init, true, BOUNCER_TYPE, space);
+      pieces_.push_back(piece);
+      
+      init = {305.0, 485.0};
+      piece = new Bouncer(init, true, BOUNCER_TYPE, space);
+      pieces_.push_back(piece);
+      
+      init = {305.0, 610.0};
+      piece = new Bouncer(init, true, BOUNCER_TYPE, space);
+      pieces_.push_back(piece);
+      
+      init = {100.0, 225.0};
+      piece = new Wall(init, true, 0, space);
+      pieces_.push_back(piece);
+      
+      init = {307.0, 285.0};
+      piece = new Wall(init, true, 0, space);
+      pieces_.push_back(piece);
+      
+      init = {510.0, 516.0};
+      piece = new Wall(init, true, 0, space);
       pieces_.push_back(piece);
       break;
       
+    case 3:
+      goal_init = {895.0f, 595.0f};
+      
+      init = {0.0f, 0.0f};
+      piece = new ConveyorBelt(init, true, CONVEYORBELT_TYPE, space);
+      piece->movable_ = true;
+      pieces_.push_back(piece);
+      
+      init = {185.0, 400.0};
+      piece = new Bouncer(init, true, BOUNCER_TYPE, space);
+      pieces_.push_back(piece);
+      
+      init = {205.0, 240.0};
+      piece = new Wall(init, true, 0, space);
+      pieces_.push_back(piece);
+      
+      init = {395.0, 107.0};
+      piece = new Wall(init, true, 0, space);
+      pieces_.push_back(piece);
+      
+      init = {395.0, 305.0};
+      piece = new Wall(init, true, 0, space);
+      pieces_.push_back(piece);
+      
+      piece = new ConveyorBelt(init, true, CONVEYORBELT_TYPE, space);
+      piece->movable_ = true;
+      pieces_.push_back(piece);
+      piece = new ConveyorBelt(init, true, CONVEYORBELT_TYPE, space);
+      piece->movable_ = true;
+      pieces_.push_back(piece);
+      
+      init = {430.0, 610.0};
+      piece = new Bouncer(init, true, BOUNCER_TYPE, space);
+      pieces_.push_back(piece);
+      
+      init = {530.0, 710.0};
+      piece = new Bouncer(init, true, BOUNCER_TYPE, space);
+      pieces_.push_back(piece);
+      
+      init = {210.0, 555.0};
+      piece = new Wall(init, true, 0, space);
+      pieces_.push_back(piece);
+      
+      init = {975.0, 345.0};
+      piece = new Wall(init, true, 0, space);
+      pieces_.push_back(piece);
+      
+      init = {975.0, 545.0};
+      piece = new Wall(init, true, 0, space);
+      pieces_.push_back(piece);
+      
+      init = {815.0, 545.0};
+      piece = new Wall(init, true, 0, space);
+      pieces_.push_back(piece);
+      
+      init = {510.0, 225.0};
+      piece = new Wall(init, true, 0, space);
+      piece->rotation_ = 90.0f;
+      piece->img_pivot_ = {100.0f, -20.0f};
+      pieces_.push_back(piece);
+      
+      init = {705.0, 225.0};
+      piece = new Wall(init, true, 0, space);
+      piece->rotation_ = 90.0f;
+      piece->img_pivot_ = {100.0f, -20.0f};
+      pieces_.push_back(piece);
+      
+      init = {895.0, 663.0};
+      piece = new Wall(init, true, 0, space);
+      piece->rotation_ = 90.0f;
+      piece->img_pivot_ = {100.0f, -20.0f};
+      pieces_.push_back(piece);
+      
+      init = {895.0, 225.0};
+      piece = new Wall(init, true, 0, space);
+      piece->rotation_ = 90.0f;
+      piece->img_pivot_ = {100.0f, -20.0f};
+      pieces_.push_back(piece);
+     
+      init = {734.0, 465.0};
+      piece = new Wall(init, true, 0, space);
+      piece->rotation_ = 90.0f;
+      piece->img_pivot_ = {100.0f, -20.0f};
+      pieces_.push_back(piece);
+      
+      init = {695.0, 663.0};
+      piece = new Wall(init, true, 0, space);
+      piece->rotation_ = 90.0f;
+      piece->img_pivot_ = {100.0f, -20.0f};
+      pieces_.push_back(piece);
+      
+      piece = new SmallRamp(init, true, 0, space);
+      piece->rotation_ = -90.0f;
+      piece->img_pivot_ = {-50.0f, 50.0f};
+      pieces_.push_back(piece);
+      break;
+    
+    case 4:
+      
+      
+      break;
       
     default:
       printf("ERROR: Level not coded\n");
@@ -130,7 +243,7 @@ Level::Level(int id, Piece* b, Piece* g, cpSpace* space) {
   //Additional ball properties
   ball->points_.clear();
   position_offset = {0.0f, 0.0f};
-  MathLib::assignRegularPolygon(20, 30, position_offset, 0.0f, ball->points_);
+  MathLib::assignRegularPolygon(6, 30, position_offset, 0.0f, ball->points_);
   
   ball->initial_pos_ = {100.0f, 0.0f};
   ball->set_pos_ = ball->initial_pos_;
@@ -149,7 +262,6 @@ Level::Level(int id, Piece* b, Piece* g, cpSpace* space) {
   goal->width_ = 100.0f;
   goal->height_ = 100.0f;
   goal->img_pivot_ = {-50.0f, -50.0f};
-  
   pieces_.push_back(goal);
   //Save this piece reference
   goal_ = goal;

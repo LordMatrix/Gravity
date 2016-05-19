@@ -21,6 +21,8 @@ ConveyorBelt::ConveyorBelt(MathLib::Point2 initial_pos, bool is_static, int coll
   width_ = 40.0f;
   height_ = 200.0f;
   img_pivot_ = {100.0f, -20.0f};
+  
+  rotation_ = 90.0f;
 }
 
 

@@ -24,6 +24,7 @@ Wall::Wall(MathLib::Point2 initial_pos, bool is_static, int collision_type, cpSp
   
 //  img_pivot_ = {100.0f, -20.0f};
   img_pivot_ = {-20.0f, -100.0f};
+  movable_ = false;
 }
 
 
