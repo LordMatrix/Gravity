@@ -103,12 +103,18 @@ Level::Level(int id, Piece* b, Piece* g, cpSpace* space) {
       init = {200.0, 725.0};
       piece = new ConveyorBelt(init, true, CONVEYORBELT_TYPE, space);
       piece->rotation_ = 90.0f;
-      piece->movable_ = false;
+      piece->movable_ = true;
       pieces_.push_back(piece);
       
       init = {80.0, 500.0};
       piece = new Spring(init, true, SPRING_TYPE, space);
-      piece->movable_ = false;
+      piece->movable_ = true;
+      pieces_.push_back(piece);
+      
+      piece = new SmallRamp(init, true, 0, space);
+      pieces_.push_back(piece);
+      
+      piece = new Bouncer(init, true, BOUNCER_TYPE, space);
       pieces_.push_back(piece);
       break;
       

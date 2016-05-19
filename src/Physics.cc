@@ -87,8 +87,10 @@ cpBool Physics::OnBallConveyorCollisionEnter(cpArbiter *arb, cpSpace *space, voi
     ball = cpShapeGetBody(b);
   }
   */
+  cpBody* body = Manager::getInstance()->ball_->physics_body_;
+  cpVect point = cpBodyGetPosition(body) - cpVect{-10.0f,0.0f};
   
-  cpBodyApplyForceAtLocalPoint(Manager::getInstance()->ball_->physics_body_ , cpVect{0.8f,0.0f}, cpVect{-10.0f,0.0f});
+  cpBodyApplyForceAtWorldPoint(body, cpVect{0.8f,0.0f}, point);
   return cpTrue;
 }
 
@@ -96,8 +98,31 @@ cpBool Physics::OnBallConveyorCollisionEnter(cpArbiter *arb, cpSpace *space, voi
 cpBool Physics::OnBallSpringCollisionEnter(cpArbiter *arb, cpSpace *space, void *data) {
   
   cpBody* body = Manager::getInstance()->ball_->physics_body_;
+  cpVect point = cpBodyGetPosition(body) - cpVect{0.0f,-10.0f};
   
-  cpBodyApplyImpulseAtLocalPoint(body, cpVect{0.0f,-cpBodyGetVelocity(body).y}, cpVect{0.0f,-10.0f});
+  cpBodyApplyImpulseAtWorldPoint(body, cpVect{0.0f,-cpBodyGetVelocity(body).y}, point);
+  return cpTrue;
+}
+
+
+cpBool Physics::OnBallBouncerCollisionEnter(cpArbiter *arb, cpSpace *space, void *data) {
+  
+//  cpBody* other = NULL;
+//  cpBody* bouncer_body = NULL;
+//
+//  cpArbiterGetBodies(arb, &other, &bouncer_body);
+//  
+//  
+//  cpBody* body = Manager::getInstance()->ball_->physics_body_;
+//  
+//  cpVect point = cpBodyGetPosition(bouncer_body);
+//  cpVect impact_point
+//  float force = 0.3f;
+//  
+//  printf("")
+//  
+//  //Remember that both point and force are expressed in global coordinates
+//  cpBodyApplyImpulseAtWorldPoint(body, -cpVect{0.0f,cpBodyGetVelocity(body).y}*force, point);
   return cpTrue;
 }
 
@@ -113,6 +138,9 @@ void Physics::createCollisionHandlers() {
   
   handler = cpSpaceAddCollisionHandler (space_, BALL_TYPE, SPRING_TYPE);
   handler->beginFunc = OnBallSpringCollisionEnter;
+  
+  handler = cpSpaceAddCollisionHandler (space_, BALL_TYPE, BOUNCER_TYPE);
+  handler->beginFunc = OnBallBouncerCollisionEnter;
 }
 
 

@@ -27,6 +27,7 @@
 #include "Pieces/Wall.h"
 #include "Pieces/ConveyorBelt.h"
 #include "Pieces/Spring.h"
+#include "Pieces/Bouncer.h"
 
 class Level {
   

@@ -5,6 +5,7 @@
 #define GOAL_TYPE 2
 #define CONVEYORBELT_TYPE 3
 #define SPRING_TYPE 4
+#define BOUNCER_TYPE 5
 
 const int kWinWidth = 1366;
 const int kWinHeight = 768;
