@@ -49,6 +49,7 @@ class Physics {
     static cpBool OnBallConveyorCollisionEnter(cpArbiter *arb, cpSpace *space, void *data);
     static cpBool OnBallSpringCollisionEnter(cpArbiter *arb, cpSpace *space, void *data);
     static cpBool OnBallBouncerCollisionEnter(cpArbiter *arb, cpSpace *space, void *data);
+    static cpBool OnBallConveyorInvertedCollisionEnter(cpArbiter *arb, cpSpace *space, void *data);
     
     void createCollisionHandlers();
     

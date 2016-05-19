@@ -23,6 +23,7 @@ ConveyorBelt::ConveyorBelt(MathLib::Point2 initial_pos, bool is_static, int coll
   img_pivot_ = {100.0f, -20.0f};
   
   rotation_ = 90.0f;
+  colspan_ = 2;
 }
 
 

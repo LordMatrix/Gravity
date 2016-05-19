@@ -78,6 +78,17 @@ cpBool Physics::OnBallConveyorCollisionEnter(cpArbiter *arb, cpSpace *space, voi
 }
 
 
+cpBool Physics::OnBallConveyorInvertedCollisionEnter(cpArbiter *arb, cpSpace *space, void *data) {
+  cpBody* body = Manager::getInstance()->ball_->physics_body_;
+  cpVect point = cpBodyGetPosition(body) - cpVect{-10.0f,0.0f};
+  cpVect position = cpBodyGetPosition(body);
+  
+  cpBodySetPosition(body, position - cpVect {1.0f, 0.0f});
+
+  return cpTrue;
+}
+
+
 cpBool Physics::OnBallSpringCollisionEnter(cpArbiter *arb, cpSpace *space, void *data) {
   
   cpBody* body = Manager::getInstance()->ball_->physics_body_;
@@ -108,6 +119,9 @@ void Physics::createCollisionHandlers() {
   
   handler = cpSpaceAddCollisionHandler (space_, BALL_TYPE, BOUNCER_TYPE);
   handler->beginFunc = OnBallBouncerCollisionEnter;
+  
+  handler = cpSpaceAddCollisionHandler (space_, BALL_TYPE, CONVEYORBELT_INVERTED_TYPE);
+  handler->preSolveFunc = OnBallConveyorInvertedCollisionEnter;
 }
 
 

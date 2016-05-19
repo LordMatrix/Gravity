@@ -27,7 +27,7 @@ Level::Level(int id, Piece* b, Piece* g, cpSpace* space) {
   switch (id) {
     case 0:
       //goal_init = {620.0f, 620.0f};
-      goal_init = {100.0f, 620.0f};
+      goal_init = {600.0f, 620.0f};
       
       //SCENE PIECES
       init = {0.0f, 0.0f};
@@ -228,8 +228,68 @@ Level::Level(int id, Piece* b, Piece* g, cpSpace* space) {
       break;
     
     case 4:
+      goal_init = {780.0f, 680.0f};
       
       
+      piece = new Spring(init, true, SPRING_TYPE, space);
+      piece->movable_ = true;
+      pieces_.push_back(piece);
+      piece = new Spring(init, true, SPRING_TYPE, space);
+      piece->movable_ = true;
+      pieces_.push_back(piece);
+      piece = new Spring(init, true, SPRING_TYPE, space);
+      piece->movable_ = true;
+      pieces_.push_back(piece);
+      piece = new SmallRamp(init, true, 0, space);
+      piece->movable_ = true;
+      pieces_.push_back(piece);
+      piece = new ConveyorBelt(init, true, CONVEYORBELT_INVERTED_TYPE, space);
+      piece->movable_ = true;
+      pieces_.push_back(piece);
+      
+      init = {135.0f, 300.0f};
+      piece = new Wall(init, true, 0, space);
+      pieces_.push_back(piece);
+      
+      init = {370.0f, 300.0f};
+      piece = new Wall(init, true, 0, space);
+      pieces_.push_back(piece);
+      
+      init = {630.0f, 300.0f};
+      piece = new Wall(init, true, 0, space);
+      pieces_.push_back(piece);
+      
+      init = {1035.0f, 200.0f};
+      piece = new Wall(init, true, 0, space);
+      pieces_.push_back(piece);
+      
+      init = {1035.0f, 400.0f};
+      piece = new Wall(init, true, 0, space);
+      pieces_.push_back(piece);
+      
+      init = {955.0f, 520.0f};
+      piece = new Wall(init, true, 0, space);
+      piece->rotation_ = 90.0f;
+      piece->img_pivot_ = {100.0f, -20.0f};
+      pieces_.push_back(piece);
+      
+      init = {750.0f, 380.0f};
+      piece = new Wall(init, true, 0, space);
+      piece->rotation_ = 90.0f;
+      piece->img_pivot_ = {100.0f, -20.0f};
+      pieces_.push_back(piece);
+      
+      init = {500.0f, 380.0f};
+      piece = new Wall(init, true, 0, space);
+      piece->rotation_ = 90.0f;
+      piece->img_pivot_ = {100.0f, -20.0f};
+      pieces_.push_back(piece);
+      
+      init = {255.0f, 380.0f};
+      piece = new Wall(init, true, 0, space);
+      piece->rotation_ = 90.0f;
+      piece->img_pivot_ = {100.0f, -20.0f};
+      pieces_.push_back(piece);
       break;
       
     default:

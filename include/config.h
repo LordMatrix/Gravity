@@ -6,11 +6,12 @@
 #define CONVEYORBELT_TYPE 3
 #define SPRING_TYPE 4
 #define BOUNCER_TYPE 5
+#define CONVEYORBELT_INVERTED_TYPE 6
 
 const int kWinWidth = 1366;
 const int kWinHeight = 768;
-const int kNumLevels = 4;
-const int kStartingLevel = 0;
+const int kNumLevels = 5;
+const int kStartingLevel = 4;
 const float kMenuWidth = 300.0f;
 
 /*
