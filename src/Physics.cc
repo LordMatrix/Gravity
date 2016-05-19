@@ -68,6 +68,7 @@ cpBool Physics::OnBallGoalCollisionEnter(cpArbiter *arb, cpSpace *space, void *d
 
 
 cpBool Physics::OnBallConveyorCollisionEnter(cpArbiter *arb, cpSpace *space, void *data) {
+  /*
   printf("You winHITHITHIT\n");
   cpShape *a = NULL;
   cpShape *b = NULL;
@@ -82,13 +83,21 @@ cpBool Physics::OnBallConveyorCollisionEnter(cpArbiter *arb, cpSpace *space, voi
   
   if (cpShapeGetCollisionType(a) == BALL_TYPE) {
     ball = cpShapeGetBody(a);
-    printf("111\n");
   } else if (cpShapeGetCollisionType(b) == BALL_TYPE) {
     ball = cpShapeGetBody(b);
-    printf("222\n");
   }
+  */
   
   cpBodyApplyForceAtLocalPoint(Manager::getInstance()->ball_->physics_body_ , cpVect{0.8f,0.0f}, cpVect{-10.0f,0.0f});
+  return cpTrue;
+}
+
+
+cpBool Physics::OnBallSpringCollisionEnter(cpArbiter *arb, cpSpace *space, void *data) {
+  
+  cpBody* body = Manager::getInstance()->ball_->physics_body_;
+  
+  cpBodyApplyImpulseAtLocalPoint(body, cpVect{0.0f,-cpBodyGetVelocity(body).y}, cpVect{0.0f,-10.0f});
   return cpTrue;
 }
 
@@ -101,6 +110,9 @@ void Physics::createCollisionHandlers() {
   
   handler = cpSpaceAddCollisionHandler (space_, BALL_TYPE, CONVEYORBELT_TYPE);
   handler->beginFunc = OnBallConveyorCollisionEnter;
+  
+  handler = cpSpaceAddCollisionHandler (space_, BALL_TYPE, SPRING_TYPE);
+  handler->beginFunc = OnBallSpringCollisionEnter;
 }
 
 

@@ -144,7 +144,7 @@ void Piece::setDynamicPhysics() {
   }
   cpPolyShapeInit(poly, physics_body_, points_.size(), verts, transform, 1.0f);
   
-  cpShapeSetElasticity(sbox, 0);
+  cpShapeSetElasticity(sbox, 0.1f);
   cpShapeSetFriction(sbox, 0.4f);
   cpShapeSetMass(sbox, 0.5);
   
@@ -199,6 +199,7 @@ void Piece::setStaticPhysics() {
     cpSpaceAddShape(space_, physics_segments_[i]);
     
     cpShapeSetCollisionType(physics_segments_[i], collision_type_);
+    cpShapeSetElasticity(physics_segments_[i], 0.3f);
   }
   
   //Remove garbage

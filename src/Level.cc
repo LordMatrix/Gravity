@@ -97,12 +97,17 @@ Level::Level(int id, Piece* b, Piece* g, cpSpace* space) {
      
       
     case 2:
-      goal_init = {300.0f, 720.0f};
+      goal_init = {500.0f, 720.0f};
       init = {0.0f, 0.0f};
       
-      init = {60.0, 725.0};
+      init = {200.0, 725.0};
       piece = new ConveyorBelt(init, true, CONVEYORBELT_TYPE, space);
       piece->rotation_ = 90.0f;
+      piece->movable_ = false;
+      pieces_.push_back(piece);
+      
+      init = {80.0, 500.0};
+      piece = new Spring(init, true, SPRING_TYPE, space);
       piece->movable_ = false;
       pieces_.push_back(piece);
       break;

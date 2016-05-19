@@ -3,12 +3,13 @@
 
 #define BALL_TYPE 1
 #define GOAL_TYPE 2
-#define CONVEYORBELT_TYPE 1
+#define CONVEYORBELT_TYPE 3
+#define SPRING_TYPE 4
 
 const int kWinWidth = 1366;
 const int kWinHeight = 768;
 const int kNumLevels = 3;
-const int kStartingLevel = 1;
+const int kStartingLevel = 2;
 const float kMenuWidth = 300.0f;
 
 /*
