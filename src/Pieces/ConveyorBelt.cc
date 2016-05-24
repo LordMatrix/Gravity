@@ -20,9 +20,15 @@ ConveyorBelt::ConveyorBelt(MathLib::Point2 initial_pos, bool is_static, int coll
   img_ = ESAT::SpriteFromFile("assets/img/conveyor.png");
   width_ = 40.0f;
   height_ = 200.0f;
-  img_pivot_ = {100.0f, -20.0f};
   
-  rotation_ = 90.0f;
+  if (collision_type == CONVEYORBELT_TYPE) {
+    rotation_ = -90.0f;
+    img_pivot_ = {-100.0f, 20.0f};
+  } else {
+    rotation_ = 90.0f;
+    img_pivot_ = {100.0f, -20.0f};
+  }
+  
   colspan_ = 2;
 }
 

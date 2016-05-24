@@ -230,7 +230,6 @@ Level::Level(int id, Piece* b, Piece* g, cpSpace* space) {
     case 4:
       goal_init = {780.0f, 680.0f};
       
-      
       piece = new Spring(init, true, SPRING_TYPE, space);
       piece->movable_ = true;
       pieces_.push_back(piece);
@@ -292,6 +291,22 @@ Level::Level(int id, Piece* b, Piece* g, cpSpace* space) {
       pieces_.push_back(piece);
       break;
       
+    case 5:
+      goal_init = {780.0f, 680.0f};
+      
+      init = {135.0f, 300.0f};
+      piece = new Ball(init, false, 0, space);
+      piece->movable_ = true;
+      pieces_.push_back(piece);
+      
+      piece = new SmallRamp(init, true, 0, space);
+      pieces_.push_back(piece);
+//      
+      init = {395.0, 305.0};
+      piece = new SeeSaw(init, false, 0, space);
+      pieces_.push_back(piece);
+      break;
+      
     default:
       printf("ERROR: Level not coded\n");
       break;
@@ -302,6 +317,8 @@ Level::Level(int id, Piece* b, Piece* g, cpSpace* space) {
   ball = new Piece(goal_init, false, BALL_TYPE, space); 
   //Additional ball properties
   ball->points_.clear();
+  ball->width_ = 25.0f;
+  ball->height_ = 25.0f;
   position_offset = {0.0f, 0.0f};
   MathLib::assignRegularPolygon(6, 30, position_offset, 0.0f, ball->points_);
   

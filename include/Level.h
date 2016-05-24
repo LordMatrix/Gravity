@@ -28,6 +28,8 @@
 #include "Pieces/ConveyorBelt.h"
 #include "Pieces/Spring.h"
 #include "Pieces/Bouncer.h"
+#include "Pieces/Ball.h"
+#include "Pieces/SeeSaw.h"
 
 class Level {
   

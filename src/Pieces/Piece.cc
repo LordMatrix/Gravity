@@ -63,7 +63,11 @@ void Piece::move() {
 void Piece::draw() {
   ESAT::Mat3 translate, rotate, scale, transform, sprmat;
   ESAT::Mat3InitAsTranslate(current_pos_.x, current_pos_.y, &translate);
-  ESAT::Mat3InitAsRotate(MathLib::rads(rotation_), &rotate);
+  
+  if (static_)
+    ESAT::Mat3InitAsRotate(MathLib::rads(rotation_), &rotate);
+  else 
+    ESAT::Mat3InitAsRotate(rotation_, &rotate);
   
   ESAT::Mat3Multiply(translate, rotate, &transform);
   
@@ -130,7 +134,7 @@ void Piece::setPhysics() {
 
 void Piece::setDynamicPhysics() {
   physics_body_ = cpSpaceAddBody(space_, cpBodyNew(0,0));
-  cpShape* sbox = cpSpaceAddShape(space_, cpBoxShapeNew(physics_body_, 20, 20, 3));
+  cpShape* sbox = cpSpaceAddShape(space_, cpBoxShapeNew(physics_body_, width_, height_, 3));
   physics_shape_ = sbox;
   
   cpPolyShape* poly =  cpPolyShapeAlloc();
@@ -151,7 +155,7 @@ void Piece::setDynamicPhysics() {
   cpVect position = {current_pos_.x, current_pos_.y};
   cpBodySetPosition(physics_body_, position);
   
-  cpBodySetAngle(physics_body_, rotation_);
+//  cpBodySetAngle(physics_body_, rotation_);
   
   cpShapeSetCollisionType(physics_shape_, collision_type_);
 }
