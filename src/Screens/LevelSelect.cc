@@ -36,7 +36,8 @@ void LevelSelect::Update(double delta) {
       if (btn > -1) {
         Game* game = new Game();
         Manager::getInstance()->screen_ = game;
-        game->current_level_ = game->levels_[btn];
+        game->current_index_ = btn - 1;
+        game->levelUp();
       }
     }
   }

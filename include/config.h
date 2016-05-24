@@ -12,11 +12,6 @@ const int kWinWidth = 1366;
 const int kWinHeight = 768;
 const int kNumLevels = 6;
 const float kMenuWidth = 300.0f;
+const bool kDebug = true;
 
-/*
-struct {
-  int width;
-  int height;
-} WindowOptions = {kWinWidth, kWinHeight};
-*/
 #endif /* __CONFIG_H__ */

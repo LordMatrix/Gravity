@@ -10,6 +10,8 @@
 Game::Game() {
   Screen();
   Init();
+  
+  background_ = ESAT::SpriteFromFile("assets/img/game_bg.png");
 }
 
 Game::Game(const Game& orig) {
@@ -52,7 +54,13 @@ void Game::Draw() {
   ESAT::DrawBegin();
   ESAT::DrawClear(255,255,255);
 
-
+  ESAT::Mat3 transform;
+  float ratiox = (float)kWinWidth / (float)ESAT::SpriteWidth(background_);
+  float ratioy = (float)kWinHeight / (float)ESAT::SpriteHeight(background_);
+  
+  ESAT::Mat3InitAsScale(ratiox, ratioy, &transform);
+  ESAT::DrawSpriteWithMatrix(background_, transform);
+  
   /************ MENU ************/
   ESAT::DrawSetFillColor(0,0,200,200);
   ESAT::DrawSetStrokeColor(255,255,255,255);
@@ -75,8 +83,9 @@ void Game::Draw() {
   
   ESAT::DrawSprite(cursor_sprite_, (float)ESAT::MousePositionX(), (float)ESAT::MousePositionY());
   
-  
-  physics_->drawPhysics();
+  if (kDebug) {
+    physics_->drawPhysics();
+  }
   
   //Print mouse coordinates
   InitText();

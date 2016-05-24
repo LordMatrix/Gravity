@@ -69,29 +69,31 @@ void Piece::draw() {
   else 
     ESAT::Mat3InitAsRotate(rotation_, &rotate);
   
-  ESAT::Mat3Multiply(translate, rotate, &transform);
-  
-  //Calculate transformed vertices
-  float vertices_out[100];
-  float vertex[2];
-  float vertex_out[2];
-  
-  //Draw points
-  int i;
-  for (i=0; i<points_.size(); i++) {
-    vertex[0] = points_[i].x;
-    vertex[1] = points_[i].y;
-    ESAT::Mat3TransformVec2(transform, vertex, vertex_out);
-    vertices_out[2*i] = vertex_out[0];
-    vertices_out[2*i+1] = vertex_out[1];
-  }
-  vertices_out[2*i] = vertices_out[0];
-  vertices_out[2*i+1] = vertices_out[1];
-    
-  ESAT::DrawSetFillColor(0,200,200,200);
-  ESAT::DrawSetStrokeColor(255,255,255,255);
-  ESAT::DrawSolidPath(vertices_out, points_.size());
+  if (kDebug) {
+    ESAT::Mat3Multiply(translate, rotate, &transform);
 
+//    Calculate transformed vertices
+    float vertices_out[100];
+    float vertex[2];
+    float vertex_out[2];
+
+    //Draw points
+    int i;
+    for (i=0; i<points_.size(); i++) {
+      vertex[0] = points_[i].x;
+      vertex[1] = points_[i].y;
+      ESAT::Mat3TransformVec2(transform, vertex, vertex_out);
+      vertices_out[2*i] = vertex_out[0];
+      vertices_out[2*i+1] = vertex_out[1];
+    }
+    vertices_out[2*i] = vertices_out[0];
+    vertices_out[2*i+1] = vertices_out[1];
+
+    ESAT::DrawSetFillColor(0,200,200,200);
+    ESAT::DrawSetStrokeColor(255,255,255,255);
+    ESAT::DrawSolidPath(vertices_out, points_.size());
+  }
+  
   if (img_ != nullptr) {
     
     float img_height = ESAT::SpriteHeight(img_);
