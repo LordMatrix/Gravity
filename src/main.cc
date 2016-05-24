@@ -37,9 +37,6 @@ int ESAT::main(int argc, char **argv) {
   
   while (ESAT::WindowIsOpened() && !Manager::getInstance()->quit_game_) {
     
-    if (ESAT::IsSpecialKeyDown(ESAT::kSpecialKey_Escape))
-      Manager::getInstance()->quit_game_ = true;
-    
     /****************SIMULATION****************/
     double tick = ESAT::Time();
     double delta = (tick - last_time) * 0.1f;

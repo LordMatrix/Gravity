@@ -16,10 +16,7 @@
  *  @param
  */
 Intro::Intro() {
-  frame_ = 0;
-  background_ = ESAT::SpriteFromFile("assets/background/intro_background.png");
-  cursor_sprite_ = ESAT::SpriteFromFile("assets/UI/Crosshair_02.png");  
-  button_background_ = ESAT::SpriteFromFile("assets/UI/button_bg.png");
+  background_ = ESAT::SpriteFromFile("assets/img/intro_bg.jpg");
 }
 
 Intro::Intro(const Intro& orig) {
@@ -28,23 +25,38 @@ Intro::Intro(const Intro& orig) {
 Intro::~Intro() {
 }
 
-void Intro::Update() {
-  if (click_) {
-//    Manager::getInstance()->screen_ = new MainMenu();
-  }
+void Intro::Update(double delta) {
+  if (ESAT::IsSpecialKeyDown(ESAT::kSpecialKey_Escape))
+      Manager::getInstance()->quit_game_ = true;
   
-  frame_+=2;
+  if (click_) {
+    Manager::getInstance()->screen_ = new LevelSelect();
+  }
 }
 
 void Intro::Draw() {
-  DrawBegin();
+  ESAT::DrawBegin();
+  ESAT::DrawClear(255,255,255);
+
+  ESAT::Mat3 transform;
+  float ratiox = (float)kWinWidth / (float)ESAT::SpriteWidth(background_);
+  float ratioy = (float)kWinHeight / (float)ESAT::SpriteHeight(background_);
   
-  ESAT::DrawSetTextSize(90);
-  ESAT::DrawSetFillColor(255, 255, 255, 200);
-  ESAT::DrawText(330.0f, 250.0f, "The Battle for Pass");
-  ESAT::DrawSetFillColor(255, 255, 255, frame_);
-  ESAT::DrawSetTextSize(30);
-  ESAT::DrawText(550.0f, 350.0f, "Click to continue");
+  ESAT::Mat3InitAsScale(ratiox, ratioy, &transform);
+  ESAT::DrawSpriteWithMatrix(background_, transform);
   
-  DrawEnd();
+  /************ TEXT ************/
+  InitText();
+  ESAT::DrawSetFillColor(0,0,0,255);
+  ESAT::DrawSetStrokeColor(0,0,0,255);
+  
+  ESAT::DrawSetTextSize(120);
+  ESAT::DrawText(330.0f, 250.0f, "Galileo's Gravity");
+  ESAT::DrawSetTextSize(60);
+  ESAT::DrawText(550.0f, 500.0f, "Click to continue");
+  
+  ESAT::DrawSprite(cursor_sprite_, (float)ESAT::MousePositionX(), (float)ESAT::MousePositionY());
+  
+  ESAT::DrawEnd();
+  ESAT::WindowFrame();
 }

@@ -39,18 +39,12 @@ void Game::Init() {
   cpSpaceSetGravity(physics_->space_, cpv(0, 0.0098f));
   
   loadLevels();
-  current_index_ = kStartingLevel;
   current_level_ = levels_[current_index_];
 
   ball_ = current_level_->ball_;
   goal_ = current_level_->goal_;
           
   CreateButtons();
-}
-
-
-void Game::Input() {
-
 }
 
 
@@ -96,6 +90,11 @@ void Game::Draw() {
 
 void Game::Update(double delta) {
   
+  if (ESAT::IsSpecialKeyDown(ESAT::kSpecialKey_Escape)) {
+    LevelSelect* ls = new LevelSelect();
+    Manager::getInstance()->screen_ = ls;
+    return;
+  }
   //FOR DEBUGGING. DELETE ON RELEASE.
   if (ESAT::IsSpecialKeyDown(ESAT::kSpecialKey_Enter)) {
     levelUp();
@@ -109,7 +108,6 @@ void Game::Update(double delta) {
       buttons_.push_back(new Button((float)kWinWidth/3, (float)kWinHeight - 100.0f, 50.0f, 50.0f, 0, nullptr, "Next Level", false));
       //buttons_.push_back(new Button(0 + 25.0f, kWinHeight - 100.0f, 50.0f, 50.0f, 0, ESAT::SpriteFromFile("assets/img/play.png"), "", false));
       current_level_->won_ = true;
-      printf("LOOPING\n");
     }
   }
     
@@ -186,7 +184,6 @@ void Game::Update(double delta) {
 
 
 void Game::CreateButtons() {
-  printf("CREATING BUTTONS\n");
   float x = kWinWidth - kMenuWidth;
 
   //Play button

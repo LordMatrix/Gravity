@@ -1,31 +1,31 @@
 /* 
- * File:   Intro.h
+ * File:   LevelSelect.h
  * Author: Marcos Vazquez
  *
  * Created on November 15, 2015, 11:55 PM
  */
 
-#ifndef INTRO_H
-#define INTRO_H 1
+#ifndef LEVELSELECT_H
+#define LEVELSELECT_H 1
 
 #include "Screen.h"
 //#include "MainMenu.h"
 #include "../Manager.h"
 
-class Intro: public Screen {
+class LevelSelect: public Screen {
 public:
-    Intro();
-    Intro(const Intro& orig);
-    virtual ~Intro();
+    LevelSelect();
+    LevelSelect(const LevelSelect& orig);
+    virtual ~LevelSelect();
     
     void Update(double delta) override;
     void Draw() override;
     
-    unsigned char frame_;
+    void createButtons();
     
 private:
 
 };
 
-#endif /* INTRO_H */
+#endif /* LEVELSELECT_H */
 

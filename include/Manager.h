@@ -14,6 +14,8 @@
 
 #include "../include/config.h"
 #include "Screens/Screen.h"
+#include "Screens/Intro.h"
+#include "Screens/LevelSelect.h"
 #include "Screens/Game.h"
 #include "Level.h"
 #include "Pieces/Piece.h"
@@ -23,7 +25,7 @@ public:
     //Screens in the game
     enum ScreenId {
       kScreen_Intro,
-      kScreen_MainMenu,
+      kScreen_LevelSelect,
       kScreen_Game,
     };
     
@@ -32,9 +34,7 @@ public:
     
     ScreenId screen_id_;
     Screen* screen_;
-    Level* level_;
     int quit_game_;
-    Level* levels_[10];
   
     Piece* ball_;
 

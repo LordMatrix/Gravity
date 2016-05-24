@@ -17,8 +17,8 @@ Manager* Manager::instance_ = nullptr;
 
 /// @brief Creates a new Manager, with screen_ defaulting to Intro
 Manager::Manager() {
-  screen_id_ = kScreen_Game;
-  screen_ = new Game();
+  screen_id_ = kScreen_Intro;
+  screen_ = new Intro();
   quit_game_ = false;
 }
 
@@ -28,11 +28,6 @@ Manager::Manager(const Manager& orig) {
 /// @brief Deletes current screen, player and all loaded levels
 Manager::~Manager() {
   delete screen_;
-
-  for (int i=0; i<kNumLevels; i++) {
-    delete levels_[i];
-    levels_[i] = nullptr;
-  }
 }
 
 /// @brief Retrieves the singleton instance

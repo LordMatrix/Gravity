@@ -32,9 +32,8 @@ class Game: public Screen {
 
     void restartLevel();
     void Init();
-    void Input();
     void Update(double delta);
-    void Draw();
+    void Draw() override;
     void CreateButtons() override;
     void deleteButtons();
     void loadLevels();
