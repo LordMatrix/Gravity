@@ -294,15 +294,19 @@ Level::Level(int id, Piece* b, Piece* g, cpSpace* space) {
     case 5:
       goal_init = {780.0f, 680.0f};
       
-      init = {135.0f, 300.0f};
+      piece = new BowlingBall(init, false, 0, space);
+      pieces_.push_back(piece);
       piece = new Ball(init, false, 0, space);
-      piece->movable_ = true;
       pieces_.push_back(piece);
       
       piece = new SmallRamp(init, true, 0, space);
       pieces_.push_back(piece);
+      piece = new SmallRamp(init, true, 0, space);
+      pieces_.push_back(piece);
+      piece = new SmallRamp(init, true, 0, space);
+      pieces_.push_back(piece);
 //      
-      init = {395.0, 305.0};
+      init = {395.0, 600.0};
       piece = new SeeSaw(init, false, 0, space);
       pieces_.push_back(piece);
       break;
@@ -314,7 +318,7 @@ Level::Level(int id, Piece* b, Piece* g, cpSpace* space) {
   
 
   //BALL
-  ball = new Piece(goal_init, false, BALL_TYPE, space); 
+  ball = new Ball(goal_init, false, BALL_TYPE, space); 
   //Additional ball properties
   ball->points_.clear();
   ball->width_ = 25.0f;

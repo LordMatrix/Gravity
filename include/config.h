@@ -11,7 +11,7 @@
 const int kWinWidth = 1366;
 const int kWinHeight = 768;
 const int kNumLevels = 6;
-const int kStartingLevel = 1;
+const int kStartingLevel = 5;
 const float kMenuWidth = 300.0f;
 
 /*

@@ -29,6 +29,7 @@
 #include "Pieces/Spring.h"
 #include "Pieces/Bouncer.h"
 #include "Pieces/Ball.h"
+#include "Pieces/BowlingBall.h"
 #include "Pieces/SeeSaw.h"
 
 class Level {
