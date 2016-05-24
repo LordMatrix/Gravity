@@ -308,6 +308,7 @@ Level::Level(int id, Piece* b, Piece* g, cpSpace* space) {
 //      
       init = {395.0, 600.0};
       piece = new SeeSaw(init, false, 0, space);
+      piece->movable_ = true;
       pieces_.push_back(piece);
       break;
       

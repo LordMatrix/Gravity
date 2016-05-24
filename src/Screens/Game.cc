@@ -96,6 +96,11 @@ void Game::Draw() {
 
 void Game::Update(double delta) {
   
+  //FOR DEBUGGING. DELETE ON RELEASE.
+  if (ESAT::IsSpecialKeyDown(ESAT::kSpecialKey_Enter)) {
+    levelUp();
+  }
+  
   if(physics_->ball_caged_) {
     //Display winning message
     ESAT::DrawText(kWinWidth/3, 100.0f, "You Win");

@@ -17,3 +17,18 @@ Ball
 Scene - Intro
         Menu
         Level
+        
+
+POSSIBLY TODO:
+
+  Constraints (cuerdas o algo)
+  Menú
+  Selector de nivel
+  Un nivel por tipo de pieza
+  Refactoring
+  Feedback visual
+  Graphic Design
+  Adjust colliders (main ball)
+  Lua/DB for levels
+  Creador de niveles
+  Fix selecting pieza

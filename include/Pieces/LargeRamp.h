@@ -30,6 +30,8 @@ class LargeRamp: public Piece {
     LargeRamp(const LargeRamp& orig);
     virtual ~LargeRamp();
     
+    virtual void draw() override;
+    
   private:
 };
 

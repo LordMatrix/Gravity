@@ -17,7 +17,7 @@ BowlingBall::BowlingBall(MathLib::Point2 initial_pos, bool is_static, int collis
   static_ = is_static;
   collision_type_ = collision_type;
   
-  img_ = ESAT::SpriteFromFile("assets/img/play.png");
+  img_ = ESAT::SpriteFromFile("assets/img/bowling.png");
   width_ = 60.0f;
   height_ = 60.0f;
   img_pivot_ = {-30.0f, -30.0f};

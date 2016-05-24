@@ -100,9 +100,21 @@ void Piece::draw() {
     float x_ratio = width_/img_width;
     float y_ratio = height_/img_height;
     
-    ESAT::Mat3InitAsTranslate(current_pos_.x + img_pivot_.x, current_pos_.y + img_pivot_.y, &translate);
-    ESAT::Mat3InitAsRotate(MathLib::rads(rotation_), &rotate);
-    ESAT::Mat3Multiply(translate, rotate, &transform);
+    //ESAT::Mat3InitAsTranslate(current_pos_.x + img_pivot_.x, current_pos_.y + img_pivot_.y, &translate);
+    ESAT::Mat3InitAsTranslate(current_pos_.x,current_pos_.y, &translate);
+    
+    if (static_)
+      ESAT::Mat3InitAsRotate(MathLib::rads(rotation_), &rotate);
+    else 
+      ESAT::Mat3InitAsRotate(rotation_, &rotate);
+  
+  
+    ESAT::Mat3 center, centered;
+    ESAT::Mat3InitAsTranslate(-width_/2, -height_/2, &center);
+    ESAT::Mat3Multiply(rotate, center, &centered);
+  
+  
+    ESAT::Mat3Multiply(translate, centered, &transform);
     
     ESAT::Mat3InitAsScale(x_ratio, y_ratio, &scale);
     ESAT::Mat3Multiply(transform, scale, &sprmat);

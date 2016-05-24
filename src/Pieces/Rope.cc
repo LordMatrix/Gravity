@@ -1,11 +1,11 @@
-#include "../../include/Pieces/SeeSaw.h"
+#include "../../include/Pieces/Rope.h"
 
 
-SeeSaw::SeeSaw(MathLib::Point2 initial_pos, bool is_static, int collision_type, cpSpace* space) : Piece(){
+Rope::Rope(MathLib::Point2 initial_pos, bool is_static, int collision_type, cpSpace* space) : Piece(){
   
   //Redefine shape
-  float width = 100.0f;
-  float height = 20.0f;;
+  float width = 5.0f;
+  float height = 10.0f;;
   float points[] = {-width,-height, width,-height, width,height, -width,height};
   
   points_ = floatToPoints(points, 8);
@@ -17,32 +17,47 @@ SeeSaw::SeeSaw(MathLib::Point2 initial_pos, bool is_static, int collision_type, 
   static_ = is_static;
   collision_type_ = collision_type;
   
-  img_ = ESAT::SpriteFromFile("assets/img/lever0.png");
-  width_ = 200.0f;
-  height_ = 40.0f;
-  img_pivot_ = {-30.0f, -30.0f};
+  img_ = ESAT::SpriteFromFile("assets/img/wall.png");
+  width_ = 10.0f;
+  height_ = 20.0f;
+  img_pivot_ = {-15.0f, -5.0f};
   
   movable_ = false;
 }
 
 
-SeeSaw::SeeSaw(const SeeSaw& orig) {
+Rope::Rope(const Rope& orig) {
 }
 
 
-SeeSaw::~SeeSaw() {
+Rope::~Rope() {
 }
 
-void SeeSaw::setDynamicPhysics() {
-  Piece::setDynamicPhysics();
- 
-  cpVect position = cpVect{current_pos_.x, current_pos_.y};
-  cpVect pivot_pos = cpVect{-1000.0f, 0.0f};
+void Rope::setDynamicPhysics() {
+  int num_segments = 10;
   
+  Piece::setDynamicPhysics();
+  
+  
+  //Create a static body
+  cpVect pivot_pos = cpVect{0.0f, -1000.0f};
   cpBody* pivot = cpBodyNewStatic();
   cpSpaceAddBody(space_, pivot);
   cpBodySetPosition(pivot, pivot_pos);
   cpShape* sbox = cpSpaceAddShape(space_, cpBoxShapeNew(pivot, 1, 1, 1));
+  
+  
+  //Create dynamic shapes joined together
+  cpVect position = cpVect{current_pos_.x, current_pos_.y};
+  
+  
+  //Attach 1st shape to the static body
+  
+  
+  
+  
+ 
+  
   
   cpPivotJoint* pin = cpPivotJointAlloc();
   pin = cpPivotJointInit(pin, physics_body_, pivot, position, position);
