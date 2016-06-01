@@ -1,32 +1,15 @@
-GRAVITY
+GALILEO'S GRAVITY
 -----------------------
 
-An Incredible Machine / Isaac Newton's Gravity ripoff
-
-
-Drag&drop puzzle pieces
-Create static objects on simulation starts
-
-Eject ball on specific point
-Mark & detect collision with goal
-Static objects on start
 Prevent puzzle pieces from overlapping
-
-Piece - Kind of piece
-Ball
-Scene - Intro
-        Menu
-        Level
         
 
 POSSIBLY TODO:
 
   Constraints (cuerdas o algo)
-  Un nivel por tipo de pieza
   Refactoring
   Feedback visual
   Graphic Design
   Adjust colliders (main ball)
   Lua/DB for levels
   Creador de niveles
-  Fix selecting pieza

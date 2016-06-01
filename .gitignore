@@ -28,3 +28,4 @@
 *.app
 build
 dist/Debug/GNU-MacOSX
+.dep.inc

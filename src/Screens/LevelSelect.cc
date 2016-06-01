@@ -46,13 +46,6 @@ void LevelSelect::Update(double delta) {
 void LevelSelect::Draw() {
   ESAT::DrawBegin();
   ESAT::DrawClear(255,255,255);
-
-//  ESAT::Mat3 transform;
-//  float ratiox = (float)kWinWidth / (float)ESAT::SpriteWidth(background_);
-//  float ratioy = (float)kWinHeight / (float)ESAT::SpriteHeight(background_);
-//  
-//  ESAT::Mat3InitAsScale(ratiox, ratioy, &transform);
-//  ESAT::DrawSpriteWithMatrix(background_, transform);
   
   /************ TEXT ************/
   InitText();
@@ -73,12 +66,14 @@ void LevelSelect::Draw() {
 
 void LevelSelect::createButtons() {
   float x = kWinWidth - kMenuWidth;
-
-  buttons_.push_back(new Button(25.0f, 200.0f, 50.0f, 50.0f, 0, nullptr, "1 - Ramps", false));
-  buttons_.push_back(new Button(225.0f, 200.0f, 50.0f, 50.0f, 0, nullptr, "2 - Walls", false));
-  buttons_.push_back(new Button(425.0f, 200.0f, 50.0f, 50.0f, 0, nullptr, "3 - Bumpers", false));
-  buttons_.push_back(new Button(625.0f, 200.0f, 50.0f, 50.0f, 0, nullptr, "4 - Conveyors", false));
+  float width = 100.0f;
+  float height = 50.0f;
   
-  buttons_.push_back(new Button(25.0f, 400.0f, 50.0f, 50.0f, 0, nullptr, "5 - Springs", false));
-  buttons_.push_back(new Button(225.0f, 400.0f, 50.0f, 50.0f, 0, nullptr, "6 - Levers", false));
+  buttons_.push_back(new Button(25.0f, 200.0f, height, width, 0, nullptr, "1 - Ramps", false));
+  buttons_.push_back(new Button(225.0f, 200.0f, height, width, 0, nullptr, "2 - Walls", false));
+  buttons_.push_back(new Button(425.0f, 200.0f, height, width, 0, nullptr, "3 - Bumpers", false));
+  buttons_.push_back(new Button(625.0f, 200.0f, height, width, 0, nullptr, "4 - Conveyors", false));
+  
+  buttons_.push_back(new Button(25.0f, 400.0f, height, width, 0, nullptr, "5 - Springs", false));
+  buttons_.push_back(new Button(225.0f, 400.0f, height, width, 0, nullptr, "6 - Levers", false));
 }

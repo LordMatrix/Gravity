@@ -20,6 +20,7 @@
 #include <ESAT/window.h>
 
 #include "ESAT_extra/chipmunk/chipmunk.h" 
+#include "ESAT_extra/sqlite3.h"
 
 #include "Pieces/Piece.h"
 #include "Pieces/SmallRamp.h"
@@ -46,6 +47,8 @@ class Level {
     Level(int id, Piece* ball, Piece* goal, cpSpace* space);
     Level(const Level& orig);
     ~Level();
+    
+    void load(int id, cpSpace* space);
 
     void LoadFromFile(std::string filename, Level* levels[10]);
    

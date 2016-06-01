@@ -9,6 +9,7 @@
 
 Game::Game() {
   Screen();
+  current_index_ = 0;
   Init();
   
   background_ = ESAT::SpriteFromFile("assets/img/game_bg.png");
@@ -86,6 +87,19 @@ void Game::Draw() {
   if (kDebug) {
     physics_->drawPhysics();
   }
+
+  //Print winning texts
+  if(physics_->ball_caged_) {
+    //Display winning message
+    ESAT::DrawSetTextSize(80.0f);
+    ESAT::DrawText(kWinWidth/3, 100.0f, "You Win");
+    //Display "next level" button
+    if (!current_level_->won_) {
+      buttons_.push_back(new Button((float)kWinWidth/3, (float)115.0f, 50.0f, 200.0f, 0, nullptr, "Click here for next Level", false));
+      current_level_->won_ = true;
+    }
+  }
+  
   
   //Print mouse coordinates
   InitText();
@@ -109,17 +123,6 @@ void Game::Update(double delta) {
     levelUp();
   }
   
-  if(physics_->ball_caged_) {
-    //Display winning message
-    ESAT::DrawText(kWinWidth/3, 100.0f, "You Win");
-    //Display "next level" button
-    if (!current_level_->won_) {
-      buttons_.push_back(new Button((float)kWinWidth/3, (float)kWinHeight - 100.0f, 50.0f, 50.0f, 0, nullptr, "Next Level", false));
-      //buttons_.push_back(new Button(0 + 25.0f, kWinHeight - 100.0f, 50.0f, 50.0f, 0, ESAT::SpriteFromFile("assets/img/play.png"), "", false));
-      current_level_->won_ = true;
-    }
-  }
-    
   //Listen to button click
   if (ESAT::MouseButtonPressed(0)) {
     for (int i=0; i<buttons_.size(); i++) {
@@ -172,13 +175,16 @@ void Game::Update(double delta) {
   } else if (!physics_->simulation_started_) {
     
     //Check clicking on pieces
-    for (int i=0; i<current_level_->pieces_.size(); i++) {
+    bool found = false;
+    for (int i=0; i<current_level_->pieces_.size() && !found; i++) {
       
       //Detect drag/drop
       if (current_level_->pieces_[i]->movable_) {
         if (ESAT::MouseButtonDown(0)) {
+          
           if (current_level_->pieces_[i]->checkClick()) {
             current_level_->pieces_[i]->dragged_ = !current_level_->pieces_[i]->dragged_;
+            found = true;
           }
         }
 
@@ -216,25 +222,28 @@ void Game::loadLevels() {
   Level* lvl;
   
   for (int i=0; i<kNumLevels; i++) {
-    lvl = new Level(i, ball_, goal_, physics_->space_);
+    lvl = new Level(i+1, ball_, goal_, physics_->space_);
     levels_.push_back(lvl);
   }
 }
 
 
 void Game::levelUp() {
-  current_index_++;
-  current_level_ = levels_[current_index_];
+  //Go to next level, if there is a next level
+  if (current_index_ < kNumLevels-1) {
+    current_index_++;
+    current_level_ = levels_[current_index_];
 
-  ball_ = current_level_->ball_;
-  goal_ = current_level_->goal_;
-  
-  
-  stopSimulation();
-  physics_->ball_caged_ = false;
-  
-  deleteButtons();
-  CreateButtons();
+    ball_ = current_level_->ball_;
+    goal_ = current_level_->goal_;
+    
+    
+    stopSimulation();
+    physics_->ball_caged_ = false;
+    
+    deleteButtons();
+    CreateButtons();
+  }
 }
 
 
