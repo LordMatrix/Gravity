@@ -29,7 +29,16 @@ class Rope: public Piece {
     virtual ~Rope();
     
     virtual void setDynamicPhysics() override;
+    virtual void update() override;
+    virtual void draw() override;
     
+    std::vector<cpBody*> physics_bodies_;
+    std::vector<cpShape*> physics_shapes_;
+    std::vector<MathLib::Point2*> points_;
+    
+    std::vector<MathLib::Vec2*> current_poss_;
+    
+    int num_segments_;
   private:
 };
 

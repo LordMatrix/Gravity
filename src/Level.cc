@@ -9,8 +9,6 @@
 #include "ESAT/draw.h"
 
 
-
-
 void Level::load(int id, cpSpace* space) {
   sqlite3 *db;
   const char *zErrMsg = 0;
@@ -64,8 +62,7 @@ void Level::load(int id, cpSpace* space) {
   }
   
   
-  //FETCH LEVEL PIECES
-  
+  //FETCH LEVEL PIECES FROM DB
   sql = "SELECT * FROM level_piece_index WHERE level_id="+std::to_string(id);
   
   rc = sqlite3_prepare(db, sql.c_str(), 100, &rs, &zErrMsg);
@@ -74,7 +71,6 @@ void Level::load(int id, cpSpace* space) {
     printf("ERROR");
   
   while (sqlite3_step(rs) == SQLITE_ROW) {
-    printf("adding piece\n");
     int piece_id = sqlite3_column_int(rs,2);
     int rotation = sqlite3_column_int(rs,3);
     int pivot_x = sqlite3_column_int(rs,4);
@@ -118,6 +114,9 @@ void Level::load(int id, cpSpace* space) {
         break;
       case 9:
         piece = new SeeSaw(init, false, 0, space);
+        break;
+      case 10:
+        piece = new Rope(init, false, 0, space);
         break;
     }
     

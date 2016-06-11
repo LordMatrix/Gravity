@@ -3,13 +3,6 @@
 
 Ball::Ball(MathLib::Point2 initial_pos, bool is_static, int collision_type, cpSpace* space) : Piece(){
   
-  //Redefine shape
-  float width = 30.0f;
-  float height = 30.0f;;
-  float points[] = {-width,-height, width,-height, width,height, -width,height};
-  
-  points_ = floatToPoints(points, 8);
-  
   space_ = space;
   initial_pos_ = initial_pos;
   set_pos_ = initial_pos_;
@@ -23,6 +16,10 @@ Ball::Ball(MathLib::Point2 initial_pos, bool is_static, int collision_type, cpSp
   img_pivot_ = {-30.0f, -30.0f};
   
   movable_ = true;
+  
+  points_.clear();
+  MathLib::Vec2 position_offset = {0.0f, 0.0f};
+  MathLib::assignRegularPolygon(20, 35, position_offset, 0.0f, points_);
 }
 
 
