@@ -17,6 +17,7 @@ SeeSaw::SeeSaw(MathLib::Point2 initial_pos, bool is_static, int collision_type, 
   static_ = is_static;
   collision_type_ = collision_type;
   
+  id_ = 9;
   img_ = ESAT::SpriteFromFile("assets/img/lever0.png");
   width_ = 200.0f;
   height_ = 40.0f;

@@ -17,6 +17,7 @@ Rope::Rope(MathLib::Point2 initial_pos, bool is_static, int collision_type, cpSp
   static_ = is_static;
   collision_type_ = collision_type;
   
+  id_ = 10;
   img_ = ESAT::SpriteFromFile("assets/img/ring.png");
   width_ = 10.0f;
   height_ = 20.0f;

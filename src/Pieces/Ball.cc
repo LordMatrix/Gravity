@@ -10,6 +10,7 @@ Ball::Ball(MathLib::Point2 initial_pos, bool is_static, int collision_type, cpSp
   static_ = is_static;
   collision_type_ = collision_type;
   
+  id_ = 8;
   img_ = ESAT::SpriteFromFile("assets/img/football.png");
   width_ = 60.0f;
   height_ = 60.0f;

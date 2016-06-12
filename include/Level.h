@@ -39,21 +39,16 @@ class Level {
   
   public:
 
-    //Maps inside the game
-    enum LevelId {
-      kLevel_Tutorial
-    };
-
     Level();
     Level(int id, Piece* ball, Piece* goal, cpSpace* space);
     Level(const Level& orig);
     ~Level();
     
     void load(int id, cpSpace* space);
-
-    void LoadFromFile(std::string filename, Level* levels[10]);
-   
-    LevelId id_;
+    static std::vector<std::string> LoadLevelNames();
+    
+    int id_;
+    std::string name_;
     bool won_;
     std::vector<Piece*> pieces_;
     

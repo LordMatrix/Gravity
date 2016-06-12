@@ -17,6 +17,7 @@ LargeRamp::LargeRamp(MathLib::Point2 initial_pos, bool is_static, int collision_
   collision_type_ = collision_type;
   colspan_ = 2;
   
+  id_ = 2;
   img_ = ESAT::SpriteFromFile("assets/img/ramp.png");
   width_ = 250.0f;
   height_ = 100.0f;

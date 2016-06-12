@@ -46,8 +46,10 @@ class LevelEditor: public Screen {
     Piece* createPiece(MathLib::Point2 initial_pos, bool is_static, int collision_type);
     void createPieces();
     void loadAllPieces();
+    void SaveLevel();
     
     std::vector<Piece*> templates_;
+    bool new_insert_;
 };
 
 #endif /* LEVELEDITOR_H */

@@ -221,7 +221,7 @@ void Game::deleteButtons() {
 void Game::loadLevels() {
   Level* lvl;
   
-  for (int i=0; i<kNumLevels; i++) {
+  for (int i=0; i<Manager::getInstance()->num_levels_; i++) {
     lvl = new Level(i+1, ball_, goal_, physics_->space_);
     levels_.push_back(lvl);
   }
@@ -230,7 +230,7 @@ void Game::loadLevels() {
 
 void Game::levelUp() {
   //Go to next level, if there is a next level
-  if (current_index_ < kNumLevels-1) {
+  if (current_index_ < Manager::getInstance()->num_levels_-1) {
     current_index_++;
     current_level_ = levels_[current_index_];
 

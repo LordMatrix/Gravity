@@ -35,7 +35,8 @@ public:
     ScreenId screen_id_;
     Screen* screen_;
     int quit_game_;
-  
+    int num_levels_;
+    
     Piece* ball_;
 
 private:

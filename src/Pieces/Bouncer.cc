@@ -17,6 +17,7 @@ Bouncer::Bouncer(MathLib::Point2 initial_pos, bool is_static, int collision_type
   static_ = is_static;
   collision_type_ = collision_type;
   
+  id_ = 5;
   img_ = ESAT::SpriteFromFile("assets/img/bouncer.png");
   width_ = 100.0f;
   height_ = 100.0f;

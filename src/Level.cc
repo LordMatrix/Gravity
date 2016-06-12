@@ -67,7 +67,7 @@ void Level::load(int id, cpSpace* space) {
   //CREATE BALL
   while (sqlite3_step(rs) == SQLITE_ROW) {
     
-    init = {(float)sqlite3_column_int(rs,3), (float)sqlite3_column_int(rs,4)};
+    init = {(float)sqlite3_column_int(rs,2), (float)sqlite3_column_int(rs,3)};
     Piece* ball = new Ball(init, false, BALL_TYPE, space);
     
     ball->points_.clear();
@@ -76,9 +76,6 @@ void Level::load(int id, cpSpace* space) {
     MathLib::Vec2 position_offset = {0.0f, 0.0f};
     MathLib::assignRegularPolygon(20, 30, position_offset, 0.0f, ball->points_);
     
-    ball->initial_pos_ = {100.0f, 0.0f};
-    ball->set_pos_ = ball->initial_pos_;
-    ball->current_pos_ = ball->initial_pos_;
     
     //Save this piece reference
     ball_ = ball;
@@ -172,4 +169,27 @@ void Level::load(int id, cpSpace* space) {
   
   sqlite3_finalize(rs);
   sqlite3_close(db);
+}
+
+
+std::vector<std::string> Level::LoadLevelNames() {
+  
+  std::vector<std::string> names;
+  sqlite3 *db;
+  const char *zErrMsg = 0;
+  int rc;
+  std::string sql;
+  sqlite3_stmt* rs;
+  
+  rc = sqlite3_open("assets/gravity.db", &db);
+  
+  sql = "SELECT name FROM level";
+  rc = sqlite3_prepare(db, sql.c_str(), 100, &rs, &zErrMsg);
+
+  while (sqlite3_step(rs) == SQLITE_ROW) {
+    std::string text((char*)sqlite3_column_text(rs,0));
+    names.push_back(text);
+  }
+  
+  return names;
 }

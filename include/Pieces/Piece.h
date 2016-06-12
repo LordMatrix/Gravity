@@ -41,6 +41,7 @@ class Piece {
     bool checkHover();
     void drop();
     
+    int id_;
     ESAT::SpriteHandle img_;
     bool static_;
     bool dragged_;

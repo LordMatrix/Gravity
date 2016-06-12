@@ -35,6 +35,7 @@ Piece::Piece(MathLib::Point2 initial_pos, bool is_static, int collision_type, cp
 
 
 Piece::Piece(const Piece& orig) {
+  id_ = orig.id_;
   img_ = orig.img_;
   static_ = orig.static_;
   dragged_ = orig.dragged_;

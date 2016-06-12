@@ -5,7 +5,7 @@ LevelEditor::LevelEditor() {
   Init();
   
   background_ = ESAT::SpriteFromFile("assets/img/game_bg.png");
-//  level_ = new Level();
+  new_insert_ = true;
 }
 
 LevelEditor::LevelEditor(const LevelEditor& orig) {
@@ -79,10 +79,12 @@ void LevelEditor::Draw() {
     templates_[i]->draw();
   }
   
+  //Show level name
+  ESAT::DrawSetFillColor(255,255,255,255);
+  ESAT::DrawSetStrokeColor(255,255,255,255);
+  ESAT::DrawText(kWinWidth-kMenuWidth+20, kWinHeight-20.0f, level_->name_.c_str());
   
   ESAT::DrawSprite(cursor_sprite_, (float)ESAT::MousePositionX(), (float)ESAT::MousePositionY());
-  
-  
   //Print mouse coordinates
   InitText();
   ESAT::DrawSetTextSize(15.0f);
@@ -110,7 +112,7 @@ void LevelEditor::Update(double delta) {
       if (buttons_[i]->checkClick()) {
         switch(i) {
           case 0:
-            //Save
+            SaveLevel();
             break;
         }
         
@@ -119,9 +121,14 @@ void LevelEditor::Update(double delta) {
   }
   
   //Append level name
-  if (ESAT::GetNextPressedKey()) {
+  if (ESAT::IsSpecialKeyDown(ESAT::kSpecialKey_Delete)) {
+    level_->name_.pop_back();
+  } else {
+    char key = ESAT::GetNextPressedKey();
+    if (key) {
+      level_->name_ += key;
+    }
   }
-  
     
   //Check clicking on pieces
   bool found = false;
@@ -146,26 +153,21 @@ void LevelEditor::Update(double delta) {
     for (int i=0; i<level_->pieces_.size() && !found; i++) {
 
       //Detect drag/drop
-//      if (level_->pieces_[i]->movable_) {
-        if (ESAT::MouseButtonDown(0)) {
-          printf("entered size %d\n", level_->pieces_.size());
+      if (ESAT::MouseButtonDown(0)) {
 
-          if (level_->pieces_[i]->checkClick()) {
-            printf("SELECTED\n");
-            level_->pieces_[i]->dragged_ = !level_->pieces_[i]->dragged_;
-            found = true;
-          }
-          
-          printf("\n\n\n");
+        if (level_->pieces_[i]->checkClick()) {
+          level_->pieces_[i]->dragged_ = !level_->pieces_[i]->dragged_;
+          found = true;
         }
+      }
 
-        //Move selected piece along with the mouse
-        if (level_->pieces_[i]->dragged_) {
-          level_->pieces_[i]->drop();
-        }
-//      }
+      //Move selected piece along with the mouse
+      if (level_->pieces_[i]->dragged_) {
+        level_->pieces_[i]->drop();
+      }
     }
   }
+
 }
 
 
@@ -198,7 +200,7 @@ void LevelEditor::loadAllPieces() {
   templates_.push_back(new ConveyorBelt(pos, true, 0, nullptr));
   templates_.push_back(new BowlingBall(pos, false, 0, nullptr));
   templates_.push_back(new SeeSaw(pos, false, 0, nullptr));
-  templates_.push_back(new Rope(pos, false, 0, nullptr));
+//  templates_.push_back(new Rope(pos, false, 0, nullptr));
   
   for (int i=1; i<templates_.size(); i++) {
     templates_[i]->initial_pos_.x += templates_[i-1]->initial_pos_.x + templates_[i-1]->width_ * 2/3;
@@ -218,4 +220,70 @@ void LevelEditor::loadAllPieces() {
   level_->pieces_.push_back(g);
   g->current_pos_ = {100.0f, 200.0f};
   g->movable_ = true;
+  
+  level_->ball_ = b;
+  level_->goal_ = g;
+}
+
+
+void LevelEditor::SaveLevel() {
+  printf("SAVING LEVEL\n");
+  
+  sqlite3 *db;
+  char *zErrMsg = 0;
+  int rc;
+  char sql[500];
+  MathLib::Point2 init;
+  sqlite3_stmt* rs;
+  
+  rc = sqlite3_open("assets/gravity.db", &db);
+  
+  
+  /*******************/
+  /*   CREATE LEVEL  */
+  /*******************/
+  if (new_insert_) {
+    snprintf(sql, 500, "INSERT INTO Level (name, ball_x, ball_y, goal_x, goal_y) VALUES('%s', %d, %d, %d, %d);", 
+            level_->name_.c_str(), (int)level_->ball_->current_pos_.x, (int)level_->ball_->current_pos_.y, (int)level_->goal_->current_pos_.x, (int)level_->goal_->current_pos_.y);
+  } else {
+    printf("updating %d\n", level_->id_);
+    snprintf(sql, 500, "UPDATE Level SET name='%s', ball_x=%d, ball_y=%d, goal_x=%d, goal_y=%d WHERE id=%d;", 
+            level_->name_.c_str(), (int)level_->ball_->current_pos_.x, (int)level_->ball_->current_pos_.y, (int)level_->goal_->current_pos_.x, (int)level_->goal_->current_pos_.y, level_->id_);
+  }
+  
+  rc = sqlite3_exec(db, sql, nullptr, 0, &zErrMsg);
+  
+  if (new_insert_) {
+    level_->id_ = sqlite3_last_insert_rowid(db);
+    new_insert_ = false;
+    Manager::getInstance()->num_levels_++;
+  }
+  
+  printf("%s\n", zErrMsg);
+  
+  
+  /*******************/
+  /*   SAVE PIECES   */
+  /*******************/
+  
+  //Delete previous pieces
+  snprintf(sql, 500, "DELETE FROM level_piece_index WHERE level_id=%d;", level_->id_);
+  rc = sqlite3_exec(db, sql, nullptr, 0, &zErrMsg);
+  
+  
+  //Scan present pieces
+  float menu_x = kWinWidth - kMenuWidth;
+  
+  //Skip ball&goal indices
+  for (int i=2; i<level_->pieces_.size(); i++) {
+  
+    Piece* piece = level_->pieces_[i];
+    bool movable = piece->current_pos_.x >= menu_x;
+    
+    snprintf(sql, 500, "INSERT INTO level_piece_index (level_id, piece_id, rotation, pivot_x, pivot_y, movable, position_x, position_y) VALUES (%d, %d, 0, 0, 0, %d, %d, %d);", 
+            level_->id_, piece->id_, (int)movable, (int)piece->current_pos_.x, (int)piece->current_pos_.y);
+    rc = sqlite3_exec(db, sql, nullptr, 0, &zErrMsg);
+    printf("%s\n", sql);
+    printf("%s\n", zErrMsg);
+  }
 }

@@ -76,7 +76,7 @@ void LevelSelect::Draw() {
 
 
 void LevelSelect::createButtons() {
-  float x = kWinWidth - kMenuWidth;
+  float menu_x = kWinWidth - kMenuWidth;
   float width = 180.0f;
   float height = 50.0f;
   
@@ -85,12 +85,23 @@ void LevelSelect::createButtons() {
   //Create editor at position 0
   buttons_.push_back(new Button(500.0f, 650.0f, height, width*2, 0, bg, "LEVEL EDITOR", true));
   
-  buttons_.push_back(new Button(25.0f, 200.0f, height, width, 0, bg, "1 - Ramps", true));
-  buttons_.push_back(new Button(225.0f, 200.0f, height, width, 0, bg, "2 - Walls", true));
-  buttons_.push_back(new Button(425.0f, 200.0f, height, width, 0, bg, "3 - Bumpers", true));
-  buttons_.push_back(new Button(625.0f, 200.0f, height, width, 0, bg, "4 - Conveyors", true));
-  buttons_.push_back(new Button(25.0f, 400.0f, height, width, 0, bg, "5 - Springs", true));
-  buttons_.push_back(new Button(225.0f, 400.0f, height, width, 0, bg, "6 - Levers", true));
+  //Load level names
+  std::vector<std::string> names = Level::LoadLevelNames();
+  
+  //Create level buttons
+  int i = 0;
+  float x = 25.0f;
+  float y = 200.0f;
+  for (i=0; i<names.size(); i++) {
+    buttons_.push_back(new Button(x, y, height, width, 0, bg, std::to_string(i+1)+" - "+names[i], true));
+    x += 200.0f;
+    if (i%5 == 0 && i!=0) {
+      x = 25.0f;
+      y += 200.0f; 
+    }
+  }
+  
+  Manager::getInstance()->num_levels_ = i;
 }
 
 
