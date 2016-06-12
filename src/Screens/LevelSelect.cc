@@ -97,7 +97,7 @@ void LevelSelect::createButtons() {
     x += 200.0f;
     if (i%5 == 0 && i!=0) {
       x = 25.0f;
-      y += 200.0f; 
+      y += 100.0f; 
     }
   }
   

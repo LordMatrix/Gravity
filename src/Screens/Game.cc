@@ -257,7 +257,7 @@ void Game::startSimulation() {
   
   //Update pieces physics
 //  if (!physics_->simulation_started_) {
-    ball_->current_pos_ = {100.0f, 0.0f};
+    ball_->current_pos_ = ball_->initial_pos_;
     
     for (int i=0; i<current_level_->pieces_.size(); i++) {
       //Check if the piece is inside the menu

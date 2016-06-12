@@ -11,6 +11,6 @@
 const int kWinWidth = 1366;
 const int kWinHeight = 768;
 const float kMenuWidth = 300.0f;
-const bool kDebug = true;
+const bool kDebug = false;
 
 #endif /* __CONFIG_H__ */

@@ -141,7 +141,6 @@ void LevelEditor::Update(double delta) {
         Piece* selected = new Piece(*templates_[i]);
         level_->pieces_.push_back(selected);
 
-        printf("Copy is at %f,%f\n", selected->current_pos_.x, selected->current_pos_.y);
         selected->movable_ = true;
         found = true;
       }
@@ -227,8 +226,6 @@ void LevelEditor::loadAllPieces() {
 
 
 void LevelEditor::SaveLevel() {
-  printf("SAVING LEVEL\n");
-  
   sqlite3 *db;
   char *zErrMsg = 0;
   int rc;
@@ -246,7 +243,6 @@ void LevelEditor::SaveLevel() {
     snprintf(sql, 500, "INSERT INTO Level (name, ball_x, ball_y, goal_x, goal_y) VALUES('%s', %d, %d, %d, %d);", 
             level_->name_.c_str(), (int)level_->ball_->current_pos_.x, (int)level_->ball_->current_pos_.y, (int)level_->goal_->current_pos_.x, (int)level_->goal_->current_pos_.y);
   } else {
-    printf("updating %d\n", level_->id_);
     snprintf(sql, 500, "UPDATE Level SET name='%s', ball_x=%d, ball_y=%d, goal_x=%d, goal_y=%d WHERE id=%d;", 
             level_->name_.c_str(), (int)level_->ball_->current_pos_.x, (int)level_->ball_->current_pos_.y, (int)level_->goal_->current_pos_.x, (int)level_->goal_->current_pos_.y, level_->id_);
   }
@@ -258,8 +254,6 @@ void LevelEditor::SaveLevel() {
     new_insert_ = false;
     Manager::getInstance()->num_levels_++;
   }
-  
-  printf("%s\n", zErrMsg);
   
   
   /*******************/
@@ -283,7 +277,5 @@ void LevelEditor::SaveLevel() {
     snprintf(sql, 500, "INSERT INTO level_piece_index (level_id, piece_id, rotation, pivot_x, pivot_y, movable, position_x, position_y) VALUES (%d, %d, 0, 0, 0, %d, %d, %d);", 
             level_->id_, piece->id_, (int)movable, (int)piece->current_pos_.x, (int)piece->current_pos_.y);
     rc = sqlite3_exec(db, sql, nullptr, 0, &zErrMsg);
-    printf("%s\n", sql);
-    printf("%s\n", zErrMsg);
   }
 }

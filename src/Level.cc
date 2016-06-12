@@ -45,7 +45,6 @@ Level::Level(const Level& orig) {
 
 
 Level::~Level() {
-  printf("LEVEL IS BEING DELETED\n");
 }
 
 void Level::load(int id, cpSpace* space) {
