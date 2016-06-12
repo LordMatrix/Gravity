@@ -35,6 +35,26 @@ Piece::Piece(MathLib::Point2 initial_pos, bool is_static, int collision_type, cp
 
 
 Piece::Piece(const Piece& orig) {
+  img_ = orig.img_;
+  static_ = orig.static_;
+  dragged_ = orig.dragged_;
+  initial_pos_ = orig.initial_pos_;
+  set_pos_ = initial_pos_;
+  current_pos_ = initial_pos_;
+  rotation_ = orig.rotation_;
+  active_ = orig.active_;
+  colspan_ = orig.colspan_;
+  height_ = orig.height_;
+  width_ = orig.width_;
+  movable_ = orig.movable_;
+  img_pivot_ = orig.img_pivot_;
+          
+  for (int i=0; i<orig.points_.size(); i++) {
+    MathLib::Point2 point = {orig.points_[i].x, orig.points_[i].y};
+    points_.push_back(point);
+  }
+  
+  printf("Piece copied\n");
 }
 
 

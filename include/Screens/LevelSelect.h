@@ -9,7 +9,7 @@
 #define LEVELSELECT_H 1
 
 #include "Screen.h"
-//#include "MainMenu.h"
+#include "LevelEditor.h"
 #include "../Manager.h"
 
 class LevelSelect: public Screen {
@@ -22,6 +22,7 @@ public:
     void Draw() override;
     
     void createButtons();
+    void virtual DrawButtons() override;
     
 private:
 

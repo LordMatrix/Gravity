@@ -56,6 +56,13 @@ void Button::init() {
       pos_.x, pos_.y
     };
   
+  //copy to class variable
+  for (int i=0; i<10; i++) {
+    path_points_[i] = path_points[i];
+  }
+  
+  num_points_ = 5;
+  
   initText();
 }
 
@@ -96,7 +103,7 @@ void Button::draw() {
   ESAT::DrawSetTextSize(25);
 
   if (text_.c_str()) {
-    ESAT::DrawText(pos_.x+margin, pos_.y+2*margin, text_.c_str());
+    ESAT::DrawText(pos_.x+margin, pos_.y+margin, text_.c_str());
   }
 }
 

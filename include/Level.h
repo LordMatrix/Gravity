@@ -33,6 +33,7 @@
 #include "Pieces/BowlingBall.h"
 #include "Pieces/SeeSaw.h"
 #include "Pieces/Rope.h"
+#include "Pieces/Goal.h"
 
 class Level {
   

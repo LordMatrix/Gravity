@@ -16,6 +16,7 @@
  *  @param
  */
 LevelSelect::LevelSelect() {
+  background_ = ESAT::SpriteFromFile("assets/img/intro_bg.jpg");
   createButtons();
 }
 
@@ -32,11 +33,14 @@ void LevelSelect::Update(double delta) {
   } else {
     if (ESAT::MouseButtonDown(0)) {
       int btn = CheckButtonsClick();
-      printf("%d\n",btn);
-      if (btn > -1) {
+      //Open level editor
+      if (btn == 0) {
+        LevelEditor* editor = new LevelEditor();
+        Manager::getInstance()->screen_ = editor;
+      } else if (btn > -1) {
         Game* game = new Game();
         Manager::getInstance()->screen_ = game;
-        game->current_index_ = btn - 1;
+        game->current_index_ = btn - 2;
         game->levelUp();
       }
     }
@@ -46,6 +50,13 @@ void LevelSelect::Update(double delta) {
 void LevelSelect::Draw() {
   ESAT::DrawBegin();
   ESAT::DrawClear(255,255,255);
+  
+  ESAT::Mat3 transform;
+  float ratiox = (float)kWinWidth / (float)ESAT::SpriteWidth(background_);
+  float ratioy = (float)kWinHeight / (float)ESAT::SpriteHeight(background_);
+  
+  ESAT::Mat3InitAsScale(ratiox, ratioy, &transform);
+  ESAT::DrawSpriteWithMatrix(background_, transform);
   
   /************ TEXT ************/
   InitText();
@@ -66,14 +77,25 @@ void LevelSelect::Draw() {
 
 void LevelSelect::createButtons() {
   float x = kWinWidth - kMenuWidth;
-  float width = 100.0f;
+  float width = 180.0f;
   float height = 50.0f;
   
-  buttons_.push_back(new Button(25.0f, 200.0f, height, width, 0, nullptr, "1 - Ramps", false));
-  buttons_.push_back(new Button(225.0f, 200.0f, height, width, 0, nullptr, "2 - Walls", false));
-  buttons_.push_back(new Button(425.0f, 200.0f, height, width, 0, nullptr, "3 - Bumpers", false));
-  buttons_.push_back(new Button(625.0f, 200.0f, height, width, 0, nullptr, "4 - Conveyors", false));
+  ESAT::SpriteHandle bg = ESAT::SpriteFromFile("assets/img/btn_bg.png");
   
-  buttons_.push_back(new Button(25.0f, 400.0f, height, width, 0, nullptr, "5 - Springs", false));
-  buttons_.push_back(new Button(225.0f, 400.0f, height, width, 0, nullptr, "6 - Levers", false));
+  //Create editor at position 0
+  buttons_.push_back(new Button(500.0f, 650.0f, height, width*2, 0, bg, "LEVEL EDITOR", true));
+  
+  buttons_.push_back(new Button(25.0f, 200.0f, height, width, 0, bg, "1 - Ramps", true));
+  buttons_.push_back(new Button(225.0f, 200.0f, height, width, 0, bg, "2 - Walls", true));
+  buttons_.push_back(new Button(425.0f, 200.0f, height, width, 0, bg, "3 - Bumpers", true));
+  buttons_.push_back(new Button(625.0f, 200.0f, height, width, 0, bg, "4 - Conveyors", true));
+  buttons_.push_back(new Button(25.0f, 400.0f, height, width, 0, bg, "5 - Springs", true));
+  buttons_.push_back(new Button(225.0f, 400.0f, height, width, 0, bg, "6 - Levers", true));
+}
+
+
+void LevelSelect::DrawButtons() {
+  for (int i=0; i<buttons_.size(); i++) {
+    buttons_[i]->draw();
+  }
 }

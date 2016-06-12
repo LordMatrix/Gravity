@@ -8,6 +8,45 @@
 #include "../include/Level.h"
 #include "ESAT/draw.h"
 
+Level::Level() {
+}
+
+Level::Level(int id, Piece* b, Piece* g, cpSpace* space) {
+  //This should be replaced by a Database
+  won_ = false;
+  float start_x, x, y;
+  
+  load(id, space);
+  
+  //Place NON-STATIC pieces in inventory (menu area)
+  start_x = kWinWidth - kMenuWidth + 70.0f;
+  x = start_x;
+  y = 50.0f;
+  //Place movable pieces on menu space
+  for (int i=0; i<pieces_.size(); i++) {
+    if (pieces_[i]->movable_) {
+      pieces_[i]->initial_pos_ = {x,y};
+      pieces_[i]->set_pos_ = pieces_[i]->initial_pos_;
+      pieces_[i]->current_pos_ = pieces_[i]->initial_pos_;
+
+      if (i%2==0 && pieces_[i]->colspan_ == 1) {
+        x += 150.0f;
+      } else {
+        x = start_x;
+        y += 100.0f;
+      }
+    }
+  }
+  
+}
+
+Level::Level(const Level& orig) {
+}
+
+
+Level::~Level() {
+  printf("LEVEL IS BEING DELETED\n");
+}
 
 void Level::load(int id, cpSpace* space) {
   sqlite3 *db;
@@ -133,42 +172,4 @@ void Level::load(int id, cpSpace* space) {
   
   sqlite3_finalize(rs);
   sqlite3_close(db);
-}
-
-
-Level::Level(int id, Piece* b, Piece* g, cpSpace* space) {
-  //This should be replaced by a Database
-  won_ = false;
-  float start_x, x, y;
-  
-  load(id, space);
-  
-  //Place NON-STATIC pieces in inventory (menu area)
-  start_x = kWinWidth - kMenuWidth + 70.0f;
-  x = start_x;
-  y = 50.0f;
-  //Place movable pieces on menu space
-  for (int i=0; i<pieces_.size(); i++) {
-    if (pieces_[i]->movable_) {
-      pieces_[i]->initial_pos_ = {x,y};
-      pieces_[i]->set_pos_ = pieces_[i]->initial_pos_;
-      pieces_[i]->current_pos_ = pieces_[i]->initial_pos_;
-
-      if (i%2==0 && pieces_[i]->colspan_ == 1) {
-        x += 150.0f;
-      } else {
-        x = start_x;
-        y += 100.0f;
-      }
-    }
-  }
-  
-}
-
-Level::Level(const Level& orig) {
-}
-
-
-Level::~Level() {
-  printf("LEVEL IS BEING DELETED\n");
 }
