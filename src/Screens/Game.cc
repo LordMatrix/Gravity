@@ -256,21 +256,19 @@ void Game::startSimulation() {
   }
   
   //Update pieces physics
-//  if (!physics_->simulation_started_) {
-    ball_->current_pos_ = ball_->initial_pos_;
-    
-    for (int i=0; i<current_level_->pieces_.size(); i++) {
-      //Check if the piece is inside the menu
-      float menu_x = kWinWidth - kMenuWidth;
-      //Update active status
-      current_level_->pieces_[i]->active_ = (current_level_->pieces_[i]->current_pos_.x < menu_x);
-        
-      if (current_level_->pieces_[i]->active_)
-        current_level_->pieces_[i]->setPhysics();
-    }
-    
-    Manager::getInstance()->ball_ = ball_;
-//  }
+  ball_->current_pos_ = ball_->initial_pos_;
+
+  for (int i=0; i<current_level_->pieces_.size(); i++) {
+    //Check if the piece is inside the menu
+    float menu_x = kWinWidth - kMenuWidth;
+    //Update active status
+    current_level_->pieces_[i]->active_ = (current_level_->pieces_[i]->current_pos_.x < menu_x);
+
+    if (current_level_->pieces_[i]->active_)
+      current_level_->pieces_[i]->setPhysics();
+  }
+
+  Manager::getInstance()->ball_ = ball_;
 }
 
 

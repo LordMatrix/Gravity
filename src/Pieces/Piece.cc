@@ -54,8 +54,6 @@ Piece::Piece(const Piece& orig) {
     MathLib::Point2 point = {orig.points_[i].x, orig.points_[i].y};
     points_.push_back(point);
   }
-  
-  printf("Piece copied\n");
 }
 
 

@@ -60,7 +60,6 @@ void Physics::drawPhysics() {
 
 
 cpBool Physics::OnBallGoalCollisionEnter(cpArbiter *arb, cpSpace *space, void *data) {
-  printf("You win\n");
   bool* caged = (bool*)data;
   *caged = true;
   return cpTrue;

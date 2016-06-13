@@ -175,8 +175,6 @@ void LevelEditor::CreateButtons() {
 
   //Play button
   buttons_.push_back(new Button(x + 25.0f, kWinHeight - 100.0f, 50.0f, 50.0f, 0, ESAT::SpriteFromFile("assets/img/save.png"), "", false));
-  
-//  buttons_.push_back(new Button(x + 125.0f, kWinHeight - 100.0f, 50.0f, 50.0f, 0, ESAT::SpriteFromFile("assets/img/pause.png"), "", false));
 }
 
 

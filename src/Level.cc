@@ -1,10 +1,3 @@
-/* 
- * File:   Map.cc
- * Author: Marcos Vazquez
- * 
- * Created on November 15, 2015, 12:13 AM
- */
-
 #include "../include/Level.h"
 #include "ESAT/draw.h"
 
