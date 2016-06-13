@@ -1,0 +1,34 @@
+GALILEO'S GRAVITY
+-------------------------
+
+The point of this game is to carry a ball from its starting point the goal by placing objects along the way to modify its trajectory.
+This game is based on Isaac Newton's Gravity & The Incredible Machine series, with more of a focus on physics simulation using the chipmunk engine.
+
+
+THE GAME
+
+After selecting the level you want to play, you'll be prompted with the game screen.
+On the central area, and taking up most of the screen, there's the simulation area. The pieces already placed here are part of the puzzle and cannot be moved from their starting positions.
+On the right there's the menu area. Drop pieces to and from here to make them part of the simulation. When the simulation starts, all pieces within these borders will not take part in it.
+Below them there's the simulation buttons. Click on them to start/resume, pause or stop/restart the simulation. You can also press the Spacebar to toggle the pause/resume simulation.
+
+Once the ball makes it to the goal (by touching it), you can advance to the next level by clicking on the victory sign. Press Enter if you want to skip a level altogether. Note that this won't work if there's no next level.
+
+
+LEVEL EDITOR
+
+In addition to the menu & simulation areas, the level editor has the templates area (bottom of the screen). Drag pieces from here to construct a puzzle. Pieces placed in the menu area will be selectable and movable by the player, whilst pieces placed in the simulation area will not.
+You can type anywhere to specify a name for your level, and erase characters with the supr key. 
+To save your level, just click on the diskette icon at the bottom of the menu area. Exit the editor and your level will now appear at the level selection screen.
+Note that once you exit the editor, you cannot go back to editing your level, nor can you delete it since these features are not implemented yet.
+
+
+TECHNICAL FEATURES
+
+Most of the features are probably self-explanatory. However, here are a few worth mentioning:
+
+- Different pieces with distinct behaviours: ramps, bouncers, balls, a lever, chains, conveyor belts and simple walls.
+- Physical properties of a piece can be analyzed in its constructor, or setStaticPhysics/setDynamicPhysics.
+- Collision behaviours can be found at Physics.h
+- Levels load from a sqlite database. The database is at assets/gravity.db. gravity_original.db holds a copy for restoring the changes made by the level editor.
+- Debug mode can be switched by changing the value for kDebug in config.h
