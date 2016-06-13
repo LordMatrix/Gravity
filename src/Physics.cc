@@ -68,21 +68,21 @@ cpBool Physics::OnBallGoalCollisionEnter(cpArbiter *arb, cpSpace *space, void *d
 
 cpBool Physics::OnBallConveyorCollisionEnter(cpArbiter *arb, cpSpace *space, void *data) {
   cpBody* body = Manager::getInstance()->ball_->physics_body_;
-  cpVect point = cpBodyGetPosition(body) - cpVect{-10.0f,0.0f};
-  cpVect position = cpBodyGetPosition(body);
+  cpVect force = {0.008f, 0.0f};
+  cpVect point = {0.0f, 0.0f};
   
-  cpBodySetPosition(body, position + cpVect {1.0f, 0.0f});
-
+  cpBodyApplyForceAtLocalPoint(body, force, point);
+  
   return cpTrue;
 }
 
 
 cpBool Physics::OnBallConveyorInvertedCollisionEnter(cpArbiter *arb, cpSpace *space, void *data) {
   cpBody* body = Manager::getInstance()->ball_->physics_body_;
-  cpVect point = cpBodyGetPosition(body) - cpVect{-10.0f,0.0f};
-  cpVect position = cpBodyGetPosition(body);
+  cpVect force = {-0.008f, 0.0f};
+  cpVect point = {0.0f, 0.0f};
   
-  cpBodySetPosition(body, position - cpVect {1.0f, 0.0f});
+  cpBodyApplyForceAtLocalPoint(body, force, point);
 
   return cpTrue;
 }
