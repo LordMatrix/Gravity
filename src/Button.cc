@@ -25,7 +25,7 @@ Button::Button() {
 *  @param height Whether a blue border will be drawn or not
 */
 Button::Button(float x, float y, float height, float width,
-  int option, ESAT::SpriteHandle img, std::string txt, bool has_border) {
+  int option, MOMOS::SpriteHandle img, std::string txt, bool has_border) {
   
   pos_ = {x, y};
   this->img_ = img;
@@ -68,7 +68,7 @@ void Button::init() {
 
 /// @brief Detects mouse click
 void Button::input() {
-  click_ = ESAT::MouseButtonUp(0);
+  click_ = MOMOS::MouseButtonUp(0);
 }
 
 /** @brief Updates the button
@@ -81,29 +81,29 @@ void Button::update() {
 void Button::draw() {
   float margin = 30.0f;
 
-  ESAT::DrawSetFillColor(100, 0, 0, 255);
-  ESAT::DrawSetStrokeColor(100,0,0, 255);
+  MOMOS::DrawSetFillColor(255, 255, 255, 255);
+  MOMOS::DrawSetStrokeColor(100, 0, 0, 255);
     
   if (border_) {
-    ESAT::DrawPath(path_points_, num_points_);
+    MOMOS::DrawPath(path_points_, num_points_);
   }
 
   if (img_) {
     //Adjust background image to button
-    float sprite_width = ESAT::SpriteWidth(img_);
-    float sprite_height = ESAT::SpriteHeight(img_);
-    ESAT::Mat3 translate, scale, transform;
-    ESAT::Mat3InitAsScale((float)width_/sprite_width, (float)height_/sprite_height, &scale);
-    ESAT::Mat3InitAsTranslate(pos_.x, pos_.y, &translate);
-    ESAT::Mat3Multiply(translate, scale, &transform);
+    float sprite_width = MOMOS::SpriteWidth(img_);
+    float sprite_height = MOMOS::SpriteHeight(img_);
+    MOMOS::Mat3 translate, scale, transform;
+    MOMOS::Mat3InitAsScale((float)width_/sprite_width, (float)height_/sprite_height, &scale);
+    MOMOS::Mat3InitAsTranslate(pos_.x, pos_.y, &translate);
+    MOMOS::Mat3Multiply(translate, scale, &transform);
 
-    ESAT::DrawSpriteWithMatrix(img_, transform);
+    MOMOS::DrawSpriteWithMatrix(img_, transform);
   }
 
-  ESAT::DrawSetTextSize(25);
+  MOMOS::DrawSetTextSize(25);
 
   if (text_.c_str()) {
-    ESAT::DrawText(pos_.x+margin, pos_.y+margin, text_.c_str());
+    MOMOS::DrawText(pos_.x+margin, pos_.y+margin, text_.c_str());
   }
 }
 
@@ -111,10 +111,10 @@ void Button::draw() {
 
 /// @brief  Stablishes initial font settings
 void Button::initText() {
-  ESAT::DrawSetTextFont("../assets/font/medieval.ttf");
-  ESAT::DrawSetTextSize(40);
-  ESAT::DrawSetFillColor(0, 200, 0, 255);
-  ESAT::DrawSetStrokeColor(0, 0, 0, 0);
+  MOMOS::DrawSetTextFont("src/Gravity/assets/font/medieval.ttf");
+  MOMOS::DrawSetTextSize(40);
+  MOMOS::DrawSetFillColor(0, 200, 0, 255);
+  MOMOS::DrawSetStrokeColor(0, 0, 0, 0);
 }
 
 /// @brief  Checks and returns if the button has been clicked
@@ -122,10 +122,10 @@ bool Button::checkClick() {
   int click = false;
 
   //Check if clicked inside the button
-  if (ESAT::MousePositionX() > pos_.x
-    && ESAT::MousePositionX() < pos_.x + width_
-    && ESAT::MousePositionY() > pos_.y
-    && ESAT::MousePositionY() < pos_.y + height_) {
+  if (MOMOS::MousePositionX() > pos_.x
+    && MOMOS::MousePositionX() < pos_.x + width_
+    && MOMOS::MousePositionY() > pos_.y
+    && MOMOS::MousePositionY() < pos_.y + height_) {
     click = 1;
   }
     
@@ -157,9 +157,9 @@ void Button::DrawRectangle(float x, float y, int width, int height, int color, b
   int blue = (color & 0x0000FF00) >> 8;
   int alpha = (color & 0x000000FF);
   
-  ESAT::DrawSetFillColor(red, green, blue, alpha);
+  MOMOS::DrawSetFillColor(red, green, blue, alpha);
 
-  ESAT::DrawSetStrokeColor(255, 255, 255, 255);
+  MOMOS::DrawSetStrokeColor(255, 255, 255, 255);
 
-  ESAT::DrawSolidPath(path_points, 5, true);
+  MOMOS::DrawSolidPath(path_points, 5, true);
 }

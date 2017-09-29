@@ -18,7 +18,7 @@ Rope::Rope(MathLib::Point2 initial_pos, bool is_static, int collision_type, cpSp
   collision_type_ = collision_type;
   
   id_ = 10;
-  img_ = ESAT::SpriteFromFile("assets/img/ring.png");
+  img_ = MOMOS::SpriteFromFile("src/Gravity/assets/img/ring.png");
   width_ = 10.0f;
   height_ = 20.0f;
   img_pivot_ = {-15.0f, -5.0f};
@@ -120,38 +120,38 @@ void Rope::draw() {
   
   for (int j=0; j<num_segments_; j++) {
     
-    ESAT::Mat3 translate, rotate, scale, transform, sprmat;
-    ESAT::Mat3InitAsTranslate(current_poss_[j]->x, current_poss_[j]->y, &translate);
+    MOMOS::Mat3 translate, rotate, scale, transform, sprmat;
+    MOMOS::Mat3InitAsTranslate(current_poss_[j]->x, current_poss_[j]->y, &translate);
 
     if (img_ != nullptr) {
 
-      float img_height = ESAT::SpriteHeight(img_);
-      float img_width = ESAT::SpriteWidth(img_);
+      float img_height = MOMOS::SpriteHeight(img_);
+      float img_width = MOMOS::SpriteWidth(img_);
 
       //Make this overflow its bounding box
       float overflow = 2.5f;
       float x_ratio = (width_/img_width) * overflow;
       float y_ratio = height_/img_height * overflow;
 
-      ESAT::Mat3InitAsTranslate(current_poss_[j]->x, current_poss_[j]->y, &translate);
+      MOMOS::Mat3InitAsTranslate(current_poss_[j]->x, current_poss_[j]->y, &translate);
 
       if (static_)
-        ESAT::Mat3InitAsRotate(MathLib::rads(rotation_), &rotate);
+        MOMOS::Mat3InitAsRotate(MathLib::rads(rotation_), &rotate);
       else 
-        ESAT::Mat3InitAsRotate(rotation_, &rotate);
+        MOMOS::Mat3InitAsRotate(rotation_, &rotate);
 
 
-      ESAT::Mat3 center, centered;
-      ESAT::Mat3InitAsTranslate(-width_, -height_, &center);
-      ESAT::Mat3Multiply(rotate, center, &centered);
+      MOMOS::Mat3 center, centered;
+      MOMOS::Mat3InitAsTranslate(-width_, -height_, &center);
+      MOMOS::Mat3Multiply(rotate, center, &centered);
 
 
-      ESAT::Mat3Multiply(translate, centered, &transform);
+      MOMOS::Mat3Multiply(translate, centered, &transform);
 
-      ESAT::Mat3InitAsScale(x_ratio, y_ratio, &scale);
-      ESAT::Mat3Multiply(transform, scale, &sprmat);
+      MOMOS::Mat3InitAsScale(x_ratio, y_ratio, &scale);
+      MOMOS::Mat3Multiply(transform, scale, &sprmat);
 
-      ESAT::DrawSpriteWithMatrix(img_, sprmat);
+      MOMOS::DrawSpriteWithMatrix(img_, sprmat);
     }
   }
 }

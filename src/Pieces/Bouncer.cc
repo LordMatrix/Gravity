@@ -18,7 +18,7 @@ Bouncer::Bouncer(MathLib::Point2 initial_pos, bool is_static, int collision_type
   collision_type_ = collision_type;
   
   id_ = 5;
-  img_ = ESAT::SpriteFromFile("assets/img/bouncer.png");
+  img_ = MOMOS::SpriteFromFile("src/Gravity/assets/img/bouncer.png");
   width_ = 100.0f;
   height_ = 100.0f;
   img_pivot_ = {-50.0f, -50.0f};
@@ -35,7 +35,7 @@ Bouncer::~Bouncer() {
 }
 
 void Bouncer::setStaticPhysics() {
-  ESAT::Mat3 translate, rotate, transform;
+  MOMOS::Mat3 translate, rotate, transform;
   MathLib::Point2 p1, p2;
   
   //Momentarily add points
@@ -46,10 +46,10 @@ void Bouncer::setStaticPhysics() {
     p1 = points_[i];
     p2 = points_[i+1];
 
-    ESAT::Mat3 translate, rotate, transform;
-    ESAT::Mat3InitAsTranslate(current_pos_.x, current_pos_.y, &translate);
-    ESAT::Mat3InitAsRotate(MathLib::rads(rotation_), &rotate);
-    ESAT::Mat3Multiply(translate, rotate, &transform);
+    MOMOS::Mat3 translate, rotate, transform;
+    MOMOS::Mat3InitAsTranslate(current_pos_.x, current_pos_.y, &translate);
+    MOMOS::Mat3InitAsRotate(MathLib::rads(rotation_), &rotate);
+    MOMOS::Mat3Multiply(translate, rotate, &transform);
 
     std::vector<MathLib::Point2> f;  
     f.push_back(p1);
@@ -64,7 +64,7 @@ void Bouncer::setStaticPhysics() {
     for (j=0; j<f.size(); j++) {
       vertex[0] = f[j].x;
       vertex[1] = f[j].y;
-      ESAT::Mat3TransformVec2(transform, vertex, vertex_out);
+      MOMOS::Mat3TransformVec2(transform, vertex, vertex_out);
       vertices_out[2*j] = vertex_out[0];
       vertices_out[2*j+1] = vertex_out[1];
     }

@@ -42,10 +42,10 @@ void Physics::drawBody(cpBody *body, void *data) {
 
 
 void Physics::drawShape(cpShape *shape, void *data) {
-  ESAT::DrawSetStrokeColor(255,0,0,255);
+  MOMOS::DrawSetStrokeColor(255,0,0,255);
   cpBB bb = cpShapeGetBB(shape);
   float path[] = {bb.l,bb.t, bb.r,bb.t, bb.r,bb.b, bb.l,bb.b, bb.l,bb.t};
-  ESAT::DrawPath(path, 5);
+  MOMOS::DrawPath(path, 5);
 }
 
 

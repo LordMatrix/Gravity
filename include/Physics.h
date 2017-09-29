@@ -16,9 +16,9 @@
 
 #include "stdio.h"
 
-#include "ESAT/draw.h"
-#include "ESAT/input.h"
-#include "ESAT_extra/chipmunk/chipmunk.h" 
+#include "MOMOS/draw.h"
+#include "MOMOS/input.h"
+#include <chipmunk/chipmunk.h>
 
 #include "config.h"
 #include "Pieces/Piece.h"

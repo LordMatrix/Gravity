@@ -12,10 +12,10 @@
 #include <stdlib.h>
 #include <string>
 #include <vector>
-#include <ESAT/window.h>
-#include <ESAT/draw.h>
-#include <ESAT/sprite.h>
-#include <ESAT/input.h> 
+#include <MOMOS/window.h>
+#include <MOMOS/draw.h>
+#include <MOMOS/sprite.h>
+#include <MOMOS/input.h> 
 
 #include "../Button.h"
 #include "../MathLib.h"
@@ -44,9 +44,9 @@ public:
   void DrawRectangle(float x, float y, int width, int height, int color, bool faces_right);
   void DrawTextBox(TextBox box);
   
-  ESAT::SpriteHandle background_;
-  ESAT::SpriteHandle cursor_sprite_;
-  ESAT::SpriteHandle button_background_;
+  MOMOS::SpriteHandle background_;
+  MOMOS::SpriteHandle cursor_sprite_;
+  MOMOS::SpriteHandle button_background_;
   
   bool click_ = false;
     

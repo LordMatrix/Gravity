@@ -18,7 +18,7 @@ ConveyorBelt::ConveyorBelt(MathLib::Point2 initial_pos, bool is_static, int coll
   collision_type_ = collision_type;
   
   id_ = 6;
-  img_ = ESAT::SpriteFromFile("assets/img/conveyor.png");
+  img_ = MOMOS::SpriteFromFile("src/Gravity/assets/img/conveyor.png");
   width_ = 40.0f;
   height_ = 200.0f;
   

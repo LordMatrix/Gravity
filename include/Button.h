@@ -12,16 +12,16 @@
 #include <stdlib.h>
 #include <string>
 #include "MathLib.h"
-#include <ESAT/window.h>
-#include <ESAT/draw.h>
-#include <ESAT/sprite.h>
-#include <ESAT/input.h> 
+#include <MOMOS/window.h>
+#include <MOMOS/draw.h>
+#include <MOMOS/sprite.h>
+#include <MOMOS/input.h> 
 
 class Button {
 public:
 
   MathLib::Point2 pos_;
-  ESAT::SpriteHandle img_;
+  MOMOS::SpriteHandle img_;
   std::string text_;
   float height_;
   float width_;
@@ -31,7 +31,7 @@ public:
 
   Button();
   Button(float x, float y, float height, float width,
-  int option, ESAT::SpriteHandle img, std::string txt, bool has_border);
+  int option, MOMOS::SpriteHandle img, std::string txt, bool has_border);
   Button(const Button& orig);
   virtual ~Button();
 
@@ -44,9 +44,9 @@ public:
   bool checkClick();
   bool checkHover();
   
-  ESAT::SpriteHandle background_;
-  ESAT::SpriteHandle cursor_sprite_;
-  ESAT::SpriteHandle button_background_;
+  MOMOS::SpriteHandle background_;
+  MOMOS::SpriteHandle cursor_sprite_;
+  MOMOS::SpriteHandle button_background_;
   
   bool click_ = false;
   

@@ -80,16 +80,16 @@ void Piece::move() {
 
 
 void Piece::draw() {
-  ESAT::Mat3 translate, rotate, scale, transform, sprmat;
-  ESAT::Mat3InitAsTranslate(current_pos_.x, current_pos_.y, &translate);
+  MOMOS::Mat3 translate, rotate, scale, transform, sprmat;
+  MOMOS::Mat3InitAsTranslate(current_pos_.x, current_pos_.y, &translate);
   
   if (static_)
-    ESAT::Mat3InitAsRotate(MathLib::rads(rotation_), &rotate);
+    MOMOS::Mat3InitAsRotate(MathLib::rads(rotation_), &rotate);
   else 
-    ESAT::Mat3InitAsRotate(rotation_, &rotate);
+    MOMOS::Mat3InitAsRotate(rotation_, &rotate);
   
   if (kDebug) {
-    ESAT::Mat3Multiply(translate, rotate, &transform);
+    MOMOS::Mat3Multiply(translate, rotate, &transform);
 
 //    Calculate transformed vertices
     float vertices_out[100];
@@ -101,46 +101,46 @@ void Piece::draw() {
     for (i=0; i<points_.size(); i++) {
       vertex[0] = points_[i].x;
       vertex[1] = points_[i].y;
-      ESAT::Mat3TransformVec2(transform, vertex, vertex_out);
+      MOMOS::Mat3TransformVec2(transform, vertex, vertex_out);
       vertices_out[2*i] = vertex_out[0];
       vertices_out[2*i+1] = vertex_out[1];
     }
     vertices_out[2*i] = vertices_out[0];
     vertices_out[2*i+1] = vertices_out[1];
 
-    ESAT::DrawSetFillColor(0,200,200,200);
-    ESAT::DrawSetStrokeColor(255,255,255,255);
-    ESAT::DrawSolidPath(vertices_out, points_.size());
+    MOMOS::DrawSetFillColor(0,200,200,200);
+    MOMOS::DrawSetStrokeColor(255,255,255,255);
+    MOMOS::DrawSolidPath(vertices_out, points_.size());
   }
   
   if (img_ != nullptr) {
     
-    float img_height = ESAT::SpriteHeight(img_);
-    float img_width = ESAT::SpriteWidth(img_);
+    float img_height = MOMOS::SpriteHeight(img_);
+    float img_width = MOMOS::SpriteWidth(img_);
     
     float x_ratio = width_/img_width;
     float y_ratio = height_/img_height;
     
-    //ESAT::Mat3InitAsTranslate(current_pos_.x + img_pivot_.x, current_pos_.y + img_pivot_.y, &translate);
-    ESAT::Mat3InitAsTranslate(current_pos_.x,current_pos_.y, &translate);
+    //MOMOS::Mat3InitAsTranslate(current_pos_.x + img_pivot_.x, current_pos_.y + img_pivot_.y, &translate);
+    MOMOS::Mat3InitAsTranslate(current_pos_.x,current_pos_.y, &translate);
     
     if (static_)
-      ESAT::Mat3InitAsRotate(MathLib::rads(rotation_), &rotate);
+      MOMOS::Mat3InitAsRotate(MathLib::rads(rotation_), &rotate);
     else 
-      ESAT::Mat3InitAsRotate(rotation_, &rotate);
+      MOMOS::Mat3InitAsRotate(rotation_, &rotate);
   
   
-    ESAT::Mat3 center, centered;
-    ESAT::Mat3InitAsTranslate(-width_/2, -height_/2, &center);
-    ESAT::Mat3Multiply(rotate, center, &centered);
+    MOMOS::Mat3 center, centered;
+    MOMOS::Mat3InitAsTranslate(-width_/2, -height_/2, &center);
+    MOMOS::Mat3Multiply(rotate, center, &centered);
   
-  
-    ESAT::Mat3Multiply(translate, centered, &transform);
+    //MOMOS::Mat3Multiply(translate, centered, &transform);
+	MOMOS::Mat3Multiply(centered, translate, &transform);
+
+    MOMOS::Mat3InitAsScale(x_ratio, y_ratio, &scale);
+    MOMOS::Mat3Multiply(transform, scale, &sprmat);
     
-    ESAT::Mat3InitAsScale(x_ratio, y_ratio, &scale);
-    ESAT::Mat3Multiply(transform, scale, &sprmat);
-    
-    ESAT::DrawSpriteWithMatrix(img_, sprmat);
+    MOMOS::DrawSpriteWithMatrix(img_, sprmat);
   }
 }
 
@@ -195,7 +195,7 @@ void Piece::setDynamicPhysics() {
 
 
 void Piece::setStaticPhysics() {
-  ESAT::Mat3 translate, rotate, transform;
+  MOMOS::Mat3 translate, rotate, transform;
   MathLib::Point2 p1, p2;
   
   //Momentarily add points
@@ -206,10 +206,10 @@ void Piece::setStaticPhysics() {
     p1 = points_[i];
     p2 = points_[i+1];
 
-    ESAT::Mat3 translate, rotate, transform;
-    ESAT::Mat3InitAsTranslate(current_pos_.x, current_pos_.y, &translate);
-    ESAT::Mat3InitAsRotate(MathLib::rads(rotation_), &rotate);
-    ESAT::Mat3Multiply(translate, rotate, &transform);
+    MOMOS::Mat3 translate, rotate, transform;
+    MOMOS::Mat3InitAsTranslate(current_pos_.x, current_pos_.y, &translate);
+    MOMOS::Mat3InitAsRotate(MathLib::rads(rotation_), &rotate);
+    MOMOS::Mat3Multiply(translate, rotate, &transform);
 
     std::vector<MathLib::Point2> f;  
     f.push_back(p1);
@@ -224,7 +224,7 @@ void Piece::setStaticPhysics() {
     for (j=0; j<f.size(); j++) {
       vertex[0] = f[j].x;
       vertex[1] = f[j].y;
-      ESAT::Mat3TransformVec2(transform, vertex, vertex_out);
+      MOMOS::Mat3TransformVec2(transform, vertex, vertex_out);
       vertices_out[2*j] = vertex_out[0];
       vertices_out[2*j+1] = vertex_out[1];
     }
@@ -275,8 +275,8 @@ bool Piece::checkClick() {
   float margin = 5.0f;
   
   int num_vertices = points_.size();
-  float mx = ESAT::MousePositionX();
-  float my = ESAT::MousePositionY();
+  float mx = MOMOS::MousePositionX();
+  float my = MOMOS::MousePositionY();
   
   
   //Raycast the area
@@ -304,6 +304,6 @@ bool Piece::checkHover() {
 
 
 void Piece::drop() {
-  set_pos_ = {(float)ESAT::MousePositionX(), (float)ESAT::MousePositionY()};
+  set_pos_ = {(float)MOMOS::MousePositionX(), (float)MOMOS::MousePositionY()};
   current_pos_ = set_pos_;
 }

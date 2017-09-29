@@ -16,11 +16,11 @@
 #include <math.h>
 #include <string>
 #include <vector>
-#include <ESAT/sprite.h>
-#include <ESAT/window.h>
+#include <MOMOS/sprite.h>
+#include <MOMOS/window.h>
 
-#include "ESAT_extra/chipmunk/chipmunk.h" 
-#include "ESAT_extra/sqlite3.h"
+#include <chipmunk/chipmunk.h>
+#include <sqlite3.h>
 
 #include "Pieces/Piece.h"
 #include "Pieces/SmallRamp.h"

@@ -4,7 +4,7 @@ LevelEditor::LevelEditor() {
   Screen();
   Init();
   
-  background_ = ESAT::SpriteFromFile("assets/img/game_bg.png");
+  background_ = MOMOS::SpriteFromFile("src/Gravity/assets/img/game_bg.png");
   new_insert_ = true;
 }
 
@@ -33,35 +33,35 @@ void LevelEditor::Init() {
 
 
 void LevelEditor::Draw() {
-  ESAT::DrawBegin();
-  ESAT::DrawClear(255,255,255);
+  MOMOS::DrawBegin();
+  MOMOS::DrawClear(255,255,255);
 
-  ESAT::Mat3 transform;
-  float ratiox = (float)kWinWidth / (float)ESAT::SpriteWidth(background_);
-  float ratioy = (float)kWinHeight / (float)ESAT::SpriteHeight(background_);
+  MOMOS::Mat3 transform;
+  float ratiox = (float)kWinWidth / (float)MOMOS::SpriteWidth(background_);
+  float ratioy = (float)kWinHeight / (float)MOMOS::SpriteHeight(background_);
   
-  ESAT::Mat3InitAsScale(ratiox, ratioy, &transform);
-  ESAT::DrawSpriteWithMatrix(background_, transform);
+  MOMOS::Mat3InitAsScale(ratiox, ratioy, &transform);
+  MOMOS::DrawSpriteWithMatrix(background_, transform);
   
   /************ MENU ************/
-  ESAT::DrawSetFillColor(0,0,200,200);
-  ESAT::DrawSetStrokeColor(255,255,255,255);
+  MOMOS::DrawSetFillColor(0,0,200,200);
+  MOMOS::DrawSetStrokeColor(255,255,255,255);
   
   //Draw menu background
   float x = kWinWidth - kMenuWidth;
   float path[] = {x,0.0f, x,kWinHeight, kWinWidth,kWinHeight, kWinWidth,0.0f, x,0.0f};
-  ESAT::DrawSolidPath(path, 5);
+  MOMOS::DrawSolidPath(path, 5);
   
   //Draw info text
-  ESAT::DrawSetTextSize(17.0f);
-  ESAT::DrawSetFillColor(255,255,255,255);
-  ESAT::DrawText(x+10, 30.0f, "Drop pieces here to make them selectable");
+  MOMOS::DrawSetTextSize(17.0f);
+  MOMOS::DrawSetFillColor(255,255,255,255);
+  MOMOS::DrawText(x+10, 30.0f, "Drop pieces here to make them selectable");
   
   //Draw piece selection area
   float y = 600.0f;
   float path2[] = {0.0f,y, x,y, x,kWinHeight, 0.0f,kWinHeight, 0.0f,y};
-  ESAT::DrawSetFillColor(0,150,0,200);
-  ESAT::DrawSolidPath(path2, 5);
+  MOMOS::DrawSetFillColor(0,150,0,200);
+  MOMOS::DrawSolidPath(path2, 5);
   
   //Draw Buttons
   for (int i=0; i<buttons_.size(); i++) {
@@ -80,34 +80,34 @@ void LevelEditor::Draw() {
   }
   
   //Show level name
-  ESAT::DrawSetFillColor(255,255,255,255);
-  ESAT::DrawSetStrokeColor(255,255,255,255);
-  ESAT::DrawText(kWinWidth-kMenuWidth+20, kWinHeight-20.0f, level_->name_.c_str());
+  MOMOS::DrawSetFillColor(255,255,255,255);
+  MOMOS::DrawSetStrokeColor(255,255,255,255);
+  MOMOS::DrawText(kWinWidth-kMenuWidth+20, kWinHeight-20.0f, level_->name_.c_str());
   
-  ESAT::DrawSprite(cursor_sprite_, (float)ESAT::MousePositionX(), (float)ESAT::MousePositionY());
+  MOMOS::DrawSprite(cursor_sprite_, (float)MOMOS::MousePositionX(), (float)MOMOS::MousePositionY());
   //Print mouse coordinates
   InitText();
-  ESAT::DrawSetTextSize(15.0f);
-  ESAT::DrawText(10.0f, 20.0f, (std::to_string((int)ESAT::MousePositionX())+", "+std::to_string((int)ESAT::MousePositionY())).c_str());
+  MOMOS::DrawSetTextSize(15.0f);
+  MOMOS::DrawText(10.0f, 20.0f, (std::to_string((int)MOMOS::MousePositionX())+", "+std::to_string((int)MOMOS::MousePositionY())).c_str());
   
-  ESAT::DrawEnd();
-  ESAT::WindowFrame();
+  MOMOS::DrawEnd();
+  MOMOS::WindowFrame();
 }
 
 
 void LevelEditor::Update(double delta) {
   
-  if (ESAT::IsSpecialKeyDown(ESAT::kSpecialKey_Escape)) {
+  if (MOMOS::IsSpecialKeyDown(MOMOS::kSpecialKey_Escape)) {
     LevelSelect* ls = new LevelSelect();
     Manager::getInstance()->screen_ = ls;
     return;
   }
   //FOR DEBUGGING. DELETE ON RELEASE.
-  if (ESAT::IsSpecialKeyDown(ESAT::kSpecialKey_Enter)) {
+  if (MOMOS::IsSpecialKeyDown(MOMOS::kSpecialKey_Enter)) {
   }
   
   //Listen to button click
-  if (ESAT::MouseButtonPressed(0)) {
+  if (MOMOS::MouseButtonPressed(0)) {
     for (int i=0; i<buttons_.size(); i++) {
       if (buttons_[i]->checkClick()) {
         switch(i) {
@@ -121,10 +121,10 @@ void LevelEditor::Update(double delta) {
   }
   
   //Append level name
-  if (ESAT::IsSpecialKeyDown(ESAT::kSpecialKey_Delete)) {
+  if (MOMOS::IsSpecialKeyDown(MOMOS::kSpecialKey_Delete)) {
     level_->name_.pop_back();
   } else {
-    char key = ESAT::GetNextPressedKey();
+    char key = MOMOS::GetNextPressedKey();
     if (key) {
       level_->name_ += key;
     }
@@ -135,7 +135,7 @@ void LevelEditor::Update(double delta) {
   for (int i=0; i<templates_.size() && !found; i++) {
 
     //Detect drag/drop
-    if (ESAT::MouseButtonDown(0)) {
+    if (MOMOS::MouseButtonDown(0)) {
 
       if (templates_[i]->checkClick()) {
         Piece* selected = new Piece(*templates_[i]);
@@ -152,7 +152,7 @@ void LevelEditor::Update(double delta) {
     for (int i=0; i<level_->pieces_.size() && !found; i++) {
 
       //Detect drag/drop
-      if (ESAT::MouseButtonDown(0)) {
+      if (MOMOS::MouseButtonDown(0)) {
 
         if (level_->pieces_[i]->checkClick()) {
           level_->pieces_[i]->dragged_ = !level_->pieces_[i]->dragged_;
@@ -174,7 +174,7 @@ void LevelEditor::CreateButtons() {
   float x = kWinWidth - kMenuWidth;
 
   //Play button
-  buttons_.push_back(new Button(x + 25.0f, kWinHeight - 100.0f, 50.0f, 50.0f, 0, ESAT::SpriteFromFile("assets/img/save.png"), "", false));
+  buttons_.push_back(new Button(x + 25.0f, kWinHeight - 100.0f, 50.0f, 50.0f, 0, MOMOS::SpriteFromFile("src/Gravity/assets/img/save.png"), "", false));
 }
 
 
@@ -231,7 +231,7 @@ void LevelEditor::SaveLevel() {
   MathLib::Point2 init;
   sqlite3_stmt* rs;
   
-  rc = sqlite3_open("assets/gravity.db", &db);
+  rc = sqlite3_open("src/Gravity/assets/gravity.db", &db);
   
   
   /*******************/

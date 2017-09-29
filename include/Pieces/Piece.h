@@ -18,9 +18,9 @@
 #include <cmath>
 #include <ctgmath>
 #include "../MathLib.h"
-#include <ESAT/math.h>
-#include <ESAT/time.h>
-#include "ESAT_extra/chipmunk/chipmunk.h"
+#include <MOMOS/math.h>
+#include <MOMOS/time.h>
+#include <chipmunk/chipmunk.h>
 #include "../config.h"
 
 class Piece {
@@ -42,7 +42,7 @@ class Piece {
     void drop();
     
     int id_;
-    ESAT::SpriteHandle img_;
+    MOMOS::SpriteHandle img_;
     bool static_;
     bool dragged_;
     bool active_;

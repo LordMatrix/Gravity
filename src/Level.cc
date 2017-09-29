@@ -1,5 +1,5 @@
 #include "../include/Level.h"
-#include "ESAT/draw.h"
+#include "MOMOS/draw.h"
 
 Level::Level() {
 }
@@ -49,7 +49,7 @@ void Level::load(int id, cpSpace* space) {
   sqlite3_stmt* rs;
   
   
-  rc = sqlite3_open("assets/gravity.db", &db);
+  rc = sqlite3_open("src/Gravity/assets/gravity.db", &db);
   
   //Fetch ball&goal
   sql = "SELECT * FROM level WHERE id="+std::to_string(id);
@@ -80,7 +80,7 @@ void Level::load(int id, cpSpace* space) {
     Piece* goal = new Piece(init, true, GOAL_TYPE, space);
     goal->movable_ = false;
     
-    goal->img_ = ESAT::SpriteFromFile("assets/img/goal.png");
+    goal->img_ = MOMOS::SpriteFromFile("src/Gravity/assets/img/goal.png");
     goal->width_ = 100.0f;
     goal->height_ = 100.0f;
     goal->img_pivot_ = {-50.0f, -50.0f};
@@ -173,7 +173,7 @@ std::vector<std::string> Level::LoadLevelNames() {
   std::string sql;
   sqlite3_stmt* rs;
   
-  rc = sqlite3_open("assets/gravity.db", &db);
+  rc = sqlite3_open("src/Gravity/assets/gravity.db", &db);
   
   sql = "SELECT name FROM level";
   rc = sqlite3_prepare(db, sql.c_str(), 100, &rs, &zErrMsg);

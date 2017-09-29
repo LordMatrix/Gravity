@@ -12,7 +12,7 @@ Game::Game() {
   current_index_ = 0;
   Init();
   
-  background_ = ESAT::SpriteFromFile("assets/img/game_bg.png");
+  background_ = MOMOS::SpriteFromFile("src/Gravity/assets/img/game_bg.png");
 }
 
 Game::Game(const Game& orig) {
@@ -52,24 +52,24 @@ void Game::Init() {
 
 
 void Game::Draw() {
-  ESAT::DrawBegin();
-  ESAT::DrawClear(255,255,255);
+  MOMOS::DrawBegin();
+  MOMOS::DrawClear(255,255,255);
 
-  ESAT::Mat3 transform;
-  float ratiox = (float)kWinWidth / (float)ESAT::SpriteWidth(background_);
-  float ratioy = (float)kWinHeight / (float)ESAT::SpriteHeight(background_);
+  MOMOS::Mat3 transform;
+  float ratiox = (float)kWinWidth / (float)MOMOS::SpriteWidth(background_);
+  float ratioy = (float)kWinHeight / (float)MOMOS::SpriteHeight(background_);
   
-  ESAT::Mat3InitAsScale(ratiox, ratioy, &transform);
-  ESAT::DrawSpriteWithMatrix(background_, transform);
+  MOMOS::Mat3InitAsScale(ratiox, ratioy, &transform);
+  MOMOS::DrawSpriteWithMatrix(background_, transform);
   
   /************ MENU ************/
-  ESAT::DrawSetFillColor(0,0,200,200);
-  ESAT::DrawSetStrokeColor(255,255,255,255);
+  MOMOS::DrawSetFillColor(0,0,200,200);
+  MOMOS::DrawSetStrokeColor(255,255,255,255);
   
   //Draw menu background
   float x = kWinWidth - kMenuWidth;
   float path[] = {x,0.0f, x,kWinHeight, kWinWidth,kWinHeight, kWinWidth,0.0f, x,0.0f};
-  ESAT::DrawSolidPath(path, 5);
+  MOMOS::DrawSolidPath(path, 5);
   
   //Draw Buttons
   for (int i=0; i<buttons_.size(); i++) {
@@ -82,7 +82,7 @@ void Game::Draw() {
     current_level_->pieces_[i]->draw();
   }
   
-  ESAT::DrawSprite(cursor_sprite_, (float)ESAT::MousePositionX(), (float)ESAT::MousePositionY());
+  MOMOS::DrawSprite(cursor_sprite_, (float)MOMOS::MousePositionX(), (float)MOMOS::MousePositionY());
   
   if (kDebug) {
     physics_->drawPhysics();
@@ -91,8 +91,8 @@ void Game::Draw() {
   //Print winning texts
   if(physics_->ball_caged_) {
     //Display winning message
-    ESAT::DrawSetTextSize(80.0f);
-    ESAT::DrawText(kWinWidth/3, 100.0f, "You Win");
+    MOMOS::DrawSetTextSize(80.0f);
+    MOMOS::DrawText(kWinWidth/3, 100.0f, "You Win");
     //Display "next level" button
     if (!current_level_->won_) {
       buttons_.push_back(new Button((float)kWinWidth/3, (float)115.0f, 50.0f, 200.0f, 0, nullptr, "Click here for next Level", false));
@@ -103,28 +103,28 @@ void Game::Draw() {
   
   //Print mouse coordinates
   InitText();
-  ESAT::DrawSetTextSize(15.0f);
-  ESAT::DrawText(10.0f, 20.0f, (std::to_string((int)ESAT::MousePositionX())+", "+std::to_string((int)ESAT::MousePositionY())).c_str());
+  MOMOS::DrawSetTextSize(15.0f);
+  MOMOS::DrawText(10.0f, 20.0f, (std::to_string((int)MOMOS::MousePositionX())+", "+std::to_string((int)MOMOS::MousePositionY())).c_str());
   
-  ESAT::DrawEnd();
-  ESAT::WindowFrame();
+  MOMOS::DrawEnd();
+  MOMOS::WindowFrame();
 }
 
 
 void Game::Update(double delta) {
   
-  if (ESAT::IsSpecialKeyDown(ESAT::kSpecialKey_Escape)) {
+  if (MOMOS::IsSpecialKeyDown(MOMOS::kSpecialKey_Escape)) {
     LevelSelect* ls = new LevelSelect();
     Manager::getInstance()->screen_ = ls;
     return;
   }
   //FOR DEBUGGING. DELETE ON RELEASE.
-  if (ESAT::IsSpecialKeyDown(ESAT::kSpecialKey_Enter)) {
+  if (MOMOS::IsSpecialKeyDown(MOMOS::kSpecialKey_Enter)) {
     levelUp();
   }
   
   //Listen to button click
-  if (ESAT::MouseButtonPressed(0)) {
+  if (MOMOS::MouseButtonDown(0)) {
     for (int i=0; i<buttons_.size(); i++) {
       if (buttons_[i]->checkClick()) {
         switch(i) {
@@ -132,15 +132,19 @@ void Game::Update(double delta) {
             //Play
             if (!physics_->simulation_started_) {
               startSimulation();
+			  printf("STARTED\n");
             } else {
               physics_->resumeSimulation();
+			  printf("RESUMED\n");
             }
             break;
           case 1:
             physics_->pauseSimulation();
+			printf("PAUSED\n");
             break;
           case 2:
             stopSimulation();
+			printf("STOPPED\n");
             break;
           case 3:
             //Next level
@@ -153,8 +157,8 @@ void Game::Update(double delta) {
   }
   
   //Listen to spacebar press
-  if (ESAT::GetNextPressedKey()) {
-    if (ESAT::IsSpecialKeyDown(ESAT::kSpecialKey_Space)) {
+  if (MOMOS::GetNextPressedKey()) {
+    if (MOMOS::IsSpecialKeyDown(MOMOS::kSpecialKey_Space)) {
       
       //Update pieces physics
       if (!physics_->simulation_started_) {
@@ -180,7 +184,7 @@ void Game::Update(double delta) {
       
       //Detect drag/drop
       if (current_level_->pieces_[i]->movable_) {
-        if (ESAT::MouseButtonDown(0)) {
+        if (MOMOS::MouseButtonDown(0)) {
           
           if (current_level_->pieces_[i]->checkClick()) {
             current_level_->pieces_[i]->dragged_ = !current_level_->pieces_[i]->dragged_;
@@ -202,11 +206,11 @@ void Game::CreateButtons() {
   float x = kWinWidth - kMenuWidth;
 
   //Play button
-  buttons_.push_back(new Button(x + 25.0f, kWinHeight - 100.0f, 50.0f, 50.0f, 0, ESAT::SpriteFromFile("assets/img/play.png"), "", false));
+  buttons_.push_back(new Button(x + 25.0f, kWinHeight - 100.0f, 50.0f, 50.0f, 0, MOMOS::SpriteFromFile("src/Gravity/assets/img/play.png"), "", false));
   //Pause Button
-  buttons_.push_back(new Button(x + 125.0f, kWinHeight - 100.0f, 50.0f, 50.0f, 0, ESAT::SpriteFromFile("assets/img/pause.png"), "", false));
+  buttons_.push_back(new Button(x + 125.0f, kWinHeight - 100.0f, 50.0f, 50.0f, 0, MOMOS::SpriteFromFile("src/Gravity/assets/img/pause.png"), "", false));
   //Stop button
-  buttons_.push_back(new Button(x + 225.0f, kWinHeight - 100.0f, 50.0f, 50.0f, 0, ESAT::SpriteFromFile("assets/img/stop.png"), "", false));
+  buttons_.push_back(new Button(x + 225.0f, kWinHeight - 100.0f, 50.0f, 50.0f, 0, MOMOS::SpriteFromFile("src/Gravity/assets/img/stop.png"), "", false));
 }
 
 

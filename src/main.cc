@@ -11,15 +11,16 @@
 //#define WIN32 1
 //#endif
 
-#include "ESAT/window.h"
-#include "ESAT/draw.h"
-#include "ESAT/input.h"
- 
+#include <MOMOS/window.h>
+#include <MOMOS/draw.h>
+#include <MOMOS/input.h>
+#include <MOMOS/time.h>
+#include <chipmunk/chipmunk.h>
+
 #include <iostream>
 #include "time.h"
 
 #include "../include/Pieces/Piece.h"
-#include "ESAT_extra/chipmunk/chipmunk.h" 
 #include "../include/config.h"
 #include "../include/Manager.h"
 
@@ -27,20 +28,20 @@
 /**
  * @brief The alpha and the omega 
  */
-int ESAT::main(int argc, char **argv) {
+int main(int argc, char **argv) {
 
   srand(time(NULL));
 
-  ESAT::WindowInit(kWinWidth, kWinHeight);
+  MOMOS::WindowInit(kWinWidth, kWinHeight);
   
-  static double last_time = ESAT::Time();
+  static double last_time = MOMOS::Time();
   
-  while (ESAT::WindowIsOpened() && !Manager::getInstance()->quit_game_) {
+  while (MOMOS::WindowIsOpened() && !Manager::getInstance()->quit_game_) {
     
     /****************SIMULATION****************/
-    double tick = ESAT::Time();
+    double tick = MOMOS::Time();
     double delta = (tick - last_time) * 0.1f;
-    last_time = ESAT::Time();
+    last_time = MOMOS::Time();
   
     //GameLoop
     Manager::getInstance()->screen_->Input();
@@ -48,6 +49,6 @@ int ESAT::main(int argc, char **argv) {
     Manager::getInstance()->screen_->Draw();
   }
   
-  ESAT::WindowDestroy();
+  MOMOS::WindowDestroy();
   return 0;
 }

@@ -12,9 +12,9 @@ const int kWindowHeight = 768;
 
 /// @brief Creates a screen and loads its sprites
 Screen::Screen() {
-    cursor_sprite_ = ESAT::SpriteFromFile("assets/img/Crosshair_02.png");
-    background_ = ESAT::SpriteFromFile("assets/img/sky.jpg");
-    button_background_ = ESAT::SpriteFromFile("assets/img/button_bg.png");
+    cursor_sprite_ = MOMOS::SpriteFromFile("src/Gravity/assets/img/Crosshair_02.png");
+    background_ = MOMOS::SpriteFromFile("src/Gravity/assets/img/intro_bg.jpg");
+    button_background_ = MOMOS::SpriteFromFile("src/Gravity/assets/img/button_bg.png");
     Init();
 }
 
@@ -22,9 +22,9 @@ Screen::Screen(const Screen& orig) {
 }
 
 Screen::~Screen() {
-//  ESAT::SpriteRelease(background_);
-  ESAT::SpriteRelease(cursor_sprite_);
-  ESAT::SpriteRelease(button_background_);
+//  MOMOS::SpriteRelease(background_);
+  MOMOS::SpriteRelease(cursor_sprite_);
+  MOMOS::SpriteRelease(button_background_);
 
   for (int i=0; i<buttons_.size(); i++) {
 //    delete(buttons_[i]);
@@ -42,15 +42,15 @@ void Screen::Init() {
  *
  */
 void Screen::DrawBegin() {
-  ESAT::DrawBegin();
-  ESAT::DrawClear(255, 255, 255);
+  MOMOS::DrawBegin();
+  MOMOS::DrawClear(255, 255, 255);
   
   //Draw background image
-  float sprite_width = ESAT::SpriteWidth(background_);
-  float sprite_height = ESAT::SpriteHeight(background_);
-  ESAT::Mat3 escale;
-  ESAT::Mat3InitAsScale((float)kWindowWidth/sprite_width, (float)kWindowHeight/sprite_height, &escale);
-  ESAT::DrawSpriteWithMatrix(background_, escale);
+  float sprite_width = MOMOS::SpriteWidth(background_);
+  float sprite_height = MOMOS::SpriteHeight(background_);
+  MOMOS::Mat3 escale;
+  MOMOS::Mat3InitAsScale((float)kWindowWidth/sprite_width, (float)kWindowHeight/sprite_height, &escale);
+  MOMOS::DrawSpriteWithMatrix(background_, escale);
   
   DrawButtons();
 }
@@ -63,13 +63,13 @@ void Screen::DrawBegin() {
  */
 void Screen::DrawEnd() {
   DrawCursor();
-  ESAT::DrawEnd();
-  ESAT::WindowFrame();
+  MOMOS::DrawEnd();
+  MOMOS::WindowFrame();
 }
 
 /// @brief Detects mouse click
 void Screen::Input() {
-  click_ = ESAT::MouseButtonUp(0);
+  click_ = MOMOS::MouseButtonUp(0);
 }
 
 /** @brief Updates the screen
@@ -82,7 +82,7 @@ void Screen::Update(double delta) {
 void Screen::Draw() {
   DrawBegin();
   
-  ESAT::DrawText(300.0f, 50.0f, "The Battle for Pass - SuperGeneric Screen");
+  MOMOS::DrawText(300.0f, 50.0f, "The Battle for Pass - SuperGeneric Screen");
   
   DrawEnd();
 }
@@ -91,7 +91,7 @@ void Screen::Draw() {
  *  Draws the sprite cursor_sprite_ on the mouse coordinates
  */
 void Screen::DrawCursor() {
-  ESAT::DrawSprite(cursor_sprite_, (float)ESAT::MousePositionX(), (float)ESAT::MousePositionY());
+  MOMOS::DrawSprite(cursor_sprite_, (float)MOMOS::MousePositionX(), (float)MOMOS::MousePositionY());
 }
 
 /// @brief Creates buttons for the current screen
@@ -123,30 +123,30 @@ void Screen::DrawButtons() {
       };
 
       /*rgb colors inside the polygon*/
-      ESAT::DrawSetFillColor(0, 0, 0, 0);
+      MOMOS::DrawSetFillColor(0, 0, 0, 0);
 
-      ESAT::DrawSetStrokeColor(255, 255, 255, 255);
+      MOMOS::DrawSetStrokeColor(255, 255, 255, 255);
 
-      ESAT::DrawSolidPath(path_points, 5, true);
+      MOMOS::DrawSolidPath(path_points, 5, true);
     }
 
     if (buttons_[i]->img_) {
       
       //Adjust background image to button
-      float sprite_width = ESAT::SpriteWidth(buttons_[i]->img_);
-      float sprite_height = ESAT::SpriteHeight(buttons_[i]->img_);
-      ESAT::Mat3 translate, escale, transform;
-      ESAT::Mat3InitAsScale((float)width/sprite_width, (float)height/sprite_height, &escale);
-      ESAT::Mat3InitAsTranslate(buttons_[i]->pos_.x, buttons_[i]->pos_.y, &translate);
-      ESAT::Mat3Multiply(translate, escale, &transform);
+      float sprite_width = MOMOS::SpriteWidth(buttons_[i]->img_);
+      float sprite_height = MOMOS::SpriteHeight(buttons_[i]->img_);
+      MOMOS::Mat3 translate, escale, transform;
+      MOMOS::Mat3InitAsScale((float)width/sprite_width, (float)height/sprite_height, &escale);
+      MOMOS::Mat3InitAsTranslate(buttons_[i]->pos_.x, buttons_[i]->pos_.y, &translate);
+      MOMOS::Mat3Multiply(translate, escale, &transform);
       
-      ESAT::DrawSpriteWithMatrix(buttons_[i]->img_, transform);
+      MOMOS::DrawSpriteWithMatrix(buttons_[i]->img_, transform);
     }
 
-    ESAT::DrawSetTextSize(25);
+    MOMOS::DrawSetTextSize(25);
 
     if (buttons_[i]->text_.c_str()) {
-      ESAT::DrawText(x+margin, y+2*margin, buttons_[i]->text_.c_str());
+      MOMOS::DrawText(x+margin, y+2*margin, buttons_[i]->text_.c_str());
     }
   }
 }
@@ -154,10 +154,10 @@ void Screen::DrawButtons() {
 
 /// @brief  Stablishes initial font settings
 void Screen::InitText() {
-  ESAT::DrawSetTextFont("assets/font/medieval.ttf");
-  ESAT::DrawSetTextSize(40);
-  ESAT::DrawSetFillColor(0, 0, 0);
-  ESAT::DrawSetStrokeColor(0, 0, 0);
+  MOMOS::DrawSetTextFont("src/Gravity/assets/font/medieval.ttf");
+  MOMOS::DrawSetTextSize(40);
+  MOMOS::DrawSetFillColor(0, 0, 0);
+  MOMOS::DrawSetStrokeColor(0, 0, 0);
 }
 
 /// @brief  Checks and returns the index of the button clicked inside g_option_buttons. Returns -1 if no button is clicked.
@@ -175,10 +175,10 @@ int Screen::CheckButtonsClick() {
     width = buttons_[i]->width_;
 
     //Check if clicked inside the button
-    if (ESAT::MousePositionX() > x
-      && ESAT::MousePositionX() < x + width
-      && ESAT::MousePositionY() > y
-      && ESAT::MousePositionY() < y + height) {
+    if (MOMOS::MousePositionX() > x
+      && MOMOS::MousePositionX() < x + width
+      && MOMOS::MousePositionY() > y
+      && MOMOS::MousePositionY() < y + height) {
       click = 1;
     }
   }
@@ -191,13 +191,13 @@ int Screen::CheckButtonsHover() {
 }
 
 void Screen::DrawTextWithLineBreaks(float x, float y, int width, int font_size, std::string txt) {
-  ESAT::DrawSetTextSize(font_size);
+  MOMOS::DrawSetTextSize(font_size);
   
   int chars_per_line = width / font_size;
   int num_lines = ceil(txt.length()/(chars_per_line));
   
   for (int i=0; i <= num_lines; i++) {
-    ESAT::DrawText(x, y+((i+1)*font_size), txt.substr (i*chars_per_line, chars_per_line).c_str());
+    MOMOS::DrawText(x, y+((i+1)*font_size), txt.substr (i*chars_per_line, chars_per_line).c_str());
   }
 }
 
@@ -220,11 +220,11 @@ void Screen::DrawRectangle(float x, float y, int width, int height, int color, b
   int blue = (color & 0x0000FF00) >> 8;
   int alpha = (color & 0x000000FF);
   
-  ESAT::DrawSetFillColor(red, green, blue, alpha);
+  MOMOS::DrawSetFillColor(red, green, blue, alpha);
 
-  ESAT::DrawSetStrokeColor(255, 255, 255, 255);
+  MOMOS::DrawSetStrokeColor(255, 255, 255, 255);
 
-  ESAT::DrawSolidPath(path_points, 5, true);
+  MOMOS::DrawSolidPath(path_points, 5, true);
 }
 
 /// @brief  Prints a TextBox
@@ -238,12 +238,12 @@ void Screen::DrawTextBox(TextBox box) {
     box.pos.x, box.pos.y
   };
 
-  ESAT::DrawSetFillColor(30, 30, 0);
+  MOMOS::DrawSetFillColor(30, 30, 0);
 
-  ESAT::DrawSetStrokeColor(255, 255, 255);
+  MOMOS::DrawSetStrokeColor(255, 255, 255);
 
-  ESAT::DrawSolidPath(pathPoints, 5, true);
+  MOMOS::DrawSolidPath(pathPoints, 5, true);
 
-  ESAT::DrawSetFillColor(150, 150, 150);
-  ESAT::DrawText(box.pos.x, box.pos.y + padding, box.txt.c_str());
+  MOMOS::DrawSetFillColor(150, 150, 150);
+  MOMOS::DrawText(box.pos.x, box.pos.y + padding, box.txt.c_str());
 }

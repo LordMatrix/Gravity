@@ -18,7 +18,7 @@ LargeRamp::LargeRamp(MathLib::Point2 initial_pos, bool is_static, int collision_
   colspan_ = 2;
   
   id_ = 2;
-  img_ = ESAT::SpriteFromFile("assets/img/ramp.png");
+  img_ = MOMOS::SpriteFromFile("src/Gravity/assets/img/ramp.png");
   width_ = 250.0f;
   height_ = 100.0f;
   img_pivot_ = {75.0f, 0.0f};
@@ -34,15 +34,15 @@ LargeRamp::~LargeRamp() {
 
 
 void LargeRamp::draw() {
-  ESAT::Mat3 translate, rotate, scale, transform, sprmat;
-  ESAT::Mat3InitAsTranslate(current_pos_.x, current_pos_.y, &translate);
+  MOMOS::Mat3 translate, rotate, scale, transform, sprmat;
+  MOMOS::Mat3InitAsTranslate(current_pos_.x, current_pos_.y, &translate);
   
   if (static_)
-    ESAT::Mat3InitAsRotate(MathLib::rads(rotation_), &rotate);
+    MOMOS::Mat3InitAsRotate(MathLib::rads(rotation_), &rotate);
   else 
-    ESAT::Mat3InitAsRotate(rotation_, &rotate);
+    MOMOS::Mat3InitAsRotate(rotation_, &rotate);
   
-  ESAT::Mat3Multiply(translate, rotate, &transform);
+  MOMOS::Mat3Multiply(translate, rotate, &transform);
   
   //Calculate transformed vertices
   float vertices_out[100];
@@ -54,44 +54,44 @@ void LargeRamp::draw() {
   for (i=0; i<points_.size(); i++) {
     vertex[0] = points_[i].x;
     vertex[1] = points_[i].y;
-    ESAT::Mat3TransformVec2(transform, vertex, vertex_out);
+    MOMOS::Mat3TransformVec2(transform, vertex, vertex_out);
     vertices_out[2*i] = vertex_out[0];
     vertices_out[2*i+1] = vertex_out[1];
   }
   vertices_out[2*i] = vertices_out[0];
   vertices_out[2*i+1] = vertices_out[1];
     
-  ESAT::DrawSetFillColor(0,200,200,200);
-  ESAT::DrawSetStrokeColor(255,255,255,255);
-  ESAT::DrawSolidPath(vertices_out, points_.size());
+  MOMOS::DrawSetFillColor(0,200,200,200);
+  MOMOS::DrawSetStrokeColor(255,255,255,255);
+  MOMOS::DrawSolidPath(vertices_out, points_.size());
 
   if (img_ != nullptr) {
     
-    float img_height = ESAT::SpriteHeight(img_);
-    float img_width = ESAT::SpriteWidth(img_);
+    float img_height = MOMOS::SpriteHeight(img_);
+    float img_width = MOMOS::SpriteWidth(img_);
     
     float x_ratio = width_/img_width;
     float y_ratio = height_/img_height;
     
-    ESAT::Mat3InitAsTranslate(current_pos_.x + img_pivot_.x, current_pos_.y + img_pivot_.y, &translate);
-    //ESAT::Mat3InitAsTranslate(current_pos_.x,current_pos_.y, &translate);
+    MOMOS::Mat3InitAsTranslate(current_pos_.x + img_pivot_.x, current_pos_.y + img_pivot_.y, &translate);
+    //MOMOS::Mat3InitAsTranslate(current_pos_.x,current_pos_.y, &translate);
     
     if (static_)
-      ESAT::Mat3InitAsRotate(MathLib::rads(rotation_), &rotate);
+      MOMOS::Mat3InitAsRotate(MathLib::rads(rotation_), &rotate);
     else 
-      ESAT::Mat3InitAsRotate(rotation_, &rotate);
+      MOMOS::Mat3InitAsRotate(rotation_, &rotate);
   
   
-    ESAT::Mat3 center, centered;
-    ESAT::Mat3InitAsTranslate(-width_/2, -height_/2, &center);
-    ESAT::Mat3Multiply(rotate, center, &centered);
+    MOMOS::Mat3 center, centered;
+    MOMOS::Mat3InitAsTranslate(-width_/2, -height_/2, &center);
+    MOMOS::Mat3Multiply(rotate, center, &centered);
   
   
-    ESAT::Mat3Multiply(translate, centered, &transform);
+    MOMOS::Mat3Multiply(translate, centered, &transform);
     
-    ESAT::Mat3InitAsScale(x_ratio, y_ratio, &scale);
-    ESAT::Mat3Multiply(transform, scale, &sprmat);
+    MOMOS::Mat3InitAsScale(x_ratio, y_ratio, &scale);
+    MOMOS::Mat3Multiply(transform, scale, &sprmat);
     
-    ESAT::DrawSpriteWithMatrix(img_, sprmat);
+    MOMOS::DrawSpriteWithMatrix(img_, sprmat);
   }
 }
